@@ -1,0 +1,13 @@
+<view class="container">
+  <view class='page-section page-section-spacing bottom-margin-100'>
+    <view class='item-input-root-view top-margin-64'>
+      <input class='item-input font-h3' placeholder='输入讲解点说明' bindinput='onInputItemName'></input>
+      <cover-view class='item-add-button font-h3' bindtap='onAddItemButtonAction'>+</cover-view>
+    </view>
+
+    <view wx:if="{{0 >= dataSource.length}}" class="page-tips-text font-h3">暂时还没有讲解点喔！马上添加吧</view>
+    <view wx:else class='bottom-margin-100'>
+      <view wx:for="{{dataSource}}" wx:key="item._id" class='item-card font-h3'><label class='item-delete-button' data-sid="{{item._id}}" bindtap='onItemDeleteButtonAction'>删除</label>{{item.name}}</view>
+    </view>
+  </view>
+</view>

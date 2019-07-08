@@ -1,0 +1,67 @@
+<!--hot.wxml-->
+<view class="container">
+  <input class='top-margin-23 bottom-margin-23 search-input font-h3'
+         type='text'
+         confirm-type='search'
+         placeholder='搜索景区、解说员'
+         maxlength='32'></input>
+
+  <view class="page-section page-section-spacing bottom-margin-23">
+      <swiper indicator-dots="{{indicatorDots}}"
+              autoplay="{{autoplay}}"
+              circular="{{circular}}"
+              vertical="{{vertical}}"
+              interval="{{interval}}"
+              duration="{{duration}}"
+              previous-margin="{{previousMargin}}px"
+              next-margin="{{nextMargin}}px"
+              class="swiper">
+        <block wx:for="{{banners}}" wx:key="banner">
+          <swiper-item class="swiper-item">
+            <image class="swiper-banner" src="{{item}}" />
+          </swiper-item>
+        </block>
+      </swiper>
+    </view>
+
+    <view class='page-section'>
+      <text class='font-h3'>热门地区</text>
+    </view>
+
+    <view class='page-section bottom-margin-23 flow-label'>
+      <block wx:for="{{hotCities}}" wx:key="city">
+        <view class='label-view font-h4'>{{item}}</view>
+      </block>
+    </view>
+
+    <view class='page-section bottom-margin-8'>
+      <text class='font-h3'>当前城市：{{location.address_component.city}}</text>
+    </view>
+
+    <view class='page-section bottom-margin-container'>
+      <block wx:for="{{mocks}}" wx:key="mock">
+        <view class='list-card bottom-margin-8'>
+          <image class="list-image" src="{{item.image}}" />
+          <view class='point-cover-view font-h5'>讲解点{{item.point}}个</view>
+        </view>
+
+        <view class='external-info-view bottom-list-card'>
+          <view class='font-h4'>{{item.owner}}</view>
+          <view class='external-info-right-view font-h5'>
+            <view class='external-info'>
+              <image class='icon-external' src='../../images/hot/location.png'></image>
+              <text>{{item.distance/1000}}KM</text>
+            </view>
+            <view class='external-info left-margin-16'>
+              <image class='icon-external' src='../../images/hot/handsets.png'></image>
+              <text>{{item.sell/10000}}万</text>
+            </view>
+            <view class='external-info left-margin-16'>
+              <image class='icon-external' src='../../images/hot/collect.png'></image>
+              <text>{{item.view/1000}}千</text>
+            </view>
+          </view>
+        </view>
+      </block>
+    </view>
+</view>

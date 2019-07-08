@@ -1,0 +1,8 @@
+<view class="container">
+  <view wx:if="{{undefined == commetatorModel._id || 5 >= commetatorModel._id.length}}" class="template-view">
+    <view class='page-full-button font-h3' bindtap='onVerifyButtonAction'>马上成为解说员</view>
+  </view>
+  <view wx:else class="template-view">
+    {{userInfo.userId}}
+  </view>
+</view>

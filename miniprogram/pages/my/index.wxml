@@ -1,0 +1,41 @@
+<view class="container">
+  <view class="user-info bottom-margin-container">
+    <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
+    <block wx:else>
+      <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
+      <text class="userinfo-nickname font-h2">{{userInfo.nickName}}</text>
+    </block>
+    <text wx:if="{{openid}}">{{openid}}</text>
+  </view>
+
+  <view class='page-section page-section-spacing bottom-margin-container'>
+    <view class='channel-card-view font-h3'>
+      <image class='channel-icon' src='../../images/my/orders.png'></image>
+      <text>我的已购</text>
+    </view>
+    <view class='channel-card-view font-h3'>
+      <image class='channel-icon' src='../../images/my/cards.png'></image>
+      <text>优惠券</text>
+    </view>
+    <view class='channel-card-view font-h3'>
+      <image class='channel-icon' src='../../images/my/comments.png'></image>
+      <text>我的评论</text>
+    </view>
+    <view class='channel-card-view font-h3'>
+      <image class='channel-icon' src='../../images/my/promotion.png'></image>
+      <text>推广赚钱</text>
+    </view>
+    <view class='channel-card-view font-h3'>
+      <image class='channel-icon' src='../../images/my/about.png'></image>
+      <text>版本声明</text>
+    </view>
+    <view class='channel-card-view font-h3' bindtap='gotoCommentatorsAction'>
+      <image class='channel-icon' src='../../images/my/admin.png'></image>
+      <text>解说管理</text>
+    </view>
+    <view wx:if="{{'undefined' != typeof(currentUserAdmin)}}" class='channel-card-view font-h3' bindtap='gotoAdminPageAction'>
+      <image class='channel-icon' src='../../images/my/admin.png'></image>
+      <text>管理员</text>
+    </view>
+  </view>
+</view>

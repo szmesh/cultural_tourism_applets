@@ -1,0 +1,4 @@
+.enter-button{
+  width: 65%;
+  margin-top: 60rpx;
+}

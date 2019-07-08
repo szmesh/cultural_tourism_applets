@@ -1,0 +1,31 @@
+.spot-images-collection {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.spot-spot-image-root-view {
+  position: relative;
+}
+
+.spot-image-card {
+  width: 192rpx;
+  height: 108rpx;
+  margin: 23rpx;
+}
+
+.image-delete-button {
+  position: absolute;
+  background-color: red;
+  color: white;
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 20rpx;
+  line-height: 40rpx;
+  text-align: center;
+  right: 10rpx;
+  top: 10rpx;
+}

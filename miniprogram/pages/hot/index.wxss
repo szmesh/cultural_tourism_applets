@@ -1,0 +1,98 @@
+.search-input {
+  width: 686rpx;
+  height: 20rpx;
+  border-radius: 38rpx;
+  border: 1rpx solid lightgray;
+  padding: 8rpx;
+}
+
+.swiper {
+  display: block;
+  height: 396rpx;
+}
+
+.swiper-item {
+  width: 100%;
+  height: 100%;
+  border-radius: 16rpx;
+}
+
+.swiper-banner {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background-size: cover;
+  border-radius: 16rpx;
+}
+
+.flow-label {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.label-view {
+  background-color: lightgray;
+  color: gray;
+  padding: 8rpx 16rpx;
+  text-align: center;
+  margin: 8rpx;
+}
+
+.list-card {
+  position: relative;
+  width: 100%;
+  height: 396rpx;
+  border-radius: 16rpx;
+  background-color: lightgray;
+}
+
+.list-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 16rpx;
+}
+
+.point-cover-view {
+  position: absolute;
+  top: 0;
+  left: 20rpx;
+  background-color: orange;
+  color: white;
+  text-align: center;
+  padding: 8rpx;
+  border-bottom-left-radius: 16rpx;
+  border-bottom-right-radius: 16rpx;
+}
+
+.external-info-view {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.external-info-right-view {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.external-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0;
+  color: gray;
+}
+
+.icon-external {
+  width: 24rpx;
+  height: 24rpx;
+  margin-right: 8rpx;
+}

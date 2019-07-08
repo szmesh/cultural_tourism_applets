@@ -1,0 +1,33 @@
+/* my.wxss */
+.user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.userinfo-avatar {
+  width: 200rpx;
+  height: 200rpx;
+  margin: 20rpx;
+  border-radius: 50%;
+}
+
+.userinfo-nickname {
+  color: #aaa;
+}
+
+.channel-card-view {
+  border-bottom: 1rpx solid lightgray;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 16rpx;
+  padding: 32rpx 0;
+}
+
+.channel-icon {
+  width: 36rpx;
+  height: 36rpx;
+  margin-right: 24rpx;
+}

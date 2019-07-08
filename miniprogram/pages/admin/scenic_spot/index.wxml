@@ -1,0 +1,18 @@
+<view class="container">
+  <view class='page-full-button font-h3' bindtap='onAddButtonAction'>新增</view>
+  <view wx:if="{{0 >= scenicSpots.length}}" class="page-section page-section-spacing page-tips-text font-h3">还没有景区，现在添加一个吧！</view>
+  <view wx:else class='page-section page-section-spacing bottom-margin-100'>
+    <view wx:for="{{scenicSpots}}" wx:key="item._id" class='spot-card top-margin-64'>
+      <text class='font-h3'>{{item.name}}</text>
+      <view class='spot-card-button-root-view font-h4'>
+        <view data-sid='{{item._id}}' bindtap='onEditButtonAction'>编辑</view>
+
+        <view data-sid='{{item._id}}' bindtap='onDeleteButtonAction'>删除</view>
+
+        <view data-sid='{{item._id}}' bindtap='onAddBannerButtonAction'>上传图片</view>
+
+        <view data-sid='{{item._id}}' bindtap='onAddItemButtonAction'>添加讲解点</view>
+      </view>
+    </view>
+  </view>
+</view>

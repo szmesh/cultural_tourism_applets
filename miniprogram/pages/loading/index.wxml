@@ -1,0 +1,4 @@
+<!--index.wxml-->
+<view class="container">
+  <button class="enter-button" type='primary' wx:if="{{canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo">开启城市时光里</button>
+</view>

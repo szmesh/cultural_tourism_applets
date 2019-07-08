@@ -1,0 +1,12 @@
+<view class="container">
+  <view class="page-full-button font-h3" bindtap='chooseImage'>上传图片</view>
+  <view wx:if="{{0 >= dataSource.length}}" class="page-tips-text font-h3">暂时还没有图片！马上上传吧</view>
+  <view wx:else class='spot-images-collection bottom-margin-100'>
+    <block wx:for="{{dataSource}}" wx:for-item="item" wx:key="item._id">
+      <view class='spot-spot-image-root-view'>
+        <view class='image-delete-button font-h2' data-sid="{{item._id}}" data-fileid="{{item.url}}" bindtap='onDeleteImage' >X</view>
+        <image class="spot-image-card" src="{{item.url}}" data-src="{{item.url}}"  bindtap="previewImage"></image>
+      </view>
+    </block>
+  </view>
+</view>

@@ -1,0 +1,30 @@
+<!--index.wxml-->
+<view class="container">
+  <!-- 管理员管理 -->
+  <view class="page-section page-section-spacing channel-card-view font-3">
+    <navigator url="admins/index" open-type="navigate">
+      <text>管理员管理</text>
+    </navigator>
+  </view>
+
+  <!-- 景区管理 -->
+  <view class="page-section page-section-spacing channel-card-view font-3">
+    <navigator url="scenic_spot/index" open-type="navigate">
+      <text>景区管理</text>
+    </navigator>
+  </view>
+
+  <!-- 解说管理 -->
+  <view class="page-section page-section-spacing channel-card-view font-3">
+    <navigator url="commentators/index" open-type="navigate">
+      <text>解说管理</text>
+    </navigator>
+  </view>
+
+  <!-- 解说员管理 -->
+  <view class="page-section page-section-spacing channel-card-view font-3">
+    <navigator url="commentators/index" open-type="navigate">
+      <text>解说员管理</text>
+    </navigator>
+  </view>
+</view>
