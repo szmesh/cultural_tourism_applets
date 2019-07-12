@@ -150,7 +150,7 @@ App({
       success: res => {
         if (0 < res.data.length) {
           this.globalData.admins = res.data
-          let admin = this.getAdminData
+          let admin = this.getAdminData()
           this.globalData.currentUserAdmin = admin
         }
       }
@@ -159,8 +159,13 @@ App({
 
   // 检查是否是管理员
   getAdminData: function () {
-    let openid = this.globalData.userId.openid
-    return this.globalData.admins.filter(item => item.openid = openid)[0]
+    let openid = this.globalData.userInfo.openid
+    let res = this.globalData.admins.filter(item => item._openid == openid)
+    if (undefined == res || 0 >= res.length) {
+      return undefined
+    }
+
+    return res[0]
   },
 
   // 获取用户位置
