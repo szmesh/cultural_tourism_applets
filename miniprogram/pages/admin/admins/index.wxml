@@ -1,3 +1,15 @@
 <view class="container">
-  
+  <view class='page-section page-section-spacing'>
+    <view wx:if="{{0 >= usersDataSource.length}}" class="page-tips-text font-h3">还没有会员哟</view>
+    <view wx:else>
+      <view wx:for="{{usersDataSource}}" class='users-list-root-view'>
+        <image class="users-icon-list" src="{{item.avatarUrl}}" />
+        <view class='users-info-root-view'>
+          <view class='info-row font-h4'>微信昵称：{{item.nickName}}</view>
+          <view wx:if="{{item.adminId}}" class='info-row font-h4'>管理员备注名：{{adminsDataSource[item.adminIndex].mark_name}}</view>
+          <view wx:else class='info-row font-h4'>设为管理员{{item.adminIndex}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
 </view>

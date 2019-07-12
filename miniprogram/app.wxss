@@ -145,3 +145,9 @@ button::after{
   color: black;
   padding: 16rpx;
 }
+
+.users-icon-list {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 100rpx;
+}
