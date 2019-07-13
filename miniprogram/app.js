@@ -160,7 +160,7 @@ App({
   // 检查是否是管理员
   getAdminData: function () {
     let openid = this.globalData.userInfo.openid
-    let res = this.globalData.admins.filter(item => item._openid == openid)
+    let res = this.globalData.admins.filter(item => item.openid == openid)
     if (undefined == res || 0 >= res.length) {
       return undefined
     }

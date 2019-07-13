@@ -37,5 +37,9 @@
       <image class='channel-icon' src='../../images/my/admin.png'></image>
       <text>管理员</text>
     </view>
+    <!-- <view class='channel-card-view font-h3' bindtap='gotoAdminPageAction'>
+      <image class='channel-icon' src='../../images/my/admin.png'></image>
+      <text>管理员</text>
+    </view> -->
   </view>
 </view>
