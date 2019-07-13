@@ -33,7 +33,11 @@
       <image class='channel-icon' src='../../images/my/admin.png'></image>
       <text>解说管理</text>
     </view>
-    <view wx:if="{{'undefined' != typeof(currentUserAdmin)}}" class='channel-card-view font-h3' bindtap='gotoAdminPageAction'>
+    <!-- <view wx:if="{{currentUserAdmin}}" class='channel-card-view font-h3' bindtap='gotoAdminPageAction'>
+      <image class='channel-icon' src='../../images/my/admin.png'></image>
+      <text>管理员</text>
+    </view> -->
+    <view class='channel-card-view font-h3' bindtap='gotoAdminPageAction'>
       <image class='channel-icon' src='../../images/my/admin.png'></image>
       <text>管理员</text>
     </view>
