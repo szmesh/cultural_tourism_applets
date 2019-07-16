@@ -11,6 +11,8 @@
     </view>
 
     <view class='channel-card-image-placehold bottom-list-card'>身份证正面</view>
-    <view class='channel-card-image-placehold bottom-margin-100'>身份证反面</view>
+    <view class='channel-card-image-placehold bottom-list-card'>身份证反面</view>
   </view>
+
+  <view class='page-full-button font-h3 bottom-margin-100' bindtap='onSaveButtonAction'>保存</view>
 </view>
