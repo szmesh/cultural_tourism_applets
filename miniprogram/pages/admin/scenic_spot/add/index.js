@@ -2,6 +2,7 @@ const app = getApp()
 
 Page({
   data: {
+    spot_table_view: 'mcta_scenic_spots',
     model: {
       _id: '',
       address: '',
@@ -23,7 +24,11 @@ Page({
     }
   },
 
-  onLoad: function () {
+  onLoad: function (options) {
+    this.setData({
+      sid: options.spotId
+    })
+
     if (!wx.cloud) {
       wx.redirectTo({
         url: '../../../chooseLib/chooseLib',
@@ -31,6 +36,32 @@ Page({
       return
     }
 
+    // 判断是否是编辑
+    if(undefined == this.data.sid || 0 >= this.data.sid.length) {
+      return
+    }
+
+    // 获取数据
+    this.getSpotDetail()
+  },
+
+  // 获取数据库的数据
+  getSpotDetail: function() {
+    let _this = this
+    const db = wx.cloud.database()
+    db.collection(this.data.spot_table_view).doc(_this.data.sid).get({
+      success: function(res) {
+        _this.setData({
+          model: res.data
+        })
+      },
+      fail: function(e) {
+        wx.showToast({
+          title: '没找到对应数据',
+          duration: 2000
+        })
+      }
+    })
   },
 
   // 进入地图
@@ -39,15 +70,16 @@ Page({
     wx.chooseLocation({
       success: function(res) {
         let add = app.getArea(res.address)
+        let model = _this.data.model
+        model.address = add.address
+        model.province = add.province
+        model.city = add.city
+        model.zone = add.zone
+        model.latitude = add.latitude
+        model.longitude = add.longitude
+
         _this.setData({
-          model: {
-            address: add.address,
-            province: add.province,
-            city: add.city,
-            zone: add.zone,
-            latitude: '' + res.latitude,
-            longitude: '' + res.longitude
-          }
+          model: model
         })
       },
       fail: function(e) {
@@ -127,13 +159,21 @@ Page({
       return
     }
 
+    // 判断是编辑还是新增
+    if(undefined == this.data.sid || 0 >= this.data.sid.length) {
+      this.addScenicSpotItem()
+    } else {
+      this.updateScenicSpotItem()
+    }
+  },
+
+  // 插入数据
+  addScenicSpotItem: function() {
     const db = wx.cloud.database()
-
     let model = this.data.model
-
-    db.collection('mcta_scenic_spots').add({
+    db.collection(this.data.spot_table_view).add({
       data: model,
-      success: res => {
+      success: function (res) {
         wx.hideToast()
         wx.showToast({
           title: '增加成功',
@@ -143,10 +183,34 @@ Page({
           delta: 1
         })
       },
-      fail: err => {
+      fail: function (err) {
         wx.hideToast()
         wx.showToast({
           title: '增加失败',
+          duration: 2000
+        })
+      }
+    })
+  },
+
+  updateScenicSpotItem: function() {
+    const db = wx.cloud.database()
+    let model = this.data.model
+    delete model._id
+    delete model._openid
+    db.collection(this.data.spot_table_view).doc(this.data.sid).update({
+      data: model,
+      success: function (res) {
+        wx.hideToast() 
+        wx.showToast({
+          title: '更新成功',
+          duration: 2000
+        })
+      },
+      fail: function (err) {
+        wx.hideToast()
+        wx.showToast({
+          title: '更新失败',
           duration: 2000
         })
       }
