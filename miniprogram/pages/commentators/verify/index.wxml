@@ -1,3 +1,16 @@
 <view class="container">
-  申请成为解说员
+  <view class="user-info bottom-margin-container">
+    <view wx:if="{{!model.img}}" class="userinfo-avatar-placehold top-margin-64 font-h3" bindtap="">上传头像</view>
+    <image wx:else image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
+  </view>
+
+  <view class='page-section page-section-spacing bottom-margin-64'>
+    <view class="cells-title font-h3">真实姓名</view>
+    <view class="cells-after-title font-h4">
+      <input class="cell-input" auto-focus maxlength="64" placeholder-style="color:black" placeholder="请输入真实姓名，不能超过32个文字" bindinput='onInputName' value="{{model.name}}" />
+    </view>
+
+    <view class='channel-card-image-placehold bottom-list-card'>身份证正面</view>
+    <view class='channel-card-image-placehold bottom-margin-100'>身份证反面</view>
+  </view>
 </view>

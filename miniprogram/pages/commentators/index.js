@@ -8,7 +8,7 @@ Page({
   },
 
   onLoad: function () {
-let _this = this
+    let _this = this
 
     if (app.globalData.userInfo) {
       this.setData({
@@ -24,13 +24,13 @@ let _this = this
     let _this = this
 
     if(undefined == _this.data.userInfo.userId ||
-    5 >= _this.data.userId.userId.length) {
+      5 >= _this.data.userInfo.userId.length) {
       return
     }
 
-    const db = wx.cloud.database
+    const db = wx.cloud.database()
     db.collection(_this.data.table_view).where({
-      u_id: _this.data.userId.userId
+      u_id: _this.data.userInfo.userId
     }).get({
       success: function(res) {
         _this.setData({
@@ -48,7 +48,7 @@ let _this = this
 // 申请成为解说员
 onVerifyButtonAction: function() {
 wx.navigateTo({
-  url: './verify/index',
+  url: './verify/index?sid=' + this.data.userInfo.userId,
 })
 }
 })

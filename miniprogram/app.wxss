@@ -151,3 +151,19 @@ button::after{
   height: 100rpx;
   border-radius: 100rpx;
 }
+
+.userinfo-avatar-placehold {
+  width: 200rpx;
+  height: 200rpx;
+  line-height: 200rpx;
+  border-radius: 50%;
+  border:1rpx dashed #000;
+  text-align: center;
+}
+
+.userinfo-avatar {
+  width: 200rpx;
+  height: 200rpx;
+  margin: 20rpx;
+  border-radius: 50%;
+}

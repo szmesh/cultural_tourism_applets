@@ -25,9 +25,11 @@ Page({
   },
 
   onLoad: function (options) {
-    this.setData({
-      sid: options.spotId
-    })
+    if (undefined != options.spotId && 0 < options.spotId.length) {
+      this.setData({
+        sid: options.spotId
+      })
+    }
 
     if (!wx.cloud) {
       wx.redirectTo({
