@@ -55,8 +55,11 @@ Page({
     })
   },
 
+  // 编辑景区
   onEditButtonAction: function(e) {
-
+    wx.navigateTo({
+      url: './add/index?spotId=' + e.currentTarget.dataset.sid,
+    })
   },
 
   onDeleteButtonAction: function(e) {
