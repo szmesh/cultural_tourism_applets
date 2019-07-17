@@ -14,7 +14,9 @@
     "pages/admin/index",
     "pages/admin/scenic_spot/index",
     "pages/admin/scenic_spot/items/index",
-    "pages/map/map"
+    "pages/map/map",
+    "pages/admin/home_banners/index",
+    "pages/admin/home_banners/banner_add/index"
   ],
   "permission": {
     "scope.userLocation": {
@@ -39,7 +41,8 @@
         "iconPath": "images/tabs/icon_API.png",
         "selectedIconPath": "images/tabs/icon_API_HL.png",
         "text": "我的"
-      }]
+      }
+    ]
   },
   "window": {
     "backgroundColor": "#F6F6F6",

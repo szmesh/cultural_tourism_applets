@@ -6,7 +6,12 @@
       <text>管理员管理</text>
     </navigator>
   </view>
-
+<!-- 公告管理 -->
+ <navigator url="home_banners/index" open-type="navigate">
+  <view class="page-section page-section-spacing channel-card-view font-3">
+      <text>公告管理</text>
+  </view>
+   </navigator>
   <!-- 景区管理 -->
   <view class="page-section page-section-spacing channel-card-view font-3">
     <navigator url="scenic_spot/index" open-type="navigate">

@@ -151,3 +151,8 @@ button::after{
   height: 100rpx;
   border-radius: 100rpx;
 }
+.page-content{
+  padding: 20rpx 15rpx;
+  position: relative;
+  box-sizing: border-box;
+}
