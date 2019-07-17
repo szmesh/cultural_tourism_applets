@@ -4,10 +4,11 @@
          type='text'
          confirm-type='search'
          placeholder='搜索景区、解说员'
+         placeholder-class='placeholder-color'
          maxlength='32'></input>
 
   <view class="page-section page-section-spacing bottom-margin-23">
-      <swiper indicator-dots="{{indicatorDots}}"
+      <swiper indicator-dots="{{true}}"
               autoplay="{{autoplay}}"
               circular="{{circular}}"
               vertical="{{vertical}}"
@@ -16,9 +17,10 @@
               previous-margin="{{previousMargin}}px"
               next-margin="{{nextMargin}}px"
               class="swiper">
-        <block wx:for="{{banners}}" wx:key="banner">
+        <block wx:for="{{banners}}" wx:key="{{item._id}}">
           <swiper-item class="swiper-item">
-            <image class="swiper-banner" src="{{item}}" />
+            <view class='banner-title'>{{item.title}}</view>
+            <image class="swiper-banner" src="{{item.bannerUrl}}" />
           </swiper-item>
         </block>
       </swiper>
