@@ -2,18 +2,20 @@
   <view wx:if="{{!commetatorModel._id || 5 >= commetatorModel._id.length}}" class="template-view">
     <view class='page-full-button font-h3' bindtap='onVerifyButtonAction'>马上成为解说员</view>
   </view>
-  <view wx:else class="page-section page-section-spacing bottom-margin-100">
+
+  <block wx:else>
     <view wx:if="{{status.apply == commetatorModel.status}}" class="page-tips-text font-h3">审批中</view>
-    
+      
     <block wx:if="{{status.reject == commetatorModel.status}}">
       <view class="page-tips-text font-h3">审批不通过</view>
-      <view wx:for="commentsDataSources" wx:key="item._id" class="template-view font-h3 bottom-margin-23">
-        {{item.des}}
+      <view wx:for="{{commentsDataSources}}" wx:key="item._id" class="page-section page-section-spacing font-h3 bottom-margin-64">
+        <view class='comments-user-info font-h5'>{{item.a_user_name}} - {{item.date}}</view>
+        <view>{{item.des}}</view>
       </view>
 
-      <view class='page-full-button font-h3' bindtap='onEditButtonAction'>重新申请</view>
+      <view class='page-full-button font-h3 bottom-margin-100' bindtap='onEditButtonAction'>重新申请</view>
     </block>
 
     <view wx:if="{{status.accept == commetatorModel.status}}" class="page-tips-text font-h3">已认证</view>
-  </view>
+  </block>
 </view>

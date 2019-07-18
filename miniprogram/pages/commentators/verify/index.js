@@ -48,7 +48,7 @@ Page({
         sid: options.sid
       })
 
-      this.comments.c_id = options.sid
+      this.data.comments.c_id = options.sid
     }
 
     // 进入详细或新增，或审批类型
@@ -65,8 +65,8 @@ Page({
 
       this.data.model.u_id = this.data.userInfo.userId
       this.data.model.openid = this.data.userInfo.openid
-      this.comments.a_user_id = this.data.userInfo.userId
-      this.comments.a_user_openid = this.data.userInfo.openid
+      this.data.comments.a_user_id = this.data.userInfo.userId
+      this.data.comments.a_user_openid = this.data.userInfo.openid
     }
 
     if (app.globalData.currentUserAdmin) {
@@ -74,7 +74,7 @@ Page({
         currentUserAdmin: app.globalData.currentUserAdmin
       })
 
-      this.comments.a_user_name = this.data.currentUserAdmin.mark_name
+      this.data.comments.a_user_name = this.data.currentUserAdmin.mark_name
     }
 
     // 判断是否是编辑或审批
@@ -141,14 +141,18 @@ Page({
     const db = wx.cloud.database()
     let model = this.data.model
     model.status = this.data.status.accept
-    delete model._id
-    delete model._openid
     db.collection(this.data.table_view).doc(this.data.sid).update({
-      data: model,
+      data: {
+        status: model.status
+      },
       success: function (res) {
         wx.showToast({
           title: '通过成功',
           duration: 2000
+        })
+
+        wx.navigateBack({
+          delta: 1
         })
       },
       fail: function (err) {
@@ -241,7 +245,30 @@ Page({
   },
 
   updateItem: function() {
+    const db = wx.cloud.database()
+    let model = this.data.model
+    model.status = this.data.status.apply
+    delete model._id
+    delete model._openid
+    db.collection(this.data.table_view).doc(this.data.sid).update({
+      data: model,
+      success: function (res) {
+        wx.showToast({
+          title: '重新申请成功',
+          duration: 2000
+        })
 
+        wx.navigateBack({
+          delta: 1
+        })
+      },
+      fail: function (err) {
+        wx.showToast({
+          title: '重新申请失败',
+          duration: 2000
+        })
+      }
+    })
   },
 
   // 检查数据

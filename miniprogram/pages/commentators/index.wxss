@@ -1,0 +1,4 @@
+.comments-user-info {
+  color: gray;
+  margin-bottom: 16rpx;
+}

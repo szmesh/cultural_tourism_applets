@@ -56,6 +56,10 @@
   margin-bottom: 100rpx;
 }
 
+.bottom-margin-200 {
+  margin-bottom: 300rpx;
+}
+
 .left-margin-16 {
   margin-left: 16rpx;
 }

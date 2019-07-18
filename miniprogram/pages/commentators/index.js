@@ -49,7 +49,7 @@ Page({
         })
 
         if(_this.data.status.reject == res.data[0].status) {
-          _this.getRejectDataSources()
+          _this.getRejectCommentsDataSources()
         }
       },
       fail: function(err) {
@@ -69,8 +69,16 @@ Page({
       c_id: c_id
     }).get({
       success: function(res) {
+        // 转时间戳
+        let data = res.data
+        data.forEach(function(item) {
+          let st = item.time
+          let date = _this.formatDataWithTimeStamp(st)
+          item.date = date
+        })
+
         _this.setData({
-          commentsDataSources: res.data
+          commentsDataSources: data
         })
       },
       fail: function(err) {
@@ -88,7 +96,19 @@ Page({
 
   onEditButtonAction: function () {
     wx.navigateTo({
-      url: './verify/index?sid=' + this.data.commetatorModel._id + 'action_type=' + this.data.action_type.e,
+      url: './verify/index?sid=' + this.data.commetatorModel._id + '&action_type=' + this.data.action_type.e,
     })
+  },
+
+  // 时间戳转日期
+  formatDataWithTimeStamp: function(st) {
+    let d = new Date(st)
+    var date = (d.getFullYear()) + "/" +
+      (d.getMonth() + 1) + "/" +
+      (d.getDate()) + " " +
+      (d.getHours()) + ":" +
+      (d.getMinutes()) + ":" +
+      (d.getSeconds());
+    return date
   }
 })
