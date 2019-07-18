@@ -79,16 +79,17 @@ Page({
 
   resetUsersDataSourceWithAdmins: function() {
     let usersDataSource = this.data.usersDataSource
-    for (let i = 0; i < usersDataSource.length; i++) {
-        let user = usersDataSource[i]
-      let adminsFilter = this.data.adminsDataSource.filter(item => item.openid == user.openid)
-      if(undefined == adminsFilter || 0 >= adminsFilter.length) {
-        continue
+    for (i = 0; i < usersDataSource.length; i++) {
+      console.log(i)
+      let user = usersDataSource[i]
+      for (j = 0; j < this.data.adminsDataSource.length; j++) {
+        let admin = this.data.adminsDataSource[j]
+        if (admin.openid == user.openid) {
+          user.adminIndex = i
+          user.adminId = adminsFilter[i]._id
+          usersDataSource[i] = user
+        }
       }
-
-      user.adminIndex = i
-      user.adminId = adminsFilter[i]._id
-      usersDataSource[i] = user
     }
 
     this.setData({
@@ -219,5 +220,5 @@ Page({
         })
       }
     })
-  }
+  },
 })
