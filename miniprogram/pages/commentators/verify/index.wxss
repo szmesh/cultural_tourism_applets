@@ -6,3 +6,8 @@
   color: lightgray;
   border:1rpx dashed #000;
 }
+
+.channel-card-image {
+  width: 686rpx;
+  height: 396rpx;
+}

@@ -3,12 +3,42 @@ const app = getApp()
 Page({
   data: {
     table_view: 'mcta_commentators',
+    comments_table_view: 'mcta_commentators_comments',
+    imagesCloundPath: 'cultural_tourism/commentators/',
+    action_types: {
+      n: 1000,
+      e: 2000,
+      a: 3000
+    },
+    img_type: {
+      icon: 1000,
+      id_card_img_front: 2000,
+      id_card_img_back: 3000
+    },
+    status: {
+      apply: 1000,
+      accept: 2000,
+      reject: 3000
+    },
     userInfo: {},
     model: {
       name: '',
+      u_id: '',
       openid: '',
       gender: 3,
-      img: ''
+      img: '',
+      id_card_img_front: '',
+      id_card_img_back: '',
+      status: 1000,
+      des: ''
+    },
+    comments: {
+      c_id: '',
+      a_user_id: '',
+      a_user_openid: '',
+      a_user_name: '',
+      des: '',
+      time: ''
     }
   },
 
@@ -17,15 +47,37 @@ Page({
       this.setData({
         sid: options.sid
       })
+
+      this.comments.c_id = options.sid
+    }
+
+    // 进入详细或新增，或审批类型
+    if (undefined != options.action_type) {
+      this.setData({
+        action_type: options.action_type
+      })
     }
 
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo
       })
+
+      this.data.model.u_id = this.data.userInfo.userId
+      this.data.model.openid = this.data.userInfo.openid
+      this.comments.a_user_id = this.data.userInfo.userId
+      this.comments.a_user_openid = this.data.userInfo.openid
     }
 
-    // 判断是否是编辑
+    if (app.globalData.currentUserAdmin) {
+      this.setData({
+        currentUserAdmin: app.globalData.currentUserAdmin
+      })
+
+      this.comments.a_user_name = this.data.currentUserAdmin.mark_name
+    }
+
+    // 判断是否是编辑或审批
     if(undefined == this.data.sid || 0 >= this.data.sid.length) {
       return
     }
@@ -53,7 +105,240 @@ Page({
     })
   },
 
+  // 真名
+  onInputName: function (e) {
+    let value = e.detail.value
+    if (undefined == typeof (info)) {
+      this.data.model.name = ''
+    } else {
+      this.data.model.name = value
+    }
+  },
+
+  // 审批意见
+  onDes: function(e) {
+    let value = e.detail.value
+    if(value) {
+      this.data.comments.des = value
+    } else {
+      this.data.comments.des = ''
+    }
+  },
+
   onSaveButtonAction: function() {
-    
-  }
+    if(!this.verifyInput()) {
+      return
+    }
+
+    if(this.data.sid) {
+      this.updateItem()
+    } else {
+      this.addItem()
+    }
+  },
+
+  onApprovalButtonAction: function() {
+    const db = wx.cloud.database()
+    let model = this.data.model
+    model.status = this.data.status.accept
+    delete model._id
+    delete model._openid
+    db.collection(this.data.table_view).doc(this.data.sid).update({
+      data: model,
+      success: function (res) {
+        wx.showToast({
+          title: '通过成功',
+          duration: 2000
+        })
+      },
+      fail: function (err) {
+        wx.showToast({
+          title: '通过失败',
+          duration: 2000
+        })
+      }
+    })
+  },
+
+  onRejectButtonAction: function() {
+    const db = wx.cloud.database()
+
+    // 先检测回绝说明
+    if(!this.data.comments.des) {
+      wx.showToast({
+        title: '请填写回绝理由',
+        duration: 2000
+      })
+      return
+    }
+
+    let model = this.data.comments
+    model.time = (new Date()).valueOf()
+    let _this = this
+    db.collection(this.data.comments_table_view).add({
+      data: model,
+      success: function (res) {
+        _this.rejectActionAfterComments()
+      },
+      fail: function (err) {
+        wx.showToast({
+          title: '回绝失败',
+          duration: 2000
+        })
+      }
+    })
+  },
+
+  rejectActionAfterComments: function() {
+    const db = wx.cloud.database()
+    let model = this.data.model
+    model.status = this.data.status.reject
+
+    db.collection(this.data.table_view).doc(this.data.sid).update({
+      data: {
+        status: this.data.status.reject
+        },
+      success: function (res) {
+        wx.showToast({
+          title: '回绝成功',
+          duration: 2000
+        })
+
+        wx.navigateBack({
+          delta: 1
+        })
+      },
+      fail: function (err) {
+        wx.showToast({
+          title: '回绝失败',
+          duration: 2000
+        })
+      }
+    })
+  },
+
+  addItem: function() {
+    const db = wx.cloud.database()
+    let model = this.data.model
+    db.collection(this.data.table_view).add({
+      data: model,
+      success: function (res) {
+        wx.showToast({
+          title: '增加成功',
+          duration: 2000
+        })
+        wx.navigateBack({
+          delta: 1
+        })
+      },
+      fail: function (err) {
+        wx.showToast({
+          title: '增加失败',
+          duration: 2000
+        })
+      }
+    })
+  },
+
+  updateItem: function() {
+
+  },
+
+  // 检查数据
+  verifyInput: function() {
+    if (undefined == typeof (this.data.model.name)
+      || 0 >= this.data.model.name.length) {
+      wx.showToast({
+        title: '请输入真实姓名',
+        duration: 2000
+      })
+      return false
+    }
+
+    if (undefined == typeof (this.data.model.img)
+      || 0 >= this.data.model.img.length) {
+      wx.showToast({
+        title: '请上传真实头像',
+        duration: 2000
+      })
+      return false
+    }
+
+    if (undefined == typeof (this.data.model.id_card_img_front)
+      || 0 >= this.data.model.id_card_img_front.length) {
+      wx.showToast({
+        title: '请上传身份证正面',
+        duration: 2000
+      })
+      return false
+    }
+
+    if (undefined == typeof (this.data.model.id_card_img_back)
+      || 0 >= this.data.model.id_card_img_back.length) {
+      wx.showToast({
+        title: '请上传身份证反面',
+        duration: 2000
+      })
+      return false
+    }
+
+    return true
+  },
+
+  // 选择图片
+  chooseImage(e) {
+    let that = this
+    let type = e.currentTarget.dataset.type
+    wx.chooseImage({
+      sourceType: ['camera', 'album'],
+      sizeType: ['original'],
+      count: 1,
+      success(res) {
+        let filePaths = res.tempFilePaths
+        let filePath = filePaths[0]
+
+        wx.showToast({
+          title: '上传中...',
+          icon: 'loading',
+        })
+
+        let matchArray = filePath.match(/\.[^.]+?$/)
+        let suffix = matchArray[0]
+        that.data.model.file_type = suffix.substr(1)
+        var timestamp = (new Date()).valueOf()
+        let cloudPath = that.data.imagesCloundPath
+          + '-' + timestamp
+          + '_' + suffix
+        wx.cloud.uploadFile({
+          cloudPath,
+          filePath,
+          success: res => {
+            let model = that.data.model
+            if (that.data.img_type.icon == type) {
+              model.img = res.fileID
+            }
+
+            if (that.data.img_type.id_card_img_front == type) {
+              model.id_card_img_front = res.fileID
+            }
+
+            if (that.data.img_type.id_card_img_back == type) {
+              model.id_card_img_back = res.fileID
+            }
+
+            that.setData({
+              model: model
+            })
+          },
+          fail: err => {
+            wx.hideToast()
+            wx.showToast({
+              icon: 'none',
+              title: '上传失败',
+            })
+          }
+        })
+      }
+    })
+  },
 })
