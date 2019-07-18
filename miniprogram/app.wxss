@@ -170,4 +170,10 @@ button::after{
   height: 200rpx;
   margin: 20rpx;
   border-radius: 50%;
+ }
+  
+.page-content {
+  padding: 20rpx 15rpx;
+  position: relative;
+  box-sizing: border-box;
 }

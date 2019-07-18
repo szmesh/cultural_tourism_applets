@@ -150,6 +150,7 @@ App({
       success: res => {
         if (0 < res.data.length) {
           this.globalData.admins = res.data
+          console.log(res.data)
           let admin = this.getAdminData()
           this.globalData.currentUserAdmin = admin
         }
