@@ -79,6 +79,17 @@ Component({
         userInfo: e.detail.userInfo,
         hasUserInfo: true
       })
+    },
+    showQRcode() {
+      wx.cloud.callFunction({
+        name: 'qrcode',
+        data: {
+          path: 'pages/my/index?openid='+this.data.openid
+        },
+        complete: res => {
+          console.log(res)
+        }
+      })
     }
   }
 })

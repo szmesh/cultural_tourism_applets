@@ -1,0 +1,77 @@
+/* miniprogram/pages/admin/home_banners/banner_edit/index.wxss */
+.input-row{
+  margin: 10rpx 10rpx 20rpx;
+  position: relative;
+}
+.row-label{
+  color: #5f5f5f;
+  font-size: 30rpx; 
+  margin-bottom: 12rpx;
+}
+.t-input{
+  display: block;
+  padding: 15rpx 20rpx;
+  font-size: 28rpx;
+  border-radius: 8rpx;
+  background-color: #f2f2f2;
+  border: none;
+}
+.input-area{
+  width: 100%;
+  box-sizing: border-box;
+  padding: 15rpx;
+  font-size: 28rpx;
+  border-radius: 8rpx;
+  background-color: #f2f2f2;
+  border: none;
+  height: 250rpx;
+}
+.t-placeholder{
+  color: #b8b8b8;
+}
+.img-add-block{
+  display: inline-flex;
+  width: 180rpx;
+  height: 180rpx;
+  justify-content: center;
+  align-items: center;
+  background-color: #f2f2f2;
+  border-radius: 8rpx;
+}
+.i-plus{
+  display: inline-block;
+  height: 80rpx;
+  line-height: 60rpx;
+  color: #b8b8b8;
+  font-size: 80rpx;
+  font-weight: 300;
+}
+.img-previewbox{
+  width: 700rpx;
+  height: 392rpx;
+  background-color: #f2f2f2;
+  border-radius: 4rpx;
+  overflow: hidden;
+  position: relative;
+}
+.tempimg{
+  height: 392rpx;
+  width: 700rpx;
+}
+.clear-i{
+  position: absolute;
+  right: 5rpx;
+  top:5rpx;
+  z-index: 5;
+}
+.save-btn{
+  width: 100%;
+  margin-top: 40rpx;
+  text-align: center;
+  height: 80rpx;
+  line-height: 80rpx;
+  color: #fff;
+  font-size: 30rpx;
+  background-color: #1bb14d;
+  border-radius: 6rpx;
+}
