@@ -1,3 +1,26 @@
 <view class="container">
-  申请成为解说员
+  <view class="user-info bottom-margin-container">
+    <view wx:if="{{!model.img}}" class="userinfo-avatar-placehold top-margin-64 font-h3" bindtap="chooseImage" data-type='1000'>上传头像</view>
+    <image wx:else class="userinfo-avatar" src="{{model.img}}" bindtap="chooseImage" data-type='{{img_type.icon}}' mode="cover"></image>
+  </view>
+
+  <view class='page-section page-section-spacing bottom-margin-64'>
+    <view class="cells-title font-h3">真实姓名</view>
+    <view class="cells-after-title font-h4">
+      <input class="cell-input" maxlength="64" disabled='{{action_types.a == action_type}}' placeholder-style="color:black" placeholder="请输入真实姓名，不能超过32个文字" bindinput='onInputName' value="{{model.name}}" />
+    </view>
+
+    <view wx:if="{{!model.id_card_img_front}}" class='channel-card-image-placehold bottom-list-card' bindtap="chooseImage" data-type='{{img_type.id_card_img_front}}'>身份证正面</view>
+    <image wx:else class="channel-card-image bottom-list-card" src="{{model.id_card_img_front}}" bindtap="chooseImage" data-type='{{img_type.id_card_img_front}}' mode="cover"></image>
+    <view wx:if="{{!model.id_card_img_back}}" class='channel-card-image-placehold bottom-list-card' bindtap="chooseImage" data-type='{{img_type.id_card_img_back}}'>身份证反面</view>
+    <image wx:else class="channel-card-image bottom-list-card" src="{{model.id_card_img_back}}" bindtap="chooseImage" data-type='{{img_type.id_card_img_back}}' mode="cover"></image>
+  </view>
+
+  <view wx:if="{{action_type == action_types.n || action_type == action_types.e}}" class='page-full-button font-h3 bottom-margin-100' bindtap='onSaveButtonAction'>保存</view>
+
+  <block wx:if="{{action_type == action_types.a}}">
+    <view class='page-full-button font-h3 bottom-margin-23' bindtap='onApprovalButtonAction'>通过</view>
+    <view class='page-full-button font-h3 bottom-margin-23' bindtap='onRejectButtonAction'>回绝</view>
+    <textarea bindblur="bindTextAreaBlur" class="page-section page-section-spacing font-h4 bottom-margin-200" placeholder-style="color:black" placeholder="请输入回绝说明" bindinput='onDes' value="{{comments.des}}" auto-height />
+  </block>
 </view>

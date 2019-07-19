@@ -1,82 +1,58 @@
-var app = getApp();
+const app = getApp()
 
-Component({
+Page({
   data: {
-    userInfo: {},
-    hasUserInfo: false,
-    canIUse: wx.canIUse('button.open-type.getUserInfo'),
-  },
-  pageLifetimes: {
-    show() {
-      if (typeof this.getTabBar === 'function' &&
-        this.getTabBar()) {
-        this.getTabBar().setData({
-          selected: 1
-        })
-      }
-    }
-  },
-  methods: {
-    onLoad() {
-      // 测试openId，并显示
-      if (app.globalData.userInfo.openid) {
-        this.setData({
-          openid: app.globalData.userInfo.openid
-        })
-      }
-
-      // 获取当前用户是否管理员的信息
-      if (app.globalData.currentUserAdmin) {
-        this.setData({
-          currentUserAdmin: app.globalData.currentUserAdmin
-        })
-      }
-
-      if (app.globalData.userInfo) {
-        this.setData({
-          userInfo: app.globalData.userInfo,
-          hasUserInfo: true,
-        })
-      } else if (this.data.canIUse) {
-        // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-        // 所以此处加入 callback 以防止这种情况
-        app.userInfoReadyCallback = (res) => {
-          this.setData({
-            userInfo: res,
-            hasUserInfo: true
-          })
-        }
-      } else {
-        // 在没有 open-type=getUserInfo 版本的兼容处理
-        wx.getUserInfo({
-          success: res => {
-            app.globalData.userInfo = res.userInfo
-            this.setData({
-              userInfo: res.userInfo,
-              hasUserInfo: true
-            })
-          }
-        })
-      }
+    table_view: 'mcta_commentators',
+    comments_table_view: 'mcta_commentators_comments',
+    action_types: {
+      n: 1000,
+      e: 2000,
+      a: 3000
     },
-    gotoAdminPageAction() {
-      // console.log(1)
-      // this.getTabBar().gotoPageAction('../cloud/index')
-      // console.log(3)
-      wx.navigateTo({
-        url: '../cloud/index',
-      })
-      
-      this.getTabBar().setData({
-        selected: 1
-      })
+    status: {
+      apply: 1000,
+      accept: 2000,
+      reject: 3000
     },
-    getUserInfo(e) {
-      app.globalData.userInfo = e.detail.userInfo
-      this.setData({
-        userInfo: e.detail.userInfo,
-        hasUserInfo: true
+    dataSource: []
+  },
+
+  onLoad: function () {
+    if (!wx.cloud) {
+      wx.redirectTo({
+        url: '../../../chooseLib/chooseLib',
       })
+      return
     }
+
+    this.getWaitApprovalDataSource()
+  },
+
+  // 查询未审批的导游
+  getWaitApprovalDataSource: function() {
+    const db = wx.cloud.database()
+    let _this = this
+    db.collection(_this.data.table_view).where({
+      status: _this.data.status.apply
+    }).get({
+      success: function(res) {
+        _this.setData({
+          dataSource: res.data
+        })
+      },
+      fail: function(err) {
+        wx.showToast({
+          title: '获取审批列表失败',
+          duration: 2000
+        })
+      }
+    })
+  },
+
+  detailButtonAction: function(e) {
+    let sid = e.currentTarget.dataset.sid
+    wx.navigateTo({
+      url: '../../commentators/verify/index?sid=' + sid + '&action_type=' + this.data.action_types.a,
+    })
   }
 })
