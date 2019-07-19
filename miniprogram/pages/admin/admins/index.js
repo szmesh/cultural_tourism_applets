@@ -79,14 +79,26 @@ Page({
 
   resetUsersDataSourceWithAdmins: function() {
     let usersDataSource = this.data.usersDataSource
+    let adminsDataSource = this.data.adminsDataSource
+    // console.log('user length: ' + usersDataSource.length)
+    // console.log('user length: ' + adminsDataSource.length)
+    // usersDataSource.forEach(function(user) {
+    //   console.log('user: ' + user)
+    //   adminsDataSource.forEach(function(admin) {
+    //     console.log('admin: ' + admin._id)
+    //     if (admin.openid == user.openid) {
+    //       user.adminIndex = i
+    //       user.adminId = admin._id
+    //     }
+    //   })
+    // })
     for (i = 0; i < usersDataSource.length; i++) {
-      console.log(i)
       let user = usersDataSource[i]
-      for (j = 0; j < this.data.adminsDataSource.length; j++) {
-        let admin = this.data.adminsDataSource[j]
+      for (j = 0; j < adminsDataSource.length; j++) {
+        let admin = adminsDataSource[j]
         if (admin.openid == user.openid) {
           user.adminIndex = i
-          user.adminId = adminsFilter[i]._id
+          user.adminId = admin._id
           usersDataSource[i] = user
         }
       }
