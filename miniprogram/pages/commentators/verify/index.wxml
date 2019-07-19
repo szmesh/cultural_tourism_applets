@@ -10,6 +10,28 @@
       <input class="cell-input" maxlength="64" disabled='{{action_types.a == action_type}}' placeholder-style="color:black" placeholder="请输入真实姓名，不能超过32个文字" bindinput='onInputName' value="{{model.name}}" />
     </view>
 
+    <view class="cells-title font-h3">性别</view>
+    <view class="cells-after-title font-h4">
+      <picker bindchange="bindPickerChange" value="{{index}}" range="{{genders}}" disabled='{{action_types.a == action_type}}'>
+        <input class="cell-input" maxlength="8" disabled='true' placeholder-style="color:black" placeholder="点击选择性别" bindinput='onInputGender' value="{{model.gender}}" />
+      </picker>
+    </view>
+
+    <view class="cells-title font-h3">所在城市</view>
+    <view class="cells-after-title font-h4">
+      <input class="cell-input" placeholder-style="color:black" disabled='true' bindtap='onOpenMap' placeholder="点击我进入地图选择位置" value='{{model.province + model.city}}' />
+    </view>
+
+    <view class="cells-title font-h3">个人标签</view>
+    <view class="cells-after-title font-h4">
+      <input class="cell-input" maxlength="64" disabled='{{action_types.a == action_type}}' placeholder-style="color:black" placeholder="例如：全国导游大赛一等将" bindinput='onInputLabel' value="{{model.label}}" />
+    </view>
+
+    <view class="cells-title font-h3">个人简介</view>
+    <view class="cells-after-title font-h4 bottom-margin-64">
+      <textarea class='template-view' placeholder-style="color:black" maxlength="240" disabled='{{action_types.a == action_type}}' placeholder="个人简介会展示给游客，请务必真实有吸引力，最多120个字。" bindinput='onInputIntr' value="{{model.intr}}" auto-height />
+    </view>
+
     <view wx:if="{{!model.id_card_img_front}}" class='channel-card-image-placehold bottom-list-card' bindtap="chooseImage" data-type='{{img_type.id_card_img_front}}'>身份证正面</view>
     <image wx:else class="channel-card-image bottom-list-card" src="{{model.id_card_img_front}}" bindtap="chooseImage" data-type='{{img_type.id_card_img_front}}' mode="cover"></image>
     <view wx:if="{{!model.id_card_img_back}}" class='channel-card-image-placehold bottom-list-card' bindtap="chooseImage" data-type='{{img_type.id_card_img_back}}'>身份证反面</view>
