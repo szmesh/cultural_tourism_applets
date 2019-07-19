@@ -30,7 +30,7 @@
       <text>版本声明</text>
     </view>
     <view class='channel-card-view font-h3' bindtap='gotoCommentatorsAction'>
-      <image class='channel-icon' src='../../images/my/admin.png'></image>
+      <image class='channel-icon' src='../../images/my/commentators.png'></image>
       <text>解说管理</text>
     </view>
     <!-- <view wx:if="{{currentUserAdmin}}" class='channel-card-view font-h3' bindtap='gotoAdminPageAction'>
