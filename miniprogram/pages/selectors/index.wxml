@@ -1,0 +1,12 @@
+<view class="container">
+  <view wx:if="{{dataSources && 0 >= dataSources.length}}" class="page-tips-text font-h3">没有找到可以选择的列表数据</view>
+
+  <view wx:else class='page-section page-section-spacing bottom-margin-64'>
+    <view wx:for="{{dataSources}}" class='template-view' wx:key="item._id" data-index="{{index}}" bindtap='selectAction'>
+      <view class="cells-title top-margin-64 font-h3">{{item.name}}</view>
+    <view class="cells-after-title font-h4">
+      <input class="cell-input" disabled='true' value="{{item.detail}}" />
+    </view>
+    </view>
+  </view>
+</view>

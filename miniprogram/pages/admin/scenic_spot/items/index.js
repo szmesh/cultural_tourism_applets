@@ -2,6 +2,7 @@ const app = getApp()
 
 Page({
   data: {
+    table_view: 'mcta_scenic_spots_items',
     sid: '',
     name: '',
     dataSource: []
@@ -32,7 +33,7 @@ Page({
     const db = wx.cloud.database()
 
     // 先查询有没有数据
-    db.collection('mcta_scenic_spots_items').where({
+    db.collection(this.data.table_view).where({
       s_id: this.data.sid
     }).get({
       success: res => {
@@ -80,7 +81,7 @@ Page({
       name: this.data.name
     }
 
-    db.collection('mcta_scenic_spots_items').add({
+    db.collection(this.data.table_view).add({
       data: model,
       success: res => {
         wx.hideToast()
@@ -105,7 +106,7 @@ Page({
   onItemDeleteButtonAction: function(e) {
     let sid = e.currentTarget.dataset.sid
     const db = wx.cloud.database()
-    db.collection('mcta_scenic_spots_items').doc(sid).remove({
+    db.collection(this.data.table_view).doc(sid).remove({
       success: res => {
         wx.hideToast()
         wx.showToast({

@@ -16,6 +16,20 @@
       <view class='page-full-button font-h3 bottom-margin-100' bindtap='onEditButtonAction'>重新申请</view>
     </block>
 
-    <view wx:if="{{status.accept == commetatorModel.status}}" class="page-tips-text font-h3">已认证</view>
+    <block wx:if="{{status.accept == commetatorModel.status}}">
+      <view class="page-tips-text font-h3">已认证</view>
+
+      <view wx:if="{{0 < albumsDataSources.length}}" class="page-section page-section-spacing bottom-margin-64">
+        <view wx:for="{{albumsDataSources}}" wx:key="item._id" class='album-channel' >
+          <view class='albums-title bottom-margin-23 font-h2'>{{item.name}}</view>
+          <view class='commentates-container-root-view'>
+            <view class='commentates-root-view add-commentates-root-view font-h3'>1</view>
+            <view class='commentates-root-view add-commentates-root-view font-h3'>点击上传讲解</view>
+          </view>
+        </view>
+      </view>
+
+      <view class='page-full-button font-h3 bottom-margin-100' bindtap='onAddAlbumButtonAction'>添加专辑</view>
+    </block>
   </block>
 </view>

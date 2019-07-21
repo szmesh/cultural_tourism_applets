@@ -4,6 +4,7 @@ Page({
   data: {
     table_view: 'mcta_commentators',
     comments_table_view: 'mcta_commentators_comments',
+    album_table_view: 'mcta_albums',
     action_type: {
       n: 1000,
       e: 2000
@@ -15,7 +16,8 @@ Page({
     },
     userInfo: {},
     commetatorModel: {},
-    commentsDataSources: []
+    commentsDataSources: [],
+    albumsDataSources: []
   },
 
   onLoad: function () {
@@ -49,6 +51,12 @@ Page({
             commetatorModel: res.data[0]
           })
 
+          // 已认证就查询当前用户的专辑
+          if (_this.data.status.accept == res.data[0].status) {
+            _this.getAlbumsDataSources()
+          }
+
+          // 如果是回绝就查询回绝说明
           if (_this.data.status.reject == res.data[0].status) {
             _this.getRejectCommentsDataSources()
           }
@@ -57,6 +65,28 @@ Page({
       fail: function(err) {
         _this.setData({
           commetatorModel: {}
+        })
+      }
+    })
+  },
+
+  // 查询当前用户的专辑
+  getAlbumsDataSources: function() {
+    let db = wx.cloud.database()
+    let _this = this
+    db.collection(_this.data.album_table_view).where({
+      _openid: _this.data.userInfo.openid
+    }).get({
+      success: function(res) {
+        if(res && res.data) {
+          _this.setData({
+            albumsDataSources: res.data
+          })
+        }
+      },
+      fail: function(err) {
+        wx.showToast({
+          title: '查询用户专辑出错',
         })
       }
     })
@@ -112,5 +142,12 @@ Page({
       (d.getMinutes()) + ":" +
       (d.getSeconds());
     return date
+  },
+
+  // 添加专辑
+  onAddAlbumButtonAction: function() {
+    wx.navigateTo({
+      url: 'albums/index',
+    })
   }
 })
