@@ -1,3 +1,28 @@
 <view class="container">
-  
+  <view class='page-section page-section-spacing bottom-margin-64'>
+    <view class="cells-title top-margin-23 font-h3">标题</view>
+    <view class="cells-after-title bottom-margin-32 font-h4">
+      <input class="cell-input" maxlength="64" placeholder-style="color:black" placeholder="请输入讲解标题，不能超过32个文字" bindinput='onInputName' value="{{model.name}}" />
+    </view>
+
+    <view class="cells-title font-h3">单价</view>
+    <view class="cells-after-title bottom-margin-32 font-h4">
+      <input class="cell-input" maxlength="64" placeholder-style="color:black" placeholder="讲解记录的单价，如果小于0.1元，则视为免费" bindinput='onInputPrice' value="{{model.price}}" />
+    </view>
+
+    <view class="cells-title font-h3">封面图片</view>
+    <image wx:if="{{model.img}}" class="img-root-view bottom-margin-32" src='{{model.img}}'></image>
+    <view wx:else class='img-root-view img-placehold-view bottom-margin-32 font-4' bindtap='chooseImage'>点击上传封面图</view>
+
+    <view class="cells-title font-h3">讲解文件</view>
+    <view class="cells-after-title bottom-margin-32 font-h4">
+      <block wx:if="{{model.src}}">
+        <view wx:if="{{1000 == playStatus}}" class='cell-input' bindtap='playAudioAction'>点击播放</view>
+        <view wx:if="{{2000 == playStatus}}" class='cell-input' bindtap='playAudioAction'>暂停</view>
+      </block>
+      <input wx:else class="cell-input" disabled='true' placeholder-style="color:black" placeholder='点击上传讲解文件' bindtap='uploadFiles'></input>
+    </view>
+  </view>
+
+  <view wx:if="{{sid}}" class='page-full-button font-h3 bottom-margin-100' bindtap='onSaveButtonAction'>保存</view>
 </view>

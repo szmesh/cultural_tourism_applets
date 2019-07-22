@@ -39,6 +39,9 @@ Page({
       zone: '',
       latitude: '',
       longitude: '',
+      b_count: 0,
+      l_count: 0,
+      c_count: 0,
       des: ''
     },
     comments: {

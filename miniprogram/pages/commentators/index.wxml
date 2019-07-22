@@ -24,7 +24,7 @@
           <view class='albums-title bottom-margin-23 font-h2'>{{item.name}}</view>
           <view class='commentates-container-root-view'>
             <view class='commentates-root-view add-commentates-root-view font-h3'>1</view>
-            <view class='commentates-root-view add-commentates-root-view font-h3'>点击上传讲解</view>
+            <view class='commentates-root-view add-commentates-root-view font-h3' data-sid='{{item._id}}' bindtap='onAddCommentatesButtonAction'>点击上传讲解</view>
           </view>
         </view>
       </view>

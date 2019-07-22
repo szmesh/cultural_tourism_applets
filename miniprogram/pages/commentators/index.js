@@ -149,5 +149,13 @@ Page({
     wx.navigateTo({
       url: 'albums/index',
     })
+  },
+
+  // 添加讲解
+  onAddCommentatesButtonAction: function(e) {
+    let sid = e.currentTarget.dataset.sid
+    wx.navigateTo({
+      url: 'comentates/index?sid=' + sid,
+    })
   }
 })
