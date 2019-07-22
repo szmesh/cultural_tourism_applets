@@ -50,11 +50,18 @@ App({
 
     // app全局保存数据
     this.globalData = {
+      access_token: '',
       admins: [],
-      locationCallBacks: []
+      locationCallBacks: [],
+      parentId: '' // 上级用户ID
+    },
+    this.getAccessToken()
+    const { query } = wx.getLaunchOptionsSync()
+    if (query.userID) {
+      this.globalData.parentId = query.userID
     }
   },
-
+  
   getUserInfo: function() {
     let _this = this
     wx.getUserInfo({
@@ -270,5 +277,17 @@ App({
     area.address = str.replace(area.province + area.city + area.zone, '')
 
     return area;
+  },
+  getAccessToken() {
+    wx.request({
+      url: 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxb62bb3a704a7d662&secret=899a0bc306a62d34cda63d3e8bd8dedc',
+      success: res => {
+        this.globalData.access_token = res.data.access_token
+        console.log(res)
+      },
+      fail: err => {
+        console.log(err)
+      }
+    })
   }
 })

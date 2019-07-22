@@ -9,6 +9,7 @@ Page({
     describe: '',
     imgChoosed: false,
     imgPath: '',
+    region: ['未知'],
     cloudPath: 'cultural_tourism/banners/',
     collectionName: 'mcta_home_banners'
   },
@@ -60,6 +61,12 @@ Page({
       describe: e.detail.value
     })
   },
+  bindRegionChange(e) {
+    console.log(e)
+    this.setData({
+      region: e.detail.value
+    })
+  },
   // 保存数据
   saveBanner() {
     if (this.checkNotNull()) {
@@ -88,9 +95,11 @@ Page({
       const db = wx.cloud.database()
       db.collection(this.data.collectionName).add({
         data: {
+          region: this.data.region,
+          city: this.data.region[0] + this.data.region[1],
           title: this.data.title,
           describe: this.data.describe,
-          date: new Date().toLocaleDateString(),
+          date: (new Date()).valueOf(),
           bannerUrl: fileID
         },
         success: res => {
@@ -117,6 +126,13 @@ Page({
   },
   // 检查数据是否合法
   checkNotNull() {
+    if (this.data.region.length < 3) {
+      wx.showToast({
+        title: '请选择地区',
+        icon: 'none'
+      })
+      return false
+    }
     if (this.data.title == '') {
       wx.showToast({
         title: '标题不能为空',

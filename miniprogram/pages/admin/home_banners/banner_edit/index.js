@@ -9,6 +9,7 @@ Page({
     title: '',
     describe: '',
     imgPath: '',
+    region: [],
     oldImage: '', // 用于记录原来的封面图，没有变化则无需重新上传
     cloudPath: 'cultural_tourism/banners/',
     collectionName: 'mcta_home_banners',
@@ -26,12 +27,13 @@ Page({
     }
   },
   // 根据id获取详情信息
-  getBannerDetail(){
+  getBannerDetail() {
     if (!this.data.targetID) return
     const db = wx.cloud.database()
     db.collection(this.data.collectionName).doc(this.data.targetID).get({
       success: res => {
         this.setData({
+          region: res.data.region || ['未知'],
           title: res.data.title,
           describe: res.data.describe,
           imgPath: res.data.bannerUrl
@@ -58,7 +60,7 @@ Page({
   },
   // 点击放大预览
   pieviewImg() {
-    if (!this.data.imgChoosed) return
+    if (!this.data.imgPath) return
     wx.previewImage({
       urls: [this.data.imgPath],
     })
@@ -76,6 +78,12 @@ Page({
   bindContentInput(e) {
     this.setData({
       describe: e.detail.value
+    })
+  },
+  bindRegionChange(e) {
+    console.log(e)
+    this.setData({
+      region: e.detail.value
     })
   },
   // 保存数据
@@ -124,9 +132,11 @@ Page({
       const db = wx.cloud.database()
       db.collection(this.data.collectionName).doc(this.data.targetID).update({
         data: {
+          region: this.data.region,
+          city: this.data.region[0] + this.data.region[1],
           title: this.data.title,
           describe: this.data.describe,
-          update_date: new Date().toLocaleDateString(),
+          update_date: new Date().valueOf(),
           bannerUrl: fileID
         },
         success: res => {
@@ -153,6 +163,13 @@ Page({
   },
   // 检查数据是否合法
   checkNotNull() {
+    if (this.data.region.length < 3) {
+      wx.showToast({
+        title: '请选择地区',
+        icon: 'none'
+      })
+      return false
+    }
     if (this.data.title == '') {
       wx.showToast({
         title: '标题不能为空',
@@ -225,3 +242,4 @@ Page({
 
   }
 })
+

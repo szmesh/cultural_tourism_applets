@@ -5,7 +5,7 @@
       <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
       <text class="userinfo-nickname font-h2">{{userInfo.nickName}}</text>
     </block>
-    <button type='primary' bindtap='showQRcode'>二维码</button>
+    <button type='primary' size='mini' bindtap='showQRcode'>推广二维码</button>
     <text wx:if="{{openid}}">{{openid}}</text>
   </view>
 

@@ -81,13 +81,24 @@ Component({
       })
     },
     showQRcode() {
-      wx.cloud.callFunction({
-        name: 'qrcode',
+      const path = getCurrentPages()
+      console.log(path)
+      wx.request({
+        url: `https://api.weixin.qq.com/wxa/getwxacode?access_token=${app.globalData.access_token}`,
+        method: 'POST',
+        responseType: 'arraybuffer',
         data: {
-          path: 'pages/my/index?openid='+this.data.openid
+          path: `pages/hot/index?userID=${this.data.openid}`
         },
-        complete: res => {
+        success: res => {
           console.log(res)
+          const baseData = 'data:image/png;base64,'+ wx.arrayBufferToBase64(res.data)
+          wx.previewImage({
+            urls: [baseData],
+          })
+        },
+        fail: err => {
+          console.log(err)
         }
       })
     }
