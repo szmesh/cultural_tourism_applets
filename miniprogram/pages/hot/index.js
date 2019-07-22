@@ -93,7 +93,6 @@ Component({
       const db = wx.cloud.database()
       db.collection(this.data.bannerCollection).get({
         success: res => {
-          console.log(res)
           this.setData({
             banners: res.data
           })
@@ -116,7 +115,7 @@ Component({
       // 获取数据
       db.collection('mcta_scenic_spots').get({
         success: res => {
-          console.log(res.data, total)
+          // console.log(res.data, total)
         }
       })
     }

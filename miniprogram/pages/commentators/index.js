@@ -44,12 +44,14 @@ Page({
       u_id: _this.data.userInfo.userId
     }).get({
       success: function(res) {
-        _this.setData({
-          commetatorModel: res.data[0]
-        })
+        if(res.data && 0 < res.data.length) {
+          _this.setData({
+            commetatorModel: res.data[0]
+          })
 
-        if(_this.data.status.reject == res.data[0].status) {
-          _this.getRejectCommentsDataSources()
+          if (_this.data.status.reject == res.data[0].status) {
+            _this.getRejectCommentsDataSources()
+          }
         }
       },
       fail: function(err) {

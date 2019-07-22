@@ -18,9 +18,9 @@
       <image class='channel-icon' src='../../images/my/cards.png'></image>
       <text>优惠券</text>
     </view>
-    <view class='channel-card-view font-h3'>
-      <image class='channel-icon' src='../../images/my/comments.png'></image>
-      <text>我的评论</text>
+    <view class='channel-card-view font-h3' bindtap='gotoCommentatorsAction'>
+      <image class='channel-icon' src='../../images/my/commentators.png'></image>
+      <text>解说管理</text>
     </view>
     <view class='channel-card-view font-h3'>
       <image class='channel-icon' src='../../images/my/promotion.png'></image>
@@ -30,17 +30,14 @@
       <image class='channel-icon' src='../../images/my/about.png'></image>
       <text>版本声明</text>
     </view>
-    <view class='channel-card-view font-h3' bindtap='gotoCommentatorsAction'>
+    
+    <view wx:if="{{currentUserAdmin}}" class='channel-card-view font-h3' bindtap='gotoAdminPageAction'>
       <image class='channel-icon' src='../../images/my/admin.png'></image>
-      <text>解说管理</text>
+      <text>管理员</text>
     </view>
-    <!-- <view wx:if="{{currentUserAdmin}}" class='channel-card-view font-h3' bindtap='gotoAdminPageAction'>
+    <!-- <view class='channel-card-view font-h3' bindtap='gotoAdminPageAction'>
       <image class='channel-icon' src='../../images/my/admin.png'></image>
       <text>管理员</text>
     </view> -->
-    <view class='channel-card-view font-h3' bindtap='gotoAdminPageAction'>
-      <image class='channel-icon' src='../../images/my/admin.png'></image>
-      <text>管理员</text>
-    </view>
   </view>
 </view>

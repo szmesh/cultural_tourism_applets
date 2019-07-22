@@ -20,16 +20,25 @@ Page({
       accept: 2000,
       reject: 3000
     },
+    genders: ['保密','女','男'],
     userInfo: {},
     model: {
       name: '',
       u_id: '',
       openid: '',
-      gender: 3,
+      gender: '保密',
+      id_card: '',
+      label: '',
+      intr: '',
       img: '',
       id_card_img_front: '',
       id_card_img_back: '',
       status: 1000,
+      province: '',
+      city: '',
+      zone: '',
+      latitude: '',
+      longitude: '',
       des: ''
     },
     comments: {
@@ -112,6 +121,26 @@ Page({
       this.data.model.name = ''
     } else {
       this.data.model.name = value
+    }
+  },
+
+  // 个人标签
+  onInputLabel: function(e) {
+    let value = e.detail.value
+    if (undefined == typeof (info)) {
+      this.data.model.label = ''
+    } else {
+      this.data.model.label = value
+    }
+  },
+
+  // 个人简介
+  onInputIntr: function(e) {
+    let value = e.detail.value
+    if (undefined == typeof (info)) {
+      this.data.model.intr = ''
+    } else {
+      this.data.model.intr = value
     }
   },
 
@@ -282,6 +311,33 @@ Page({
       return false
     }
 
+    if(undefined == typeof(this.data.model.city) ||
+    0 >= this.data.model.city.length) {
+      wx.showToast({
+        title: '请选择所在城市',
+        duration: 2000
+      })
+      return false
+    }
+
+    if (undefined == typeof (this.data.model.label) ||
+      0 >= this.data.model.label.length) {
+      wx.showToast({
+        title: '请填写个人标签',
+        duration: 2000
+      })
+      return false
+    }
+
+    if (undefined == typeof (this.data.model.intr) ||
+      0 >= this.data.model.intr.length) {
+      wx.showToast({
+        title: '请填写个人简介',
+        duration: 2000
+      })
+      return false
+    }
+
     if (undefined == typeof (this.data.model.img)
       || 0 >= this.data.model.img.length) {
       wx.showToast({
@@ -314,6 +370,11 @@ Page({
 
   // 选择图片
   chooseImage(e) {
+    // 判断是否是审批
+    if (this.data.action_types.a == this.data.action_type) {
+      return
+    }
+
     let that = this
     let type = e.currentTarget.dataset.type
     wx.chooseImage({
@@ -364,6 +425,52 @@ Page({
               title: '上传失败',
             })
           }
+        })
+      }
+    })
+  },
+
+  // 选择性别
+  bindPickerChange: function(e) {
+    // 判断是否是审批
+    if (this.data.action_types.a == this.data.action_type) {
+      return
+    }
+
+    let model = this.data.model
+    model.gender = this.data.genders[e.detail.value]
+    this.setData({
+      model: model
+    })
+  },
+
+  // 进入地图
+  onOpenMap: function () {
+    // 判断是否是审批
+    if(this.data.action_types.a == this.data.action_type) {
+      return
+    }
+
+    let _this = this
+    wx.chooseLocation({
+      success: function (res) {
+        let add = app.getArea(res.address)
+        let model = _this.data.model
+        model.province = add.province
+        model.city = add.city
+        model.zone = add.zone
+        model.latitude = add.latitude
+        model.longitude = add.longitude
+
+        _this.setData({
+          model: model
+        })
+      },
+      fail: function (e) {
+        wx.showToast({
+          title: '无法打开地图',
+          icon: none,
+          duration: 2000
         })
       }
     })
