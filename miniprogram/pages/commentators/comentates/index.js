@@ -60,21 +60,49 @@ Page({
       return
     }
 
+    wx.showToast({
+      title: '正在保存',
+      duration: 8000
+    })
+
     const db = wx.cloud.database()
     let _this = this
+    let pagesArr = getCurrentPages()
     db.collection(_this.data.table_view).add({
       data: _this.data.model,
       success: function(res) {
+        let commentatesId = res._id
         wx.showToast({
           title: '新增成功',
           duration: 2000
         })
 
         wx.navigateBack({
-          delta: 1
+          delta: 1,
+          success: function() {
+            let parentPage = pagesArr[pagesArr.length - 2]
+            let albumsDataSources = parentPage.data.albumsDataSources
+            albumsDataSources.forEach(item => {
+              if(item._id == _this.data.sid) {
+                let model = _this.data.model
+                model._id = commentatesId
+                if (item.commentates) {
+                  item.commentates.push(model)
+                } else {
+                  tem.commentates = [model]
+                }
+              }
+            })
+            parentPage.setData({
+              albumsDataSources: albumsDataSources
+            })
+
+            wx.hideToast()
+          }
         })
       },
       fail: function(err) {
+        wx.hideToast()
         wx.showToast({
           title: '新增失败',
           duration: 2000
@@ -190,7 +218,7 @@ Page({
         wx.showToast({
           title: '上传中...',
           icon: 'loading',
-          duration: 10000
+          duration: 20000
         })
 
         let matchArray = filePath.match(/\.[^.]+?$/)
@@ -229,8 +257,9 @@ Page({
   playAudioAction: function() {
     if(1000 == this.data.playStatus) {
       if (this.data.innerAudioContext.src != this.data.model.src) {
+        this.data.innerAudioContext.destroy()
+        this.data.innerAudioContext = wx.createInnerAudioContext()
         this.data.innerAudioContext.src = this.data.model.src
-        this.data.model.time = this.data.innerAudioContext.duration
       }
       
       this.data.innerAudioContext.play()

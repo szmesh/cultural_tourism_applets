@@ -163,6 +163,8 @@ Page({
       })
     } else {
       if (this.data.innerAudioContext.src != commentatesModel.src) {
+        this.data.innerAudioContext.destroy()
+        this.data.innerAudioContext = wx.createInnerAudioContext()
         this.data.innerAudioContext.src = commentatesModel.src
       }
 
