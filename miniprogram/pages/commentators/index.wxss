@@ -21,9 +21,38 @@
 }
 
 .commentates-root-view {
+  position: relative;
   width: 330rpx;
   height: 330rpx;
   margin-bottom: 44rpx;
+}
+
+.commentates-image {
+  width: 330rpx;
+  height: 330rpx;
+}
+
+.commentates-play-image {
+  position: absolute;
+  width: 100rpx;
+  height: 100rpx;
+  left: 115rpx;
+  top: 115rpx;
+}
+
+.commentates-title {
+  width: 100%;
+}
+
+.commentates-audio-root-view {
+  position: absolute;
+  width: 100%;
+  height: 64rpx;
+  line-height: 64rpx;
+  padding: 0 23rpx;
+  color: white;
+  left: 0;
+  bottom: 0;
 }
 
 .add-commentates-root-view {

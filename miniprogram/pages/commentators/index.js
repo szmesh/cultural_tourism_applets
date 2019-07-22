@@ -5,6 +5,9 @@ Page({
     table_view: 'mcta_commentators',
     comments_table_view: 'mcta_commentators_comments',
     album_table_view: 'mcta_albums',
+    commentates_table_view: 'mcta_commentates',
+    innerAudioContext: undefined,
+    playingSID: '',
     action_type: {
       n: 1000,
       e: 2000
@@ -17,7 +20,7 @@ Page({
     userInfo: {},
     commetatorModel: {},
     commentsDataSources: [],
-    albumsDataSources: []
+    albumsDataSources: [],
   },
 
   onLoad: function () {
@@ -26,6 +29,17 @@ Page({
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo
+      })
+
+      // 设置音频回调
+      this.data.innerAudioContext = wx.createInnerAudioContext()
+
+      this.data.innerAudioContext.onPlay(() => {
+        console.log('开始播放')
+      })
+      this.data.innerAudioContext.onError((res) => {
+        console.log(res.errMsg)
+        console.log(res.errCode)
       })
 
       // 查询已经是解说员
@@ -82,6 +96,8 @@ Page({
           _this.setData({
             albumsDataSources: res.data
           })
+
+          _this.getCommentatesDataSource()
         }
       },
       fail: function(err) {
@@ -90,6 +106,71 @@ Page({
         })
       }
     })
+  },
+
+  // 查询当前用户所有的讲解记录
+  getCommentatesDataSource: function() {
+    const db = wx.cloud.database()
+    let _this = this
+    db.collection(_this.data.commentates_table_view).where({
+      _openid: _this.data.userInfo.openid
+    }).get({
+      success: function(res) {
+        if(res && res.data) {
+          let commentatesDataSource = res.data
+          _this.resetAlbumsDataSourcesWithCommentates(commentatesDataSource)
+        }
+      },
+      fail: function(err) {
+        wx.showToast({
+          title: '查询讲解记录出错',
+        })
+      }
+    })
+  },
+
+  // 根据讲解记录重置专辑数据
+  resetAlbumsDataSourcesWithCommentates: function (commentatesDataSource) {
+    let albumsDataSources = this.data.albumsDataSources
+    albumsDataSources.forEach(a => {
+      commentatesDataSource.forEach(c => {
+        if (a._id == c.s_id) {
+          if (a.commentates) {
+            a.commentates.push(c)
+          } else {
+            a.commentates = []
+            a.commentates.push(c)
+          }
+        }
+      })
+    })
+
+    this.setData({
+      albumsDataSources: albumsDataSources
+    })
+  },
+
+  // 播放讲解
+  playAudio: function(e) {
+    let aIndex = e.currentTarget.dataset.aindex
+    let cIndex = e.currentTarget.dataset.cindex
+    let albumModel = this.data.albumsDataSources[aIndex]
+    let commentatesModel = albumModel.commentates[cIndex]
+    if(this.data.playingSID) {
+      this.data.innerAudioContext.pause()
+      this.setData({
+        playingSID: ''
+      })
+    } else {
+      if (this.data.innerAudioContext.src != commentatesModel.src) {
+        this.data.innerAudioContext.src = commentatesModel.src
+      }
+
+      this.data.innerAudioContext.play()
+      this.setData({
+        playingSID: commentatesModel._id
+      })
+    }
   },
 
   // 回绝的说明信息

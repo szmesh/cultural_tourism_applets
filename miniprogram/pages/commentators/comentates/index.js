@@ -38,6 +38,8 @@ Page({
       this.setData({
         sid: options.sid
       })
+
+      this.data.model.s_id = options.sid
     }
 
     // 设置音频回调
