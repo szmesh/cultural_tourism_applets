@@ -256,6 +256,7 @@ Page({
   addItem: function() {
     const db = wx.cloud.database()
     let model = this.data.model
+    let pagesArr = getCurrentPages()
     db.collection(this.data.table_view).add({
       data: model,
       success: function (res) {
@@ -263,8 +264,16 @@ Page({
           title: '增加成功',
           duration: 2000
         })
+
+        model._id = res._id
         wx.navigateBack({
-          delta: 1
+          delta: 1,
+          success: function(res) {
+            let parentPage = pagesArr[pagesArr.length - 2]
+            parentPage.setData({
+              commetatorModel: model
+            })
+          }
         })
       },
       fail: function (err) {
