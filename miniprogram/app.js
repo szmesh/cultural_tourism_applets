@@ -5,6 +5,7 @@ var qqmapsdk;
 App({
   data: {
     mapKey: 'TNABZ-4BYK3-V7J36-Y5WH7-46RCV-E7FCQ',
+    accessTokenUrl: 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxb62bb3a704a7d662&secret=899a0bc306a62d34cda63d3e8bd8dedc'
   },
 
   onLaunch: function () {
@@ -53,7 +54,7 @@ App({
       access_token: '',
       admins: [],
       locationCallBacks: [],
-      parentId: '' // 上级用户ID
+      parentId: '-1' // 上级用户ID
     },
     this.getAccessToken()
     const { query } = wx.getLaunchOptionsSync()
@@ -68,7 +69,9 @@ App({
       success: function (res) {
         console.log('用户信息获取成功：')
         console.log(res)
-        _this.globalData.userInfo = res.userInfo
+        let userInfo = res.userInfo
+        userInfo.parentId = _this.globalData.parentId
+        _this.globalData.userInfo = userInfo
         _this.onGetOpenid()
 
         if (_this.userInfoReadyCallback) {
@@ -277,9 +280,10 @@ App({
 
     return area;
   },
+
   getAccessToken() {
     wx.request({
-      url: 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxb62bb3a704a7d662&secret=899a0bc306a62d34cda63d3e8bd8dedc',
+      url: this.data.accessTokenUrl,
       success: res => {
         this.globalData.access_token = res.data.access_token
         console.log(res)
