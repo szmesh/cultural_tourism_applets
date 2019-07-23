@@ -1,53 +1,72 @@
-// miniprogram/pages/admin/home_banners/banner_add/index.js
+// miniprogram/pages/admin/home_banners/banner_edit/index.js
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+    targetID: '',
     title: '',
     describe: '',
-    imgChoosed: false,
     imgPath: '',
-    region: ['未知'],
+    region: [],
+    oldImage: '', // 用于记录原来的封面图，没有变化则无需重新上传
     cloudPath: 'cultural_tourism/banners/',
-    collectionName: 'mcta_home_banners'
+    collectionName: 'mcta_home_banners',
+    imgBlured: false
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function(options) {
-
+  onLoad: function (options) {
+    console.log(options)
+    if (options.id) {
+      this.data.targetID = options.id
+      this.getBannerDetail()
+    }
+  },
+  // 根据id获取详情信息
+  getBannerDetail() {
+    if (!this.data.targetID) return
+    const db = wx.cloud.database()
+    db.collection(this.data.collectionName).doc(this.data.targetID).get({
+      success: res => {
+        this.setData({
+          region: res.data.region || ['未知'],
+          title: res.data.title,
+          describe: res.data.describe,
+          imgPath: res.data.bannerUrl
+        })
+        this.data.oldImage = res.data.bannerUrl
+      }
+    })
   },
   // 选择本地照片
   chooseImage() {
-    var _this = this
     wx.chooseImage({
       count: 1,
       sizeType: ['original', 'compressed'],
       sourceType: ['album'],
-      success: function(res) {
-        _this.setData({
-          imgChoosed: true,
+      success: res => {
+        this.setData({
           imgPath: res.tempFilePaths[0]
         })
         console.log(res)
       },
-      fail: function(res) {},
-      complete: function(res) {},
+      fail: function (res) { },
+      complete: function (res) { },
     })
   },
   // 点击放大预览
   pieviewImg() {
-    if (!this.data.imgChoosed) return
+    if (!this.data.imgPath) return
     wx.previewImage({
       urls: [this.data.imgPath],
     })
   },
   clearImg() {
     this.setData({
-      imgChoosed: false,
       imgPath: ''
     })
   },
@@ -73,33 +92,51 @@ Page({
       wx.showLoading({
         title: '保存中',
       })
-      const matchArray = this.data.imgPath.match(/\.[^.]+?$/)
-      const suffix = matchArray[0]
-      const timestamp = (new Date()).valueOf()
-      wx.cloud.uploadFile({
-        cloudPath: `${this.data.cloudPath}banner_${timestamp}${suffix}`,
-        filePath: this.data.imgPath,
-        success: res => {
-         this.doSaveData(res.fileID)
-        },
-        fail: err => {
-          wx.hideLoading()
-        }
-      })
-      
+      // 与旧的图不等才要重新上传
+      if (this.data.imgPath && this.data.oldImage != this.data.imgPath) {
+        const matchArray = this.data.imgPath.match(/\.[^.]+?$/)
+        const suffix = matchArray[0]
+        const timestamp = (new Date()).valueOf()
+        wx.cloud.uploadFile({
+          cloudPath: `${this.data.cloudPath}banner_${timestamp}${suffix}`,
+          filePath: this.data.imgPath,
+          success: res => {
+            this.doSaveData(res.fileID)
+            // 可以将旧图片删除了！
+            this.deleteOldImg()
+          },
+          fail: err => {
+            wx.hideLoading()
+          }
+        })
+      } else {
+        this.doSaveData(this.data.oldImage)
+      }
     }
   },
-  // 执行数据库保存
+  // 删除原来数据库中的图片 
+  deleteOldImg() {
+    wx.cloud.deleteFile({
+      fileList: [this.data.oldImage],
+      success: res => {
+        console.log('旧图片已删除！')
+      },
+      fail: err => {
+        console.log(err)
+      }
+    })
+  },
+  // 执行数据库update
   doSaveData(fileID) {
     if (fileID) {
       const db = wx.cloud.database()
-      db.collection(this.data.collectionName).add({
+      db.collection(this.data.collectionName).doc(this.data.targetID).update({
         data: {
           region: this.data.region,
           city: this.data.region[0] + this.data.region[1],
           title: this.data.title,
           describe: this.data.describe,
-          date: (new Date()).valueOf(),
+          update_date: new Date().valueOf(),
           bannerUrl: fileID
         },
         success: res => {
@@ -110,14 +147,14 @@ Page({
           })
           setTimeout(() => {
             wx.showToast({
-              title: '添加成功！',
+              title: ' 保存成功！',
             })
           }, 100)
-         
+
         },
         fail: err => {
           wx.showToast({
-            title: '新增失败！',
+            title: '保存失败！',
           })
           wx.hideLoading()
         }
@@ -159,49 +196,50 @@ Page({
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function() {
+  onReady: function () {
 
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function() {
+  onShow: function () {
 
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
-  onHide: function() {
+  onHide: function () {
 
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
-  onUnload: function() {
+  onUnload: function () {
 
   },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh: function() {
+  onPullDownRefresh: function () {
 
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom: function() {
+  onReachBottom: function () {
 
   },
 
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function() {
+  onShareAppMessage: function () {
 
   }
 })
+

@@ -49,3 +49,8 @@
   width: 40rpx;
   height: 40rpx;
 }
+.edit-i{
+  width: 40rpx;
+  height: 40rpx;
+  margin-right: 16rpx;
+}

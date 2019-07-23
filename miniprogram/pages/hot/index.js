@@ -79,7 +79,10 @@ Component({
     }
   },
   methods: {
-    onLoad() {
+    onLoad(option) {
+      if (option.userID) {
+        app.globalData.parentId = option.userID
+      }
       let _this = this
       // 注册地址回调
       app.getCacheUserCurrentLocation(loc => {
@@ -115,7 +118,7 @@ Component({
       // 获取数据
       db.collection('mcta_scenic_spots').get({
         success: res => {
-          // console.log(res.data, total)
+        console.log(res.data, total)
         }
       })
     }

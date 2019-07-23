@@ -1,4 +1,4 @@
-/* miniprogram/pages/admin/home_banners/banner_add/index.wxss */
+/* miniprogram/pages/admin/home_banners/banner_edit/index.wxss */
 .input-row{
   margin: 10rpx 10rpx 20rpx;
   position: relative;

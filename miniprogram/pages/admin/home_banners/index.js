@@ -6,7 +6,8 @@ Page({
    */
   data: {
     bannerList: [],
-    collectionName: 'mcta_home_banners'
+    collectionName: 'mcta_home_banners',
+    targetImg: ''
   },
 
   /**
@@ -37,6 +38,7 @@ Page({
   // 删除前确认提示
   deleteConfirm(e) {
     const id = e.currentTarget.dataset.id
+    this.data.targetImg = e.currentTarget.dataset.url
     wx.showModal({
       title: '提示',
       content: '确定要删除吗？',
@@ -60,7 +62,25 @@ Page({
       }
     })
   },
-
+  // 删除原来数据库中的图片 
+  deleteAbandonImg() {
+    wx.cloud.deleteFile({
+      fileList: [this.data.targetImg],
+      success: res => {
+        console.log('相关图片已删除！')
+      },
+      fail: err => {
+        console.log(err)
+      }
+    })
+  },
+  // 进入编辑页面
+  toEdit(e) {
+    const targetID = e.currentTarget.dataset.id
+    wx.navigateTo({
+      url: `./banner_edit/index?id=${targetID}`,
+    })
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

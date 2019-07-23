@@ -1,0 +1,20 @@
+/* miniprogram/pages/my/promotion/promotion.wxss */
+page{
+  background-color: #eceff0;
+}
+.qrcode-content{
+  padding: 50rpx 30rpx;
+  text-align: center;
+}
+image{
+  width: 550rpx;
+  height: 600rpx;
+  margin-top: 50rpx;
+}
+.intro-text{
+  margin-top: 30rpx;
+  margin-bottom: 30rpx;
+  color: #5a5a5a;
+  font-size: 30rpx;
+  padding: 0 20rpx;
+}

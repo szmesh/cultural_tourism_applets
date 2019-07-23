@@ -1,0 +1,7 @@
+<!--miniprogram/pages/my/promotion/promotion.wxml-->
+<!-- 推广页面 -->
+<view class='qrcode-content'>
+  <image src='{{imgURL}}'></image>
+  <view class='intro-text'>将此二维码分享给好友，赢取推广奖励</view>
+  <!-- <button type='primary' bindtap='saveQRcode'>保存到相册</button> -->
+</view>
