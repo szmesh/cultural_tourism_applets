@@ -1,0 +1,10 @@
+.img-root-view {
+  width: 330rpx;
+  height: 330rpx;
+}
+
+.img-placehold-view {
+  border: 1rpx dashed gray;
+  line-height: 330rpx;
+  text-align: center;
+}

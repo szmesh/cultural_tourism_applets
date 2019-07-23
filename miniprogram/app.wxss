@@ -44,6 +44,10 @@
   margin-bottom: 23rpx;
 }
 
+.bottom-margin-32 {
+  margin-bottom: 32rpx;
+}
+
 .bottom-margin-64 {
   margin-bottom: 64rpx;
 }
