@@ -2,6 +2,10 @@ const app = getApp()
 
 Page({
   data: {
+    adminLevel: {
+      s: 1000,
+      n: 2000
+    },
     admins_table_view: 'mcta_admins',
     users_table_view: 'mcta_users',
     usersDataSource: [],
@@ -75,16 +79,29 @@ Page({
 
   resetUsersDataSourceWithAdmins: function() {
     let usersDataSource = this.data.usersDataSource
-    for (let i = 0; i < usersDataSource.length; i++) {
-        let user = usersDataSource[i]
-      let adminsFilter = this.data.adminsDataSource.filter(item => item._openid == user._openid)
-      if(undefined == adminsFilter || 0 >= adminsFilter.length) {
-        continue
+    let adminsDataSource = this.data.adminsDataSource
+    // console.log('user length: ' + usersDataSource.length)
+    // console.log('user length: ' + adminsDataSource.length)
+    // usersDataSource.forEach(function(user) {
+    //   console.log('user: ' + user)
+    //   adminsDataSource.forEach(function(admin) {
+    //     console.log('admin: ' + admin._id)
+    //     if (admin.openid == user.openid) {
+    //       user.adminIndex = i
+    //       user.adminId = admin._id
+    //     }
+    //   })
+    // })
+    for (i = 0; i < usersDataSource.length; i++) {
+      let user = usersDataSource[i]
+      for (j = 0; j < adminsDataSource.length; j++) {
+        let admin = adminsDataSource[j]
+        if (admin.openid == user.openid) {
+          user.adminIndex = i
+          user.adminId = admin._id
+          usersDataSource[i] = user
+        }
       }
-
-      user.adminIndex = i
-      user.adminId = adminsFilter[i]._id
-      usersDataSource[i] = user
     }
 
     this.setData({
@@ -94,11 +111,126 @@ Page({
 
   // 根据用户的openid查找存在的管理员对象
   getAdminModelWithOpenId: function(openId) {
-    let res = this.data.adminsDataSource.filter(item => item._openid == openid)
+    let res = this.data.adminsDataSource.filter(item => item.openid == openid)
     if (undefined == res || 0 >= res.length) {
       return undefined
     }
 
     return res[0]
-  }
+  },
+
+  // 用户名输入时，保存到当前数据模型
+  onNameMarkInputAction: function(e) {
+    let value = e.detail.value
+    let index = e.target.dataset.index
+    if (value) {
+      let user = this.data.usersDataSource[index]
+      let adminIndex = user.adminIndex
+      let admin = this.data.adminsDataSource[adminIndex]
+      admin.mark_name = value
+      this.data.adminsDataSource[adminIndex] = admin
+    }
+  },
+
+  // 修改备注名
+  onEditMarkName: function(e) {
+    let index = e.target.dataset.index
+    let user = this.data.usersDataSource[index]
+    let adminIndex = user.adminIndex
+    let admin = this.data.adminsDataSource[adminIndex]
+
+    const db = wx.cloud.database()
+    let _this = this
+    db.collection(_this.data.admins_table_view).doc(admin._id).update({
+      data: {
+        mark_name: admin.mark_name
+      },
+      success: function(res) {
+        wx.showToast({
+          title: '修改成功',
+          duration: 2000
+        })
+      },
+      fail: function(e) {
+        wx.showToast({
+          title: '修改失败',
+          duration: 2000
+        })
+      }
+    })
+  },
+
+  // 将用户设置为管理员
+  onChangeAdminSetting: function(e) {
+    let index = e.target.dataset.index
+    let user = this.data.usersDataSource[index]
+
+    const db = wx.cloud.database()
+    let _this = this
+
+    if (user.adminId) {
+      db.collection(_this.data.admins_table_view).doc(user.adminId).remove({
+        success: function (res) {
+          wx.showToast({
+            title: '删除成功',
+            duration: 2000
+          })
+
+          let usersDataSource = _this.data.usersDataSource
+          user.adminId = undefined
+          user.adminIndex = undefined
+          usersDataSource[index] = user
+          _this.setData({
+            usersDataSource: usersDataSource
+          })
+        },
+        fail: function(e) {
+          wx.showToast({
+            title: '删除失败',
+            duration: 2000
+          })
+        }
+      })
+
+      return
+    }
+
+    let admin = {
+      openid: user.openid,
+      level: _this.data.adminLevel.s,
+      mark_name: user.nickName
+    }
+
+    db.collection(_this.data.admins_table_view).add({
+      // data 字段表示需新增的 JSON 数据
+      data: admin,
+      success: function (res) {
+        wx.showToast({
+          title: '设置成功',
+          duration: 2000
+        })
+
+        let usersDataSource = _this.data.usersDataSource
+        let adminsDataSource = _this.data.adminsDataSource
+
+        user.adminId = res._id
+        admin._id = res._id
+        user.adminIndex = adminsDataSource.length
+
+        // 放在设置adminIndex后面，是因为这样刚好使得新下标等于原来的数组长度
+        adminsDataSource.push(admin)
+        usersDataSource[index] = user
+        _this.setData({
+          usersDataSource: usersDataSource,
+          adminsDataSource: adminsDataSource
+        })
+      },
+      fail: function(e) {
+        wx.showToast({
+          title: '设置失败',
+          duration: 2000
+        })
+      }
+    })
+  },
 })

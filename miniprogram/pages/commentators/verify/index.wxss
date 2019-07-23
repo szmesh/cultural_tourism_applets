@@ -1,0 +1,13 @@
+.channel-card-image-placehold {
+  width: 686rpx;
+  height: 396rpx;
+  line-height: 396rpx;
+  text-align: center;
+  color: lightgray;
+  border:1rpx dashed #000;
+}
+
+.channel-card-image {
+  width: 686rpx;
+  height: 396rpx;
+}

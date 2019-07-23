@@ -3,12 +3,8 @@ var app = getApp();
 Component({
   data: {
     location: {address_component: {city: '未知'}},
-    banners: [
-      'cloud://mesh-7ams1.6d65-mesh-7ams1/poc/images/banner/1.jpg',
-      'cloud://mesh-7ams1.6d65-mesh-7ams1/poc/images/banner/2.jpg',
-      'cloud://mesh-7ams1.6d65-mesh-7ams1/poc/images/banner/3.jpg',
-      'cloud://mesh-7ams1.6d65-mesh-7ams1/poc/images/banner/4.jpg'
-    ],
+    bannerCollection: 'mcta_home_banners',
+    banners: [],
     hotCities: [
       '广东',
       '四川',
@@ -57,12 +53,19 @@ Component({
     ],
     indicatorDots: true,
     vertical: false,
-    autoplay: false,
+    autoplay: true,
     circular: false,
-    interval: 2000,
+    interval: 3000,
     duration: 500,
     previousMargin: 0,
     nextMargin: 0,
+    pagination: {
+      current: 1,
+      size: 10,
+      total: 0,
+      prev: 1,
+      next: 1
+    }
   },
   pageLifetimes: {
     show() {
@@ -72,10 +75,14 @@ Component({
           selected: 0
         })
       }
+      this.getBanners()
     }
   },
   methods: {
-    onLoad() {
+    onLoad(option) {
+      if (option.userID) {
+        app.globalData.parentId = option.userID
+      }
       let _this = this
       // 注册地址回调
       app.getCacheUserCurrentLocation(loc => {
@@ -83,6 +90,37 @@ Component({
           location: loc
         })
       })
+      this.updateList()
     },
+    getBanners() {
+      const db = wx.cloud.database()
+      db.collection(this.data.bannerCollection).get({
+        success: res => {
+          this.setData({
+            banners: res.data
+          })
+        },
+        fail: err => {
+          console.log(err)
+        }
+      })
+    },
+    updateList() {
+      const db = wx.cloud.database()
+      // 统计数量
+      var total = 0
+      db.collection('mcta_scenic_spots').count({
+        success: res => {
+          total = res.total
+        }
+      })
+      
+      // 获取数据
+      db.collection('mcta_scenic_spots').get({
+        success: res => {
+        console.log(res.data, total)
+        }
+      })
+    }
   },
 })

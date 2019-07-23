@@ -2,12 +2,12 @@
   <view class='page-section page-section-spacing bottom-margin-64'>
     <view class="cells-title font-h3">景区名</view>
     <view class="cells-after-title font-h4">
-      <input class="cell-input" auto-focus maxlength="64" placeholder-style="color:black" placeholder="请输入景区名字，不能超过32个文字" bindinput='onInputName' />
+      <input class="cell-input" auto-focus maxlength="64" placeholder-style="color:black" placeholder="请输入景区名字，不能超过32个文字" bindinput='onInputName' value="{{model.name}}" />
     </view>
 
     <view class="cells-title font-h3 top-margin-64">开放时间</view>
     <view class="cells-after-title font-h4">
-      <input class="cell-input" placeholder-style="color:black" placeholder="请输入景区开放时间，如09:00-17:30" bindinput='onWorkTime' />
+      <input class="cell-input" placeholder-style="color:black" placeholder="请输入景区开放时间，如09:00-17:30" bindinput='onWorkTime' value="{{model.work_time}}" />
     </view>
 
     <view class="cells-title font-h3 top-margin-64">位置</view>
@@ -17,22 +17,22 @@
 
     <view class="cells-title font-h3 top-margin-64">说明</view>
     <view class="cells-after-title font-h4">
-      <textarea bindblur="bindTextAreaBlur" placeholder-style="color:black" placeholder="请输入景区的详细说明" bindinput='onDes' auto-height />
+      <textarea bindblur="bindTextAreaBlur" placeholder-style="color:black" placeholder="请输入景区的详细说明" bindinput='onDes' value="{{model.des}}" auto-height />
     </view>
 
     <view class="cells-title font-h3 top-margin-64">票价信息</view>
     <view class="cells-after-title font-h4">
-      <input class="cell-input" placeholder-style="color:black" placeholder="请输入景区的门票信息" bindinput='onTicketsInfo' />
+      <input class="cell-input" placeholder-style="color:black" placeholder="请输入景区的门票信息" bindinput='onTicketsInfo' value="{{model.tickets_info}}" />
     </view>
 
     <view class="cells-title font-h3 top-margin-64">游玩路线</view>
     <view class="cells-after-title font-h4">
-      <input class="cell-input" placeholder-style="color:black" bindinput='onSuggestion' placeholder="请输入景区的游玩路线说明 "/>
+      <input class="cell-input" placeholder-style="color:black" bindinput='onSuggestion' placeholder="请输入景区的游玩路线说明" value="{{model.suggestion}}" />
     </view>
 
     <view class="cells-title font-h3 top-margin-64">游玩建议</view>
     <view class="cells-after-title font-h4">
-      <input class="cell-input" placeholder-style="color:black" placeholder="请输入游玩时的建议" bindinput='onAssistanceTips' />
+      <input class="cell-input" placeholder-style="color:black" placeholder="请输入游玩时的建议" bindinput='onAssistanceTips' value="{{model.assistance_tips}}" />
     </view>
   </view>
 

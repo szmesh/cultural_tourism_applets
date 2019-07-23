@@ -1,9 +1,12 @@
 .search-input {
-  width: 686rpx;
+  width: 660rpx;
   height: 20rpx;
   border-radius: 38rpx;
   border: 1rpx solid lightgray;
-  padding: 8rpx;
+  padding: 8rpx 20rpx;
+}
+.placeholder-color{
+  color:rgb(172, 172, 172);
 }
 
 .swiper {
@@ -14,7 +17,6 @@
 .swiper-item {
   width: 100%;
   height: 100%;
-  border-radius: 16rpx;
 }
 
 .swiper-banner {
@@ -22,7 +24,6 @@
   height: 100%;
   border: none;
   background-size: cover;
-  border-radius: 16rpx;
 }
 
 .flow-label {
@@ -34,11 +35,12 @@
 }
 
 .label-view {
-  background-color: lightgray;
+  background-color: rgb(230, 230, 230);
   color: gray;
-  padding: 8rpx 16rpx;
+  padding: 8rpx 18rpx;
   text-align: center;
   margin: 8rpx;
+  border-radius: 6rpx;
 }
 
 .list-card {
@@ -95,4 +97,12 @@
   width: 24rpx;
   height: 24rpx;
   margin-right: 8rpx;
+}
+.banner-title{
+  color: #fff;
+  font-size: 30rpx;
+  position: absolute;
+  top: 15rpx;
+  left: 10rpx;
+  z-index: 5;
 }

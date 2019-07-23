@@ -2,12 +2,19 @@
   <view class='page-section page-section-spacing'>
     <view wx:if="{{0 >= usersDataSource.length}}" class="page-tips-text font-h3">还没有会员哟</view>
     <view wx:else>
-      <view wx:for="{{usersDataSource}}" class='users-list-root-view'>
+      <view wx:for="{{usersDataSource}}" wx:for-index="index" class='users-list-root-view' wx:key='item._id'>
         <image class="users-icon-list" src="{{item.avatarUrl}}" />
         <view class='users-info-root-view'>
           <view class='info-row font-h4'>微信昵称：{{item.nickName}}</view>
-          <view wx:if="{{item.adminId}}" class='info-row font-h4'>管理员备注名：{{adminsDataSource[item.adminIndex].mark_name}}</view>
-          <view wx:else class='info-row font-h4'>设为管理员{{item.adminIndex}}</view>
+          <view wx:if="{{item.adminId}}" data-index='{{index}}' class='info-row font-h4' bindtap='onChangeAdminSetting'>删除管理员</view>
+          <view wx:else class='info-row font-h4' data-index='{{index}}' bindtap='onChangeAdminSetting'>设为管理员</view>
+          <view wx:if="{{item.adminId}}" class='info-row info-root-view font-h4'>
+            <view class='info-root-view'>
+              <view>备注名：</view>
+              <input class='font-h4' maxlength="64" placeholder='备注名' value='{{adminsDataSource[item.adminIndex].mark_name}}' data-index='{{index}}' bindinput='onNameMarkInputAction' />
+            </view>
+            <view data-index='{{index}}' bindtap='onEditMarkName'>修改</view>
+          </view>
         </view>
       </view>
     </view>

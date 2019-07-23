@@ -2,5 +2,6 @@
   "usingComponents": {},
   "navigationBarBackgroundColor": "#ffffff",
   "navigationBarTextStyle": "black",
-  "navigationBarTitleText": "个人中心"
+  "navigationBarTitleText": "公告新增",
+  "backgroundTextStyle": "light"
 }

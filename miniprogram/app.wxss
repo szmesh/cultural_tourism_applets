@@ -56,6 +56,10 @@
   margin-bottom: 100rpx;
 }
 
+.bottom-margin-200 {
+  margin-bottom: 300rpx;
+}
+
 .left-margin-16 {
   margin-left: 16rpx;
 }
@@ -150,4 +154,26 @@ button::after{
   width: 100rpx;
   height: 100rpx;
   border-radius: 100rpx;
+}
+
+.userinfo-avatar-placehold {
+  width: 200rpx;
+  height: 200rpx;
+  line-height: 200rpx;
+  border-radius: 50%;
+  border:1rpx dashed #000;
+  text-align: center;
+}
+
+.userinfo-avatar {
+  width: 200rpx;
+  height: 200rpx;
+  margin: 20rpx;
+  border-radius: 50%;
+ }
+  
+.page-content {
+  padding: 20rpx 15rpx 100rpx;
+  position: relative;
+  box-sizing: border-box;
 }
