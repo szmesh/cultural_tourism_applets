@@ -6,7 +6,7 @@
   </view>
   <view class='input-row'>
     <view class='row-label'>公告标题</view>
-    <input class="t-input" value="{{title}}" bindinput="bindTitleInput" auto-focus
+    <input class="t-input" value="{{title}}" bindinput="bindTitleInput"
     placeholder-class='t-ploceholder' placeholder='请输入标题' maxlength='32'></input>
   </view>
    <view class='input-row'>

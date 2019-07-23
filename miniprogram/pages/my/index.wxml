@@ -5,7 +5,6 @@
       <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
       <text class="userinfo-nickname font-h2">{{userInfo.nickName}}</text>
     </block>
-    <button type='primary' size='mini' bindtap='showQRcode'>推广二维码</button>
     <text wx:if="{{openid}}">{{openid}}</text>
   </view>
 
@@ -22,10 +21,12 @@
       <image class='channel-icon' src='../../images/my/commentators.png'></image>
       <text>解说管理</text>
     </view>
+    <navigator url='./promotion/promotion'>
     <view class='channel-card-view font-h3'>
       <image class='channel-icon' src='../../images/my/promotion.png'></image>
       <text>推广赚钱</text>
     </view>
+     </navigator>
     <view class='channel-card-view font-h3'>
       <image class='channel-icon' src='../../images/my/about.png'></image>
       <text>版本声明</text>
