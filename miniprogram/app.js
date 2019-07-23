@@ -54,7 +54,8 @@ App({
       access_token: '',
       admins: [],
       locationCallBacks: [],
-      parentId: '-1' // 上级用户ID
+      parentId: '-1', // 上级用户ID
+      userLocation: {}
     },
     this.getAccessToken()
     const { query } = wx.getLaunchOptionsSync()
@@ -189,6 +190,13 @@ App({
         const speed = res.speed
         const accuracy = res.accuracy
 
+        // 保存经纬度
+        let userLocation = {
+          latitude: latitude,
+          longitude: longitude
+        }
+        _this.globalData.userLocation = userLocation
+
         _this.getReverseGeocoderLocation(longitude, latitude)
       }
     })
@@ -292,5 +300,27 @@ App({
         console.log(err)
       }
     })
+  },
+  
+  geoDistance: function(lat2, lng2) {
+    if (!this.globalData.userLocation.latitude) {
+      return
+    }
+
+    let lat1 = this.globalData.userLocation.latitude
+    let lng1 = this.globalData.userLocation.longitude
+
+    let radLat1 = this.rad(lat1);
+    let radLat2 = this.rad(lat2);
+    let a = radLat1 - radLat2;
+    let b = this.rad(lng1) - this.rad(lng2);
+    let s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) + Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(b / 2), 2)));
+    s = s * 6378.137;// EARTH_RADIUS;
+    s = Math.round(s * 10000) / 10000; //输出为公里
+    return s.toFixed(2);
+  },
+
+  rad: function(d) {
+    return d * Math.PI / 180.0;
   }
 })

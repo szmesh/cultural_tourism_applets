@@ -7,7 +7,8 @@
          placeholder-class='placeholder-color'
          maxlength='32'></input>
 
-  <view class="page-section page-section-spacing bottom-margin-23">
+  <view wx:if="{{banners && 0 >= banners.length}}" class="page-tips-text font-h3">暂时没有推荐内容</view>
+  <view wx:else class="page-section page-section-spacing bottom-margin-23">
       <swiper indicator-dots="{{true}}"
               autoplay="{{autoplay}}"
               circular="{{circular}}"
@@ -40,27 +41,28 @@
       <text class='font-h3'>当前城市：{{location.address_component.city}}</text>
     </view>
 
-    <view class='page-section bottom-margin-container'>
-      <block wx:for="{{mocks}}" wx:key="mock">
+    <view wx:if="{{dataSources && 0 >= dataSources.length}}" class="page-tips-text font-h3">暂时没有景区记录</view>
+    <view wx:else class='page-section bottom-margin-container'>
+      <block wx:for="{{dataSources}}" wx:key="item._id">
         <view class='list-card bottom-margin-8'>
-          <image class="list-image" src="{{item.image}}" />
-          <view class='point-cover-view font-h5'>讲解点{{item.point}}个</view>
+          <image wx:if="{{item.imagessDataSources && 0 < item.imagessDataSources.length}}" class="list-image" src="{{item.imagessDataSources[0].url}}" />
+          <view wx:if="{{item.itemsDataSources}}" class='point-cover-view font-h5'>讲解点{{item.itemsDataSources.length}}个</view>
         </view>
 
         <view class='external-info-view bottom-list-card'>
-          <view class='font-h4'>{{item.owner}}</view>
+          <view class='font-h4'>{{item.name}}</view>
           <view class='external-info-right-view font-h5'>
             <view class='external-info'>
               <image class='icon-external' src='../../images/hot/location.png'></image>
-              <text>{{item.distance/1000}}KM</text>
+              <text>{{item.distance}}KM</text>
             </view>
             <view class='external-info left-margin-16'>
               <image class='icon-external' src='../../images/hot/handsets.png'></image>
-              <text>{{item.sell/10000}}万</text>
+              <text>{{item.sell_count/10000}}万</text>
             </view>
             <view class='external-info left-margin-16'>
               <image class='icon-external' src='../../images/hot/collect.png'></image>
-              <text>{{item.view/1000}}千</text>
+              <text>{{item.view_count/1000}}千</text>
             </view>
           </view>
         </view>
