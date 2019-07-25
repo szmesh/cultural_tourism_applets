@@ -6,10 +6,15 @@ Page({
    */
   data: {
     targetID: '',
+    bannerType: {},
+    link: '',
     title: '',
     describe: '',
     imgPath: '',
-    region: [],
+    region: ['未知'],
+    typeOptions: [{ value: 'image', name: '图片' },
+    { value: 'spot', name: '景区' },
+    { value: 'link', name: '链接' },],
     oldImage: '', // 用于记录原来的封面图，没有变化则无需重新上传
     cloudPath: 'cultural_tourism/banners/',
     collectionName: 'mcta_home_banners',
@@ -31,14 +36,16 @@ Page({
     if (!this.data.targetID) return
     const db = wx.cloud.database()
     db.collection(this.data.collectionName).doc(this.data.targetID).get({
-      success: res => {
+      success: ({data}) => {
         this.setData({
-          region: res.data.region || ['未知'],
-          title: res.data.title,
-          describe: res.data.describe,
-          imgPath: res.data.bannerUrl
+          bannerType: this.data.typeOptions.find(item => item.value == data.banner_type),
+          region: data.region || ['未知'],
+          title: data.title,
+          link: data.link,
+          describe: data.describe,
+          imgPath: data.bannerUrl
         })
-        this.data.oldImage = res.data.bannerUrl
+        this.data.oldImage = data.bannerUrl
       }
     })
   },
@@ -84,6 +91,19 @@ Page({
     console.log(e)
     this.setData({
       region: e.detail.value
+    })
+  },
+  bindTypeChange(e) {
+    console.log(e)
+    const index = e.detail.value
+    this.setData({
+      bannerType: this.data.typeOptions[index]
+    })
+  },
+  bindLinkInput(e) {
+    console.log(e)
+    this.setData({
+      link: e.detail.value
     })
   },
   // 保存数据
@@ -132,9 +152,11 @@ Page({
       const db = wx.cloud.database()
       db.collection(this.data.collectionName).doc(this.data.targetID).update({
         data: {
+          banner_type: this.data.bannerType.value,
           region: this.data.region,
           city: this.data.region[0] + this.data.region[1],
           title: this.data.title,
+          link: this.data.link,
           describe: this.data.describe,
           update_date: new Date().valueOf(),
           bannerUrl: fileID
@@ -163,7 +185,7 @@ Page({
   },
   // 检查数据是否合法
   checkNotNull() {
-    if (this.data.region.length < 3) {
+    if (this.data.bannerType == 'spot' && this.data.region.length < 3) {
       wx.showToast({
         title: '请选择地区',
         icon: 'none'
@@ -177,9 +199,16 @@ Page({
       })
       return false
     }
-    if (this.data.content == '') {
+    if (this.data.bannerType == 'link' && this.data.link == '') {
       wx.showToast({
-        title: '请输入描述内容',
+        title: '请输入链接地址',
+        icon: 'cancel'
+      })
+      return false
+    }
+    if (this.data.bannerType == 'spot' && this.data.content == '') {
+      wx.showToast({
+        title: '请输入介绍信息',
         icon: 'cancel'
       })
       return false

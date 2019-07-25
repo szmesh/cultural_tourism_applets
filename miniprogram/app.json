@@ -18,7 +18,7 @@
     "pages/admin/home_banners/index",
     "pages/admin/home_banners/banner_add/index",
     "pages/admin/home_banners/banner_edit/index",
-    "pages/my/promotion/promotion"
+    "pages/my/promotion/promotion",
     "pages/commentators/albums/index"
   ],
   "permission": {

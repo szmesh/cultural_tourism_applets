@@ -5,11 +5,16 @@ Page({
    * 页面的初始数据
    */
   data: {
+    bannerType: {},
+    link: '',
     title: '',
     describe: '',
     imgChoosed: false,
     imgPath: '',
     region: ['未知'],
+    typeOptions: [{value: 'image', name: '图片'},
+      { value: 'spot', name: '景区' },
+      { value: 'link', name: '链接' },],
     cloudPath: 'cultural_tourism/banners/',
     collectionName: 'mcta_home_banners'
   },
@@ -67,6 +72,19 @@ Page({
       region: e.detail.value
     })
   },
+  bindTypeChange(e) {
+    console.log(e)
+    const index = e.detail.value
+    this.setData({
+      bannerType: this.data.typeOptions[index]
+    })
+  },
+  bindLinkInput(e) {
+    console.log(e)
+    this.setData({
+      link: e.detail.value
+    })
+  },
   // 保存数据
   saveBanner() {
     if (this.checkNotNull()) {
@@ -95,9 +113,11 @@ Page({
       const db = wx.cloud.database()
       db.collection(this.data.collectionName).add({
         data: {
+          banner_type: this.data.bannerType.value,
           region: this.data.region,
           city: this.data.region[0] + this.data.region[1],
           title: this.data.title,
+          link: this.data.link,
           describe: this.data.describe,
           date: (new Date()).valueOf(),
           bannerUrl: fileID
@@ -126,7 +146,7 @@ Page({
   },
   // 检查数据是否合法
   checkNotNull() {
-    if (this.data.region.length < 3) {
+    if (this.data.bannerType == 'spot' &&this.data.region.length < 3) {
       wx.showToast({
         title: '请选择地区',
         icon: 'none'
@@ -140,9 +160,16 @@ Page({
       })
       return false
     }
-    if (this.data.content == '') {
+    if (this.data.bannerType == 'link' && this.data.link == '') {
       wx.showToast({
-        title: '请输入描述内容',
+        title: '请输入链接地址',
+        icon: 'cancel'
+      })
+      return false
+    }
+    if (this.data.bannerType == 'spot' && this.data.content == '') {
+      wx.showToast({
+        title: '请输入介绍信息',
         icon: 'cancel'
       })
       return false

@@ -1,6 +1,11 @@
 <!--miniprogram/pages/admin/home_banners/banner_add/index.wxml-->
 <view class='page-content'>
-  <view class='input-row'>
+ <view class='input-row'>
+    <view class='row-label'>类型</view>
+    <picker mode='selector' bindchange='bindTypeChange' value="{{index}}" range-key='name' range='{{typeOptions}}'><view class='region-txt'>{{
+    bannerType.name || '未选择'}}</view></picker>
+  </view>
+  <view class='input-row' hidden="{{bannerType.value!='spot'}}">
     <view class='row-label'>所在地区</view>
     <picker mode='region' bindchange='bindRegionChange' value='{{region}}'><view class='region-txt'>{{region[0]}} {{region[1]}} {{region[2]}}</view></picker>
   </view>
@@ -9,11 +14,18 @@
     <input class="t-input" bindinput="bindTitleInput"
     placeholder-class='t-ploceholder' placeholder='请输入标题' maxlength='32'></input>
   </view>
-   <view class='input-row'>
-    <view  class='row-label'>公告描述</view>
+   <view class='input-row' hidden="{{bannerType.value!='link'}}">
+    <view  class='row-label'>链接地址</view>
+    <input class="t-input" 
+    bindinput="bindLinkInput"
+    placeholder-class='t-ploceholder' placeholder='请输入链接地址' maxlength='32'></input>
+  </view>
+   <view class='input-row' hidden="{{bannerType.value!='spot'}}">
+    <view  class='row-label'>景区介绍</view>
     <textarea class="input-area"
     bindinput='bindContentInput'
-    placeholder-class='t-ploceholder' placeholder='请输入描述信息'></textarea>
+    placeholder-class='t-ploceholder'
+    placeholder='请输入介绍信息'></textarea>
   </view>
   <view class='input-row'>
     <view class='row-label'>封面图</view>
