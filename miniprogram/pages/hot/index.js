@@ -4,6 +4,9 @@ Component({
   data: {
     location: {address_component: {city: '未知'}},
     bannerCollection: 'mcta_home_banners',
+    spot_table_view: 'mcta_scenic_spots',
+    image_table_view: 'mcta_images',
+    item_table_view: 'mcta_scenic_spots_items',
     banners: [],
     hotCities: [
       '广东',
@@ -17,40 +20,7 @@ Component({
       '西藏',
       '湖南'
     ],
-    mocks: [
-      {
-        point: 40,
-        image: 'cloud://mesh-7ams1.6d65-mesh-7ams1/poc/images/city_background/1.jpg',
-        owner: '广东民间工艺博物馆',
-        distance: '2232',
-        sell: 167800,
-        view: 5030
-      },
-      {
-        point: 21,
-        image: 'cloud://mesh-7ams1.6d65-mesh-7ams1/poc/images/city_background/2.jpg',
-        owner: '黄埔军校旧址纪念馆',
-        distance: '3950',
-        sell: 37800,
-        view: 6810
-      },
-      {
-        point: 15,
-        image: 'cloud://mesh-7ams1.6d65-mesh-7ams1/poc/images/city_background/3.jpg',
-        owner: '北京路文化旅游区',
-        distance: '200000',
-        sell: 2250,
-        view: 187
-      },
-      {
-        point: 37,
-        image: 'cloud://mesh-7ams1.6d65-mesh-7ams1/poc/images/city_background/4.jpg',
-        owner: '广东近代革命历史博物馆',
-        distance: '1852',
-        sell: 3092,
-        view: 1670
-      }
-    ],
+    dataSources: [],
     indicatorDots: true,
     vertical: false,
     autoplay: true,
@@ -83,15 +53,29 @@ Component({
       if (option.userID) {
         app.globalData.parentId = option.userID
       }
+
       let _this = this
-      // 注册地址回调
+
+      // 注册当前城市回调，定位有一定延时，所以需要订阅，定位有结果就会回调并刷新界面
       app.getCacheUserCurrentLocation(loc => {
+        let dataSources = _this.data.dataSources
+
+        // 计算距离当前用户
+        dataSources.forEach(item => {
+          let distance = app.geoDistance(item.latitude, item.longitude)
+          item.distance = distance
+        })
+
         _this.setData({
-          location: loc
+          location: loc,
+          dataSources: dataSources
         })
       })
-      this.updateList()
+
+      // 查询所有的景区列表
+      this.getSpotsDataSources()
     },
+
     getBanners() {
       const db = wx.cloud.database()
       db.collection(this.data.bannerCollection).get({
@@ -105,20 +89,97 @@ Component({
         }
       })
     },
-    updateList() {
+
+    getSpotsDataSources() {
+      let _this = this
       const db = wx.cloud.database()
-      // 统计数量
-      var total = 0
-      db.collection('mcta_scenic_spots').count({
+      
+      // 获取景区主数据
+      db.collection(_this.data.spot_table_view).get({
         success: res => {
-          total = res.total
+          if(res && 0 < res.data.length) {
+            _this.setData({
+              dataSources: res.data
+            })
+
+            // 如果已有位置信息，则计算距离
+            if (_this.data.location.address) {
+              _this.data.dataSources.forEach(item => {
+                let distance = app.geoDistance(item.latitude, item.longitude)
+                item.distance = distance
+              })
+            }
+
+            // 查询图片集和讲解点
+            _this.data.dataSources.forEach((item, index) => {
+              _this.getImagesSetForSpot(item._id, index)
+            })
+          } else {
+            _this.setData({
+              dataSources: []
+            })
+          }
+        },
+        fail: err => {
+          wx.showToast({
+            title: '未找到景区记录',
+            duration: 2000
+          })
+
+          _this.setData({
+            dataSources: []
+          })
         }
       })
-      
-      // 获取数据
-      db.collection('mcta_scenic_spots').get({
+    },
+
+    // 查询景区的图片集
+    getImagesSetForSpot(sid, index) {
+      let _this = this
+      const db = wx.cloud.database()
+      db.collection(_this.data.image_table_view).where({
+        s_id: sid,
+        type: 2000
+      }).get({
         success: res => {
-        console.log(res.data, total)
+          if (res && res.data) {
+            let dataSources = _this.data.dataSources
+            let model = dataSources[index]
+            model.imagessDataSources = res.data
+
+            _this.setData({
+              dataSources: dataSources
+            })
+
+            _this.getItemsSetForSpot(sid, index)
+          }
+        },
+        fail: err => {
+          console.log(err)
+        }
+      })
+    },
+
+    // 查询景区的讲解点集
+    getItemsSetForSpot(sid, index) {
+      let _this = this
+      let db = wx.cloud.database()
+      db.collection(_this.data.item_table_view).where({
+        s_id: sid
+      }).get({
+        success: res => {
+          if(res && res.data) {
+            let dataSources = _this.data.dataSources
+            let model = dataSources[index]
+            model.itemsDataSources = res.data
+
+            _this.setData({
+              dataSources: dataSources
+            })
+          }
+        },
+        fail: err => {
+          console.log(err)
         }
       })
     }

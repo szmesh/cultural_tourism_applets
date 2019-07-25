@@ -4,7 +4,6 @@ Page({
   data: {
     spot_table_view: 'mcta_scenic_spots',
     model: {
-      _id: '',
       address: '',
       province: '',
       city: '',
@@ -77,8 +76,8 @@ Page({
         model.province = add.province
         model.city = add.city
         model.zone = add.zone
-        model.latitude = add.latitude
-        model.longitude = add.longitude
+        model.latitude = res.latitude
+        model.longitude = res.longitude
 
         _this.setData({
           model: model
