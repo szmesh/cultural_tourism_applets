@@ -1,0 +1,47 @@
+.swiper {
+  display: block;
+  height: 396rpx;
+}
+
+.swiper-item {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-banner {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background-size: cover;
+}
+
+.tab {
+  float: left;
+  width: 33.3333%;
+  text-align: center;
+  padding: 10rpx 0;
+}
+
+.topTabSwiper {
+  zoom: 1;
+}
+
+.topTabSwiper:after {
+  content: "";
+  clear: both;
+  display: block;
+}
+
+.tabBorer {
+  color: #ffa631;
+}
+
+.info-swiper {
+  width: 100%;
+  height: 1300rpx;
+}
+
+.item-card {
+  margin: 16rpx 0;
+  color: black;
+}

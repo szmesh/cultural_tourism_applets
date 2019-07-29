@@ -182,6 +182,14 @@ Component({
           console.log(err)
         }
       })
+    },
+
+    // 点击景区进入详情
+    onSpotDetailButtonAction: function (e) {
+      let sid = e.currentTarget.dataset.sid
+      wx.navigateTo({
+        url: 'detail/index?sid=' + sid,
+      })
     }
-  },
+  }
 })
