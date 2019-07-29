@@ -407,8 +407,7 @@ Page({
         that.data.model.file_type = suffix.substr(1)
         var timestamp = (new Date()).valueOf()
         let cloudPath = that.data.imagesCloundPath
-          + '-' + timestamp
-          + '_' + suffix
+          + '/' + timestamp + suffix
         wx.cloud.uploadFile({
           cloudPath,
           filePath,

@@ -5,6 +5,7 @@
   border: 1rpx solid lightgray;
   padding: 8rpx 20rpx;
 }
+
 .placeholder-color{
   color:rgb(172, 172, 172);
 }

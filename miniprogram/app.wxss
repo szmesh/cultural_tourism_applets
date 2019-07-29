@@ -68,6 +68,14 @@
   margin-left: 16rpx;
 }
 
+.left-margin-23 {
+  margin-left: 23rpx;
+}
+
+.left-margin-32 {
+  margin-left: 32rpx;
+}
+
 .font-h1 {
   font-size: 40rpx;
 }

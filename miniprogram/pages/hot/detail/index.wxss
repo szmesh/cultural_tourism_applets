@@ -1,0 +1,121 @@
+.swiper {
+  display: block;
+  height: 396rpx;
+}
+
+.swiper-item {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-banner {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background-size: cover;
+}
+
+.tab {
+  float: left;
+  width: 33.3333%;
+  text-align: center;
+  padding: 10rpx 0;
+}
+
+.topTabSwiper {
+  zoom: 1;
+}
+
+.topTabSwiper:after {
+  content: "";
+  clear: both;
+  display: block;
+}
+
+.tabBorer {
+  color: #ffa631;
+}
+
+.info-swiper {
+  width: 100%;
+  height: 1300rpx;
+}
+
+.item-card {
+  margin: 16rpx 0;
+  color: black;
+}
+
+.commentators-list-card-root-view {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.commentators-icon {
+  width: 180rpx;
+  height: 240rpx;
+  margin-right: 24rpx;
+}
+
+.commentators-info-root-view {
+  width: 500rpx;
+}
+
+.commentators-name-label-view {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.commentators-action-root-view {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.commentators-action-button-view {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.commentators-name {
+  font-weight: bold;
+}
+
+.commentators-label {
+  margin-left: 23rpx;
+  padding: 6rpx;
+  background-color: goldenrod;
+  color: white;
+}
+
+.commentators-intr {
+  color: gray;
+}
+
+.price {
+  color: #ffa631;
+  font-weight: bold;
+}
+
+.action-button {
+  padding: 8rpx 16rpx;
+  height: 40rpx;
+  line-height: 40rpx;
+  border-radius: 40rpx;
+}
+
+.white-button {
+  border: 1rpx solid #ffa631;
+  color: #ffa631;
+}
+
+.gold-button {
+  background-color: #ffa631;
+  color: white;
+}

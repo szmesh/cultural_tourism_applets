@@ -1,0 +1,86 @@
+<view class="container">
+  <!-- 没有数据提示信息 -->
+  <block wx:if="{{model && model._id}}">
+    <!-- 图片集 -->
+    <view wx:if="{{model.imagesDataSources}}" class="page-section page-section-spacing bottom-margin-23">
+      <swiper indicator-dots="{{true}}"
+              autoplay="{{banner_properties.autoplay}}"
+              circular="{{banner_properties.circular}}"
+              vertical="{{banner_properties.vertical}}"
+              interval="{{banner_properties.interval}}"
+              duration="{{banner_properties.duration}}"
+              previous-margin="{{banner_properties.previousMargin}}px"
+              next-margin="{{banner_properties.nextMargin}}px"
+              class="swiper">
+        <block wx:for="{{model.imagesDataSources}}" wx:key="{{item._id}}">
+          <swiper-item class="swiper-item">
+            <image class="swiper-banner" src="{{item.url}}" />
+          </swiper-item>
+        </block>
+      </swiper>
+    </view>
+
+    <view class='page-section page-section-spacing bottom-margin-100'>
+      <view class='topTabSwiper'>
+      <view class='tab {{currentIndex == 0 ? "tabBorer" : ""}}' data-index="0" bindtap='onTabButtonAction'>解说</view>
+      <view class='tab  {{currentIndex == 1 ? "tabBorer" : ""}}' data-index="1" bindtap='onTabButtonAction'>景区简介</view>
+      <view class='tab  {{currentIndex == 2 ? "tabBorer" : ""}}' data-index="2" bindtap='onTabButtonAction'>景点目录</view>
+    </view>
+    <swiper current="{{currentIndex}}" class='info-swiper' duration="300" bindchange='onSwiperChangeAction'>
+      <swiper-item>
+        <view wx:for="{{commentatorsDataSources}}" wx:key="item._id" class='commentators-list-card-root-view'>
+          <image class='commentators-icon' src="{{item.img}}"></image>
+          <view class='commentators-info-root-view'>
+            <view class='commentators-name-label-view'>
+              <view class='commentators-name font-h3'>{{item.name}}</view>
+              <view wx:if="{{item.label}}" class='commentators-label font-h5'>{{item.label}}</view>
+            </view>
+
+            <view class='commentators-intr font-h4'>{{item.intr}}</view>
+
+            <view class='commentators-name-label-view top-margin-23'>
+              <view class='commentators-intr font-h4'>{{item.l_count/10000}}万人收听</view>
+              <view class='commentators-intr left-margin-32 font-h4'>{{item.b_count}}人购买</view>
+            </view>
+
+            <view class='commentators-intr font-h4'>包含{{item.c_count}}个讲解点</view>
+
+            <view class='commentators-action-root-view font-h3'>
+              <view wx:if="{{item.albums && 0 < item.albums.length}}" class="price">{{item.albums[0].price}}元</view>
+
+              <view class='commentators-action-button-view'>
+                <view class='action-button white-button'>详情</view>
+                <view class='action-button gold-button left-margin-23'>购买</view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </swiper-item>
+      <swiper-item>
+        <view class="cells-title font-h3">景区地址</view>
+        <view class="cells-after-title bottom-margin-32 font-h4">{{model.province + model.city + model.zone + model.address}}</view>
+
+        <view class="cells-title font-h3">门票信息</view>
+        <view class="cells-after-title bottom-margin-32 font-h4">{{model.tickets_info}}</view>
+
+        <view class="cells-title font-h3">开放时间</view>
+        <view class="cells-after-title bottom-margin-32 font-h4">{{model.work_time}}</view>
+
+        <view class="cells-title font-h3">景区信息</view>
+        <view class="cells-after-title bottom-margin-32 font-h4">{{model.des}}</view>
+
+        <view class="cells-title font-h3">游玩路线</view>
+        <view class="cells-after-title bottom-margin-32 font-h4">{{model.assistance_tips}}</view>
+
+        <view class="cells-title font-h3">景区助手</view>
+        <view class="cells-after-title bottom-margin-32 font-h4">{{model.suggestion}}</view>
+      </swiper-item>
+      <swiper-item>
+        <view wx:for="{{model.itemsDataSources}}" wx:key="item._id" class='item-card font-h3'>{{item.name}}</view>
+      </swiper-item>
+    </swiper>
+    </view>
+  </block>
+
+  <view wx:else class="page-tips-text font-h3">没有查找到对应景区的信息</view>
+</view>

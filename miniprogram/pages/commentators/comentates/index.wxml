@@ -5,9 +5,9 @@
       <input class="cell-input" maxlength="64" placeholder-style="color:black" placeholder="请输入讲解标题，不能超过32个文字" bindinput='onInputName' value="{{model.name}}" />
     </view>
 
-    <view class="cells-title font-h3">单价</view>
+    <view class="cells-title font-h3">讲解点</view>
     <view class="cells-after-title bottom-margin-32 font-h4">
-      <input class="cell-input" maxlength="64" placeholder-style="color:black" placeholder="讲解记录的单价，如果小于0.1元，则视为免费" bindinput='onInputPrice' value="{{model.price}}" />
+      <input class="cell-input" disabled='true' placeholder-style="color:black" placeholder="点击选择对应的讲解点" value="{{item_model.name}}" bindtap='onSelectItemButtonAction' />
     </view>
 
     <view class="cells-title font-h3">封面图片</view>
