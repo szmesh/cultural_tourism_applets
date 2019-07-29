@@ -28,7 +28,33 @@
     </view>
     <swiper current="{{currentIndex}}" class='info-swiper' duration="300" bindchange='onSwiperChangeAction'>
       <swiper-item>
-        <view class='info-swiper-con'>解说主界面</view>
+        <view wx:for="{{commentatorsDataSources}}" wx:key="item._id" class='commentators-list-card-root-view'>
+          <image class='commentators-icon' src="{{item.img}}"></image>
+          <view class='commentators-info-root-view'>
+            <view class='commentators-name-label-view'>
+              <view class='commentators-name font-h3'>{{item.name}}</view>
+              <view wx:if="{{item.label}}" class='commentators-label font-h5'>{{item.label}}</view>
+            </view>
+
+            <view class='commentators-intr font-h4'>{{item.intr}}</view>
+
+            <view class='commentators-name-label-view top-margin-23'>
+              <view class='commentators-intr font-h4'>{{item.l_count/10000}}万人收听</view>
+              <view class='commentators-intr left-margin-32 font-h4'>{{item.b_count}}人购买</view>
+            </view>
+
+            <view class='commentators-intr font-h4'>包含{{item.c_count}}个讲解点</view>
+
+            <view class='commentators-action-root-view font-h3'>
+              <view wx:if="{{item.albums && 0 < item.albums.length}}" class="price">{{item.albums[0].price}}元</view>
+
+              <view class='commentators-action-button-view'>
+                <view class='action-button white-button'>详情</view>
+                <view class='action-button gold-button left-margin-23'>购买</view>
+              </view>
+            </view>
+          </view>
+        </view>
       </swiper-item>
       <swiper-item>
         <view class="cells-title font-h3">景区地址</view>

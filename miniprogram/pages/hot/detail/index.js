@@ -6,8 +6,8 @@ Page({
     spot_table_view: 'mcta_scenic_spots',
     image_table_view: 'mcta_images',
     item_table_view: 'mcta_scenic_spots_items',
-    commentates_table_view: 'mcta_commentators',
-    commentates_table_view: 'mcta_commentates',
+    albums_table_view: 'mcta_albums',
+    commentators_table_view: 'mcta_commentators',
     banner_properties: {
       indicatorDots: true,
       vertical: false,
@@ -20,7 +20,10 @@ Page({
     },
     currentIndex: 0,
     userInfo: {},
-    model: {}
+    model: {},
+    albumsDataSources: [],
+    commentatorsIdArray: [],
+    commentatorsDataSources: []
   },
 
   onLoad: function (options) {
@@ -56,6 +59,7 @@ Page({
         if (res && res.data && res.data._id) {
           _this.data.model = res.data
           _this.getImagesSetForSpot()
+          _this.getAlbums()
 
           // 设置界面标题
           wx.setNavigationBarTitle({
@@ -129,25 +133,88 @@ Page({
     })
   },
 
-  // 查询景区对应的讲解
-  getCommentates: function() {
+  // 查询景区对应的专辑
+  getAlbums: function() {
     const db = wx.cloud.database()
     let _this = this
-    db.collection(_this.data.commentates_table_view).where({
-
+    db.collection(_this.data.albums_table_view).where({
+      s_id: _this.data.sid
     }).get({
       success: function(res) {
+        if(res && res.data) {
+          _this.data.albumsDataSources = res.data
 
+          let commentatorsIdArray = []
+          for (let i = 0; i < _this.data.albumsDataSources.length; i++) {
+            let album = _this.data.albumsDataSources[i]
+            let copenid = album._openid
+            if (commentatorsIdArray.indexOf(copenid) == -1) {
+              commentatorsIdArray.push(copenid);
+            }
+          }
+
+          _this.data.commentatorsIdArray = commentatorsIdArray
+          _this.getCommentators()
+        } else {
+          _this.data.albumsDataSources = []
+          _this.data.commentatorsIdArray = []
+        }
       },
       fail: function(err) {
-        
+        _this.data.albumsDataSources = []
+        _this.data.commentatorsIdArray = []
       }
     })
   },
 
   // 查询讲解员信息
   getCommentators: function() {
+    let _this = this
+    const db = wx.cloud.database()
+    const _ = db.command
+    db.collection(_this.data.commentators_table_view).where({
+      _openid: _.in(_this.data.commentatorsIdArray)
+    }).get({
+      success: function(res) {
+        if(res && res.data) {
+          _this.setData({
+            commentatorsDataSources: res.data
+          })
+          _this.resetCommentatorsDataSources()
+        } else {
+          _this.setData({
+            commentatorsDataSources: []
+          })
+        }
+      },
+      fail: function(err) {
+        _this.setData({
+          commentatorsDataSources: []
+        })
+      }
+    })
+  },
 
+  // 将专辑和导游关联一起
+  resetCommentatorsDataSources: function() {
+    let _this = this
+    let commentatorsDataSources = _this.data.commentatorsDataSources
+    commentatorsDataSources.forEach(commentator => {
+      _this.data.albumsDataSources.forEach(album => {
+        if (album._openid == commentator._openid) {
+          if (commentator.albums) {
+            commentator.albums.push(album)
+          } else {
+            commentator.albums = []
+            commentator.albums.push(album)
+          }
+        }
+      })
+    })
+
+    _this.setData({
+      commentatorsDataSources: commentatorsDataSources
+    })
   },
 
   //获取当前滑块的index
