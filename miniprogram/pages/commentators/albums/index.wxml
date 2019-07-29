@@ -5,17 +5,15 @@
       <input class="cell-input" auto-focus maxlength="64" placeholder-style="color:black" placeholder="请输入转辑名称，尽量保持唯一" bindinput='onInputName' value="{{model.name}}" />
     </view>
 
+    <view class="cells-title font-h3">单价</view>
+    <view class="cells-after-title bottom-margin-32 font-h4">
+      <input class="cell-input" maxlength="64" placeholder-style="color:black" placeholder="讲解记录的单价，如果小于0.1元，则视为免费" bindinput='onInputPrice' value="{{model.price}}" />
+    </view>
+
     <view class="cells-title font-h3 top-margin-64">景区</view>
     <view class="cells-after-title font-h4">
       <input class="cell-input" disabled='true' placeholder-style="color:black" placeholder="点击选择景区" value="{{spot_model.name}}" bindtap='onSelectSpotsButtonAction' />
     </view>
-
-    <block wx:if="{{spot_model._id}}">
-      <view class="cells-title font-h3 top-margin-64">讲解点</view>
-      <view class="cells-after-title font-h4">
-        <input class="cell-input" disabled='true' placeholder-style="color:black" placeholder="点击选择对应的讲解点" value="{{item_model.name}}" bindtap='onSelectItemButtonAction' />
-      </view>
-    </block>
   </view>
 
   <view class='page-full-button font-h3 bottom-margin-100' bindtap='onSaveButtonAction'>保存</view>

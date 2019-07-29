@@ -6,6 +6,8 @@ Page({
     spot_table_view: 'mcta_scenic_spots',
     image_table_view: 'mcta_images',
     item_table_view: 'mcta_scenic_spots_items',
+    commentates_table_view: 'mcta_commentators',
+    commentates_table_view: 'mcta_commentates',
     banner_properties: {
       indicatorDots: true,
       vertical: false,
@@ -125,6 +127,27 @@ Page({
         console.log(err)
       }
     })
+  },
+
+  // 查询景区对应的讲解
+  getCommentates: function() {
+    const db = wx.cloud.database()
+    let _this = this
+    db.collection(_this.data.commentates_table_view).where({
+
+    }).get({
+      success: function(res) {
+
+      },
+      fail: function(err) {
+        
+      }
+    })
+  },
+
+  // 查询讲解员信息
+  getCommentators: function() {
+
   },
 
   //获取当前滑块的index

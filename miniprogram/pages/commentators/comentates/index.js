@@ -3,6 +3,7 @@ const app = getApp()
 Page({
   data: {
     table_view: 'mcta_commentates',
+    spot_items_table_view: 'mcta_scenic_spots_items',
     files_path: 'cultural_tourism/commentates/images',
     audio_files_path: 'cultural_tourism/commentates/audio',
     playStatus: 1000,
@@ -11,6 +12,7 @@ Page({
       video: 1000,
       audio: 2000
     },
+    item_model: {},
     model: {
       name: '',
       type: '',
@@ -21,7 +23,9 @@ Page({
       price: 0,
       b_count: 0,
       l_count: 0,
-      s_id: ''
+      s_id: '',
+      i_id: '',
+      i_name: ''
     }
   },
 
@@ -42,6 +46,15 @@ Page({
       this.data.model.s_id = options.sid
     }
 
+    // 保存景区id
+    if (options.s_id) {
+      this.setData({
+        s_id: options.s_id
+      })
+
+      this.data.model.i_id = options.s_id
+    }
+
     // 设置音频回调
     this.data.innerAudioContext = wx.createInnerAudioContext()
 
@@ -51,6 +64,18 @@ Page({
     this.data.innerAudioContext.onError((res) => {
       console.log(res.errMsg)
       console.log(res.errCode)
+    })
+  },
+
+  // 选择讲解点
+  onSelectItemButtonAction: function () {
+    wx.navigateTo({
+      url: '../../selectors/index?s_table='
+        + this.data.spot_items_table_view
+        + '&s_name_key=name'
+        + '&search_key=s_id'
+        + '&search_value=' + this.data.s_id
+        + '&call_back=item_model'
     })
   },
 
@@ -68,6 +93,8 @@ Page({
     const db = wx.cloud.database()
     let _this = this
     let pagesArr = getCurrentPages()
+    _this.data.model.i_id = _this.data.item_model._id
+    _this.data.model.i_name = _this.data.item_model.name
     db.collection(_this.data.table_view).add({
       data: _this.data.model,
       success: function(res) {
@@ -89,7 +116,7 @@ Page({
                 if (item.commentates) {
                   item.commentates.push(model)
                 } else {
-                  tem.commentates = [model]
+                  item.commentates = [model]
                 }
               }
             })
@@ -177,8 +204,7 @@ Page({
         let suffix = matchArray[0]
         var timestamp = (new Date()).valueOf()
         let cloudPath = that.data.files_path
-          + '/' + timestamp
-          + '_' + suffix
+          + '/' + timestamp + suffix
         wx.cloud.uploadFile({
           cloudPath,
           filePath,

@@ -237,8 +237,9 @@ Page({
   // 添加讲解
   onAddCommentatesButtonAction: function(e) {
     let sid = e.currentTarget.dataset.sid
+    let s_id = e.currentTarget.dataset.spotid
     wx.navigateTo({
-      url: 'comentates/index?sid=' + sid,
+      url: 'comentates/index?sid=' + sid + '&s_id=' + s_id,
     })
   }
 })
