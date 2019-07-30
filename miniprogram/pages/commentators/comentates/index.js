@@ -3,6 +3,7 @@ const app = getApp()
 Page({
   data: {
     table_view: 'mcta_commentates',
+    album_table_view: 'mcta_albums',
     spot_items_table_view: 'mcta_scenic_spots_items',
     files_path: 'cultural_tourism/commentates/images',
     audio_files_path: 'cultural_tourism/commentates/audio',
@@ -92,7 +93,6 @@ Page({
 
     const db = wx.cloud.database()
     let _this = this
-    let pagesArr = getCurrentPages()
     _this.data.model.i_id = _this.data.item_model._id
     _this.data.model.i_name = _this.data.item_model.name
     db.collection(_this.data.table_view).add({
@@ -104,29 +104,8 @@ Page({
           duration: 2000
         })
 
-        wx.navigateBack({
-          delta: 1,
-          success: function() {
-            let parentPage = pagesArr[pagesArr.length - 2]
-            let albumsDataSources = parentPage.data.albumsDataSources
-            albumsDataSources.forEach(item => {
-              if(item._id == _this.data.sid) {
-                let model = _this.data.model
-                model._id = commentatesId
-                if (item.commentates) {
-                  item.commentates.push(model)
-                } else {
-                  item.commentates = [model]
-                }
-              }
-            })
-            parentPage.setData({
-              albumsDataSources: albumsDataSources
-            })
-
-            wx.hideToast()
-          }
-        })
+        // 增加专辑的讲解点数量
+        _this.updateAlbumsCCount(commentatesId)
       },
       fail: function(err) {
         wx.hideToast()
@@ -134,6 +113,46 @@ Page({
           title: '新增失败',
           duration: 2000
         })
+      }
+    })
+  },
+
+  // 更新专辑的讲解点数量
+  updateAlbumsCCount: function (commentatesId) {
+    const db = wx.cloud.database()
+    let _this = this
+    let pagesArr = getCurrentPages()
+    const _ = db.command
+    db.collection(_this.data.album_table_view).doc(_this.data.sid).update({
+      data: {
+        c_count: _.inc(1)
+      },
+      success: function(res) {
+        if(res) {
+          wx.navigateBack({
+            delta: 1,
+            success: function () {
+              let parentPage = pagesArr[pagesArr.length - 2]
+              let albumsDataSources = parentPage.data.albumsDataSources
+              albumsDataSources.forEach(item => {
+                if (item._id == _this.data.sid) {
+                  let model = _this.data.model
+                  model._id = commentatesId
+                  if (item.commentates) {
+                    item.commentates.push(model)
+                  } else {
+                    item.commentates = [model]
+                  }
+                }
+              })
+              parentPage.setData({
+                albumsDataSources: albumsDataSources
+              })
+
+              wx.hideToast()
+            }
+          })
+        }
       }
     })
   },

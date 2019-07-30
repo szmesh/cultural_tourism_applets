@@ -43,7 +43,7 @@
               <view class='commentators-intr left-margin-32 font-h4'>{{item.b_count}}人购买</view>
             </view>
 
-            <view class='commentators-intr font-h4'>包含{{item.c_count}}个讲解点</view>
+            <view wx:if="{{item.albums && 0 < item.albums.length}}" class='commentators-intr font-h4'>包含{{item.albums[0].c_count}}个讲解点</view>
 
             <view class='commentators-action-root-view font-h3'>
               <view wx:if="{{item.albums && 0 < item.albums.length}}" class="price">{{item.albums[0].price}}元</view>
@@ -55,6 +55,8 @@
             </view>
           </view>
         </view>
+
+        <view wx:if="{{!commentatorsDataSources || 0 >= commentatorsDataSources.length}}" class='page-tips-text font-h3'>暂无讲解哟</view>
       </swiper-item>
       <swiper-item>
         <view class="cells-title font-h3">景区地址</view>
