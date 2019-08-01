@@ -1,5 +1,6 @@
 /**app.wxss**/
 .container {
+  position: relative;
   width: 100%;
   height: 100%;
   display: flex;
@@ -38,6 +39,10 @@
 
 .top-margin-23 {
   margin-top: 23rpx;
+}
+
+.top-margin-16 {
+  margin-top: 16rpx;
 }
 
 .bottom-margin-23 {
@@ -149,6 +154,51 @@ button::after{
   text-align: center;
   vertical-align: middle;
   background-color: black;
+}
+
+.page-full-row-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100rpx;
+  line-height: 100rpx;
+  background-color: #ffa631;
+  color: white;
+  text-align: center;
+}
+
+.row-content-messages {
+  position: relative;
+  background-color: white;
+  width: 120rpx;
+  height: 100rpx;
+}
+
+.row-content-messages-image {
+  width: 60rpx;
+  height: 60rpx;
+  margin: 20rpx 30rpx;
+}
+
+.tips-row-content-messages {
+  position: absolute;
+  top: 8rpx;
+  right: 10rpx;
+  color: white;
+  background-color: red;
+  width: 32rpx;
+  height: 32rpx;
+  line-height: 32rpx;
+  border-radius: 50%;
+}
+
+.row-content-button {
+  width: 630rpx;
+  text-align: center;
+  color: white;
 }
 
 .cells-title {

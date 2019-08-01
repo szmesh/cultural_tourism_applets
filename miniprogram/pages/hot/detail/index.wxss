@@ -90,7 +90,7 @@
 .commentators-label {
   margin-left: 23rpx;
   padding: 6rpx;
-  background-color: goldenrod;
+  background-color: #ffa631;
   color: white;
 }
 

@@ -28,7 +28,7 @@
     </view>
     <swiper current="{{currentIndex}}" class='info-swiper' duration="300" bindchange='onSwiperChangeAction'>
       <swiper-item>
-        <view wx:for="{{commentatorsDataSources}}" wx:key="item._id" class='commentators-list-card-root-view'>
+        <view wx:for="{{commentatorsDataSources}}" wx:key="item._id" class='commentators-list-card-root-view' data-index="{{index}}" bindtap='onCommentatorsDetailAction'>
           <image class='commentators-icon' src="{{item.img}}"></image>
           <view class='commentators-info-root-view'>
             <view class='commentators-name-label-view'>
