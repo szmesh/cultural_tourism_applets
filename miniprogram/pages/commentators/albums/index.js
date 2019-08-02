@@ -9,7 +9,10 @@ Page({
       name: '',
       price: 0,
       s_id: '',
-      s_name: ''
+      s_name: '',
+      b_count: 0,
+      l_count: 0,
+      c_count: 0
     },
     userInfo: {},
     spot_model: {},

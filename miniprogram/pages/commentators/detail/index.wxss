@@ -1,0 +1,93 @@
+.commentators-list-card-root-view {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.commentators-icon {
+  width: 180rpx;
+  height: 240rpx;
+  margin-right: 24rpx;
+}
+
+.commentators-info-root-view {
+  width: 500rpx;
+}
+
+.commentators-name-label-view {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.commentators-name {
+  font-weight: bold;
+}
+
+.commentators-label {
+  margin-left: 23rpx;
+  padding: 6rpx;
+  background-color: #ffa631;
+  color: white;
+}
+
+.commentators-intr {
+  color: gray;
+}
+
+.price {
+  color: #ffa631;
+  font-weight: bold;
+}
+
+.item-card-root-view {
+  width: 100%;
+}
+
+.title-item {
+  color: #ffa631;
+}
+
+.commentates-container-root-view {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between
+}
+
+.commentates-root-view {
+  position: relative;
+  width: 330rpx;
+  height: 330rpx;
+  margin-bottom: 44rpx;
+}
+
+.commentates-image {
+  width: 330rpx;
+  height: 330rpx;
+}
+
+.commentates-play-image {
+  position: absolute;
+  width: 100rpx;
+  height: 100rpx;
+  left: 115rpx;
+  top: 115rpx;
+}
+
+.commentates-title {
+  width: 100%;
+}
+
+.commentates-audio-root-view {
+  position: absolute;
+  width: 100%;
+  height: 64rpx;
+  line-height: 64rpx;
+  padding: 0 23rpx;
+  color: white;
+  left: 0;
+  bottom: 0;
+}

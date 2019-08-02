@@ -236,5 +236,15 @@ Page({
         currentIndex: e.target.dataset.index
       })
     }
+  },
+
+  onCommentatorsDetailAction: function(e) {
+    let index = e.currentTarget.dataset.index
+    let commentatorModel = this.data.commentatorsDataSources[index]
+    wx.navigateTo({
+      url: '../../commentators/detail/index?sid=' + this.data.sid
+      + '&cid=' + commentatorModel._id
+      + '&aid=' + commentatorModel.albums[0]._id,
+    })
   }
 })
