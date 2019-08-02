@@ -1,0 +1,2 @@
+<!--miniprogram/pages/admin/navigator/navigator.wxml-->
+<web-view src="{{url}}"></web-view>

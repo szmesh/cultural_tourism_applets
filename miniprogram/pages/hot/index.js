@@ -105,6 +105,26 @@ Component({
         }
       })
     },
+    toBannerDetail(e) {
+      console.log(e)
+      const target = this.data.banners[e.currentTarget.dataset.index]
+      if (target.banner_type == 'spot') {
+        wx.navigateTo({
+          url: `../admin/home_banners/banner_detail/banner_detail?id=${target._id}`,
+        })
+      }
+      if (target.banner_type=='image') {
+        wx.previewImage({
+          urls: [target.bannerUrl],
+        })
+      }
+      if (target.banner_type == 'link') {
+        wx.navigateTo({
+          url: `../admin/navigator/navigator?url=${target.link}`,
+        })
+      }
+
+    },
     updateList() {
       const db = wx.cloud.database()
       // 统计数量

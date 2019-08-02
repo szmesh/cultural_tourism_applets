@@ -19,7 +19,9 @@
     "pages/admin/home_banners/banner_add/index",
     "pages/admin/home_banners/banner_edit/index",
     "pages/my/promotion/promotion",
-    "pages/commentators/albums/index"
+    "pages/commentators/albums/index",
+    "pages/admin/navigator/navigator",
+    "pages/admin/home_banners/banner_detail/banner_detail"
   ],
   "permission": {
     "scope.userLocation": {

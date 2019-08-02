@@ -1,0 +1,13 @@
+<!--miniprogram/pages/admin/home_banners/banner_detail/banner_detail.wxml-->
+<view class='page-content'>
+  <view class='info-row'>
+    <view class='main-title'>{{title}}</view> 
+    <view class='sub-title'>{{region[0]}} {{region[1]}}</view>
+  </view>
+  <view class='info-row'>
+    <image class='banner-img' src='{{imgPath}}'></image>
+  </view>
+  <view class='info-row'>
+    <text>{{description}}</text>
+  </view>
+</view>

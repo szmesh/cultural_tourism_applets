@@ -20,7 +20,7 @@
         <block wx:for="{{banners}}" wx:key="{{item._id}}">
           <swiper-item class="swiper-item">
             <view class='banner-title'>{{item.title}}</view>
-            <image class="swiper-banner" src="{{item.bannerUrl}}" />
+            <image class="swiper-banner" src="{{item.bannerUrl}}" bindtap='toBannerDetail' data-index="{{index}}"/>
           </swiper-item>
         </block>
       </swiper>
