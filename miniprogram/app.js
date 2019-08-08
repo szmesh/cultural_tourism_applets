@@ -82,7 +82,6 @@ App({
       fail: function(e) {
         wx.showToast({
           title: '获取用户信息失败！',
-          icon: none,
           duration: 1000
         })
       }
@@ -103,7 +102,6 @@ App({
       fail: err => {
         wx.showToast({
           title: 'openid获取失败',
-          icon: none,
           duration: 1000
         })
       }
@@ -146,7 +144,6 @@ App({
       fail: err => {
         wx.showToast({
           title: '插入会员失败！',
-          icon: none,
           duration: 1000
         })
       }
@@ -220,7 +217,6 @@ App({
       fail: function(e) {
         wx.showToast({
           title: '地址信息查找失败',
-          icon: none,
           duration: 2000
         })
       }
