@@ -4,7 +4,7 @@ Page({
   data: {
     table_view: 'mcta_commentators',
     comments_table_view: 'mcta_commentators_comments',
-    imagesCloundPath: 'cultural_tourism/commentators/',
+    imagesCloundPath: 'cultural_tourism/commentators',
     action_types: {
       n: 1000,
       e: 2000,
