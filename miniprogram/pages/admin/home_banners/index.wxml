@@ -8,8 +8,8 @@
   <image class='item-img' src='{{item.bannerUrl}}' bindtap='previewImg' data-path='{{item.bannerUrl}}'></image>
   <view class='info-row'>
      <view class='item-text'>{{item.title}}</view>
-     <image class="edit-i"  src='cloud://mesh-7ams1.6d65-mesh-7ams1/icons/edit.png' bindtap="toEdit" data-id='{{item._id}}'></image>
-     <image class="trash-i"  src='cloud://mesh-7ams1.6d65-mesh-7ams1/icons/trash.png' bindtap="deleteConfirm" data-id='{{item._id}}'  data-url="{{item.bannerUrl}}"></image>
+     <image class="edit-i"  src='../../../images/icons/edit.png' bindtap="toEdit" data-id='{{item._id}}'></image>
+     <image class="trash-i"  src='../../../images/icons/trash.png	' bindtap="deleteConfirm" data-id='{{item._id}}'  data-url="{{item.bannerUrl}}"></image>
   </view>
   </view>
 </block>
