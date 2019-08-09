@@ -1,0 +1,10 @@
+<view class="container">
+  <view class='page-section page-section-spacing bottom-margin-64'>
+    <view class="cells-title font-h3">分成方案名</view>
+    <view class="cells-after-title font-h4">
+      <input class="cell-input" maxlength="64" placeholder-style="color:black" placeholder="请输入分成方案名，不能超过32个文字" bindinput='onInputName' value="{{model.name}}" />
+    </view>
+  </view>
+
+  <view class='page-full-button font-h3 bottom-margin-100' bindtap='onSaveAction'>保存</view>
+</view>
