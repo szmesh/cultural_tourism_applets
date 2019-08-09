@@ -12,6 +12,7 @@ App({
 
   onLaunch: function () {
     var _this = this;
+    // 获取下本地IP
     this.getCIP()
     // 本地缓存服务
     if (!wx.cloud) {
@@ -294,7 +295,11 @@ App({
       }
     })
   },
-  // 统一支付接口，发起微信支付前调用
+  /** 统一支付接口，发起微信支付调用
+   * @param tradeId: 商品id
+   * @param price: 价格/元
+   * @param description: 商品信息
+  */
   unitedPayRequest(tradeId, price, description) {
     const _this = this
     const appid = 'wx0c72bf852316254c',
@@ -364,8 +369,16 @@ App({
           signType,
           paySign
         }
+        // 用于保存订单的信息
+        const saveData = {
+          openid,
+          trade_id: tradeId,
+          trade_no: out_trade_no,
+          total_fee,
+          description: description || ''
+        }
         // 正式发起支付
-        _this.weixinPayment(params)
+        _this.weixinPayment(params, saveData)
         }
 
       },
@@ -383,22 +396,38 @@ App({
     nonceStr,
     prepayId,
     signType,
-    paySign}) {
+    paySign }, savedata) {
     wx.requestPayment({
       timeStamp,
       nonceStr,
       package: `prepay_id=${prepayId}`,
       signType,
       paySign,
-      success: function (res) { 
+      success: res => { 
+        if (savedata) {
+          savedata['trade_time'] = timeStamp
+          this.saveTradeRecord(savedata)
+        }
         console.log(res)
       },
-      fail: function (res) {
+      fail: res => {
         console.log(res)
        }
     })
   },
-  
+  // 存储交易信息
+  saveTradeRecord(data) {
+    const db = wx.cloud.database()
+    db.collection('mcta_trade_records').add({
+      data,
+      success: res => {
+        console.log(res)
+      },
+      fail: err => {
+        console.log(err)
+      }
+    })
+  },
   // 获取终端IP
   getCIP() {
     wx.request({

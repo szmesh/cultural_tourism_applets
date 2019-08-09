@@ -61,7 +61,7 @@ Component({
     },
     myBill() {
       console.log('调用支付')
-      app.unitedPayRequest('支付测试', 0.01)
+      app.unitedPayRequest('face13585d4c43bd0f2836135d579611', 0.01, '支付测试')
     },
     gotoCommentatorsAction() {
       wx.navigateTo({
