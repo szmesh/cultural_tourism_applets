@@ -1,0 +1,24 @@
+<view class="container">
+  <view wx:if="{{0 >= dataSources.length}}" class="page-section page-section-spacing page-tips-text font-h3">还没有规则配置，现在添加一个吧！</view>
+  <view wx:else class="page-section page-section-spacing bottom-margin-64">
+    <view wx:for="{{dataSources}}" wx:key="item._id" class='rule-card top-margin-32'>
+      <view class="font-h3">{{item.name}}</view>
+      <view class="font-h3">{{item.type}}</view>
+      <input class="rule-cell-input font-h4" maxlength="64" placeholder="百分比" bindinput='onInputPercent' value="{{item.percent}}" data-index="{{index}}" />
+      <view class="button-view font-h3">
+        <view class="delete-button" data-index="{{index}}" bindtap="onDeletePercent">删除</view>
+        <view class="edit-button left-margin-23" data-index="{{index}}" bindtap="onEditPercent">修改</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="page-section page-section-spacing bottom-margin-64">
+    <input class="rule-new-input font-h4 bottom-margin-23" maxlength="64" placeholder="请输入规则名称" bindinput='onNewInputName' value="{{model.name}}" />
+
+    <input class="rule-new-input font-h4" maxlength="64" placeholder="请输入百分比" bindinput='onNewInputPercent' value="{{model.percent}}" />
+
+    <input class="rule-new-input font-h4 bottom-margin-23" maxlength="64" placeholder="请输入类型编码负数，平台保留-4000" bindinput='onNewInputType' value="{{model.type}}" />
+  </view>
+
+  <view class='page-full-button bottom-margin-100 font-h3' bindtap='onAddButtonAction'>添加</view>
+</view>

@@ -1,0 +1,15 @@
+<view class="container">
+  <view wx:if="{{0 >= dataSources.length}}" class="page-section page-section-spacing page-tips-text font-h3">还没有配置规则范围，现在添加一个吧！</view>
+  <view wx:else class="page-section page-section-spacing bottom-margin-64">
+    <view wx:for="{{dataSources}}" wx:key="item._id" class='scope-card top-margin-64'>
+      <view class="scope-info">
+        <view class="font-h3">{{item.s_name}}</view>
+        <view class="scope-address font-h5">{{item.s_province + item.s_city}}</view>
+      </view>
+
+      <view data-sid="{{item._id}}" data-index="{{index}}" class="scope-card-button font-h3" bindtap="onDeleteAction">移除</view>
+    </view>
+  </view>
+
+  <view class='page-full-button bottom-margin-100 font-h3' bindtap='onAddButtonAction'>添加景区</view>
+</view>

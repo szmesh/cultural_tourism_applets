@@ -1,0 +1,19 @@
+.scope-card {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.scope-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+}
+
+.scope-address {
+  color: gray;
+}
+
+.scope-card-button {
+  color: red;
+}

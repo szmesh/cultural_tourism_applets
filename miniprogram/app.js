@@ -4,6 +4,9 @@ var qqmapsdk;
 
 App({
   data: {
+    profit_table_view: 'mcta_profit_percents',
+    profit_scope_table_view: 'mcta_profit_percent_scope',
+    profit_item_table_view: 'mcta_profit_percent_items',
     mapKey: 'TNABZ-4BYK3-V7J36-Y5WH7-46RCV-E7FCQ',
     accessTokenUrl: 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxb62bb3a704a7d662&secret=899a0bc306a62d34cda63d3e8bd8dedc'
   },
@@ -54,7 +57,7 @@ App({
       access_token: '',
       admins: [],
       locationCallBacks: [],
-      parentId: '-1', // 上级用户ID
+      parentId: '-3000', // 上级用户ID
       userLocation: {}
     },
     this.getAccessToken()
@@ -294,6 +297,50 @@ App({
       },
       fail: err => {
         console.log(err)
+      }
+    })
+  },
+
+  getProfitPercentRecordID: function(spotID, callback) {
+    let _this = this
+    const db = wx.cloud.database()
+    db.collection(_this.data.profit_scope_table_view).where({
+      s_id: spotID
+    }).get({
+      success: function(res) {
+        _this.getProfitPercentRecord(res.data.p_id)
+      },
+      fail: function(err) {
+        callback(false, undefined, err)
+      }
+    })
+  },
+
+  getProfitPercentRecord: function (pid, callback) {
+    let _this = this
+    const db = wx.cloud.database()
+    db.collection(_this.data.profit_table_view).doc(pid).get({
+      success: function(res) {
+        _this.getProfitPercentItems(pid, res.data, callback)
+      },
+      fail: function(err) {
+        callback(false, undefined, err)
+      }
+    })
+  },
+
+  getProfitPercentItems: function (pid, profitModel, callback) {
+    let _this = this
+    const db = wx.cloud.database()
+    db.collection(_this.data.profit_scope_table_view).where({
+      p_id: pid
+    }).get({
+      success: function (res) {
+        profitModel.items = res.data
+        callback(true, profitModel, undefined)
+      },
+      fail: function(err) {
+        callback(false, undefined, err)
       }
     })
   },
