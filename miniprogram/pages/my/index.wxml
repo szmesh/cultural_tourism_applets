@@ -5,11 +5,12 @@
       <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
       <text class="userinfo-nickname font-h2">{{userInfo.nickName}}</text>
     </block>
+    <button type='primary' bindtap='myBill' size='mini'>支付测试</button>
     <text wx:if="{{openid}}">{{openid}}</text>
   </view>
 
   <view class='page-section page-section-spacing bottom-margin-container'>
-    <view class='channel-card-view font-h3'>
+    <view class='channel-card-view font-h3' >
       <image class='channel-icon' src='../../images/my/orders.png'></image>
       <text>我的已购</text>
     </view>

@@ -1,15 +1,18 @@
 //app.js
 var QQMapWX = require('./libs/qqmap/qqmap-wx-jssdk.js');
+var md5 = require('./utils/md5.js')
+var util = require('./utils/util.js')
 var qqmapsdk;
 
 App({
   data: {
     mapKey: 'TNABZ-4BYK3-V7J36-Y5WH7-46RCV-E7FCQ',
+    cip: ''
   },
 
   onLaunch: function () {
     var _this = this;
-
+    this.getCIP()
     // 本地缓存服务
     if (!wx.cloud) {
       console.error('请使用 2.2.3 或以上的基础库以使用云能力')
@@ -18,7 +21,6 @@ App({
         traceUser: true,
       })
     }
-
     wx.getSetting({
       success: function (res) {
         // 用户信息授权
@@ -50,6 +52,8 @@ App({
 
     // app全局保存数据
     this.globalData = {
+      appId: 'wx0c72bf852316254c',
+      appSecret: 'f826a0aff906145032a3811c097f2a96',
       access_token: '',
       admins: [],
       locationCallBacks: [],
@@ -277,15 +281,133 @@ App({
 
     return area;
   },
+  // 获取access token
   getAccessToken() {
     wx.request({
-      url: 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxb62bb3a704a7d662&secret=899a0bc306a62d34cda63d3e8bd8dedc',
+      url: `https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${this.globalData.appId}&secret=${this.globalData.appSecret}`,
       success: res => {
         this.globalData.access_token = res.data.access_token
         console.log(res)
       },
       fail: err => {
         console.log(err)
+      }
+    })
+  },
+  // 统一支付接口，发起微信支付前调用
+  unitedPayRequest(tradeId, price, description) {
+    const _this = this
+    const appid = 'wx0c72bf852316254c',
+      openid = this.globalData.userInfo.openid,
+    mch_id = '1549025261', //商户ID
+    nonce_str = util.randomString(), //随机字符串
+    body = description || 'JSAPI 支付测试', // 描述信息
+    out_trade_no = util.createTradeNo(), // 商户订单号
+    total_fee = parseInt(price * 100) || 1,  //支付金额，单位为分
+    spbill_create_ip = this.data.cip, // 客户端IP地址
+    notify_url = '192.168.3.12', // 通知地址
+    trade_type = 'JSAPI', //交易类型
+    key = 'starsys2019080811111111111111111' //商户平台设置的密钥
+    // 签名拼接
+    let paymentStr = `appid=${appid}&body=${body}&mch_id=${mch_id}&nonce_str=${nonce_str}&notify_url=${notify_url}&openid=${openid}&out_trade_no=${out_trade_no}&spbill_create_ip=${spbill_create_ip}&total_fee=${total_fee}&trade_type=${trade_type}`
+    paymentStr += `&key=${key}`
+    const sign = util.md5(paymentStr).toUpperCase()
+    var formData = `<xml>
+    <appid>${appid}</appid>
+    <body>${body}</body>
+    <mch_id>${mch_id}</mch_id>
+    <nonce_str>${nonce_str}</nonce_str>
+    <notify_url>${notify_url}</notify_url>
+    <out_trade_no>${out_trade_no}</out_trade_no>
+    <openid>${openid}</openid>
+    <spbill_create_ip>${spbill_create_ip}</spbill_create_ip>
+    <total_fee>${total_fee}</total_fee>
+    <trade_type>${trade_type}</trade_type>
+    <sign>${sign}</sign>
+    </xml>`
+    // 调用统一支付接口
+    wx.request({
+      url: 'https://api.mch.weixin.qq.com/pay/unifiedorder',
+      method: 'POST',
+      header: {'Content-Type': 'text/xml;charset=utf-8'},
+      data: formData,
+      success(res) {
+        console.log('返回商户', res.data)
+        var result_code = util.getXMLNodeValue('result_code', res.data);
+        var resultCode = result_code.split('[')[2].split(']')[0];
+        if (resultCode == 'FAIL') {
+          var err_code_des = util.getXMLNodeValue('err_code_des', res.data);
+          var errDes = err_code_des.split('[')[2].split(']')[0];
+          wx.showToast({
+            title: errDes,
+            icon: 'none'
+          })
+        } else {
+        // 准备发起支付
+        const prepay_id = util.getXMLNodeValue('prepay_id', res.data)
+      
+       // this.data.prepay_id = prepay_id
+        let tempStr = prepay_id.split('[')
+        let prepayId = tempStr[2].split(']')[0]
+        // sign
+        let appId = 'wx0c72bf852316254c',
+          nonceStr = util.randomString(),
+          timeStamp = util.createTimeStamp(),
+          signType = 'MD5'
+          let stringSignTemp = `appId=${appId}&nonceStr=${nonceStr}&package=prepay_id=${prepayId}&signType=${signType}&timeStamp=${timeStamp}&key=${key}`;
+          console.log(stringSignTemp)
+        let paySign = md5(stringSignTemp).toUpperCase()
+        const params = {
+          timeStamp,
+          nonceStr,
+          prepayId,
+          signType,
+          paySign
+        }
+        // 正式发起支付
+        _this.weixinPayment(params)
+        }
+
+      },
+      fail(err) {
+        wx.showToast({
+          title: err,
+          icon: 'none'
+        })
+        console.log(err)
+      }
+    })
+  },
+  // 发起微信支付
+  weixinPayment({ timeStamp,
+    nonceStr,
+    prepayId,
+    signType,
+    paySign}) {
+    wx.requestPayment({
+      timeStamp,
+      nonceStr,
+      package: `prepay_id=${prepayId}`,
+      signType,
+      paySign,
+      success: function (res) { 
+        console.log(res)
+      },
+      fail: function (res) {
+        console.log(res)
+       }
+    })
+  },
+  
+  // 获取终端IP
+  getCIP() {
+    wx.request({
+      url: 'https://pv.sohu.com/cityjson?ie=utf-8',
+      success: res => {
+        var temp = res.data
+        var result = temp.substring(temp.indexOf(':') + 1, temp.indexOf(',')).trim()
+        console.log(result.split('"')[1])
+        this.data.cip = result.split('"')[1]
       }
     })
   }

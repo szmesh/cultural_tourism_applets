@@ -59,6 +59,10 @@ Component({
         })
       }
     },
+    myBill() {
+      console.log('调用支付')
+      app.unitedPayRequest('支付测试', 0.01)
+    },
     gotoCommentatorsAction() {
       wx.navigateTo({
         url: '../commentators/index',
