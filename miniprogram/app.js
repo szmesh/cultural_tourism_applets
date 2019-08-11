@@ -7,7 +7,7 @@ App({
     profit_table_view: 'mcta_profit_percents',
     profit_scope_table_view: 'mcta_profit_percent_scope',
     profit_item_table_view: 'mcta_profit_percent_items',
-    mapKey: 'TNABZ-4BYK3-V7J36-Y5WH7-46RCV-E7FCQ',
+    mapKey: 'C3IBZ-EE5KK-O7LJC-AQT6W-WWQR3-KXB4P',
     accessTokenUrl: 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxb62bb3a704a7d662&secret=899a0bc306a62d34cda63d3e8bd8dedc'
   },
 
