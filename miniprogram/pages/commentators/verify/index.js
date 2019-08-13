@@ -4,7 +4,7 @@ Page({
   data: {
     table_view: 'mcta_commentators',
     comments_table_view: 'mcta_commentators_comments',
-    imagesCloundPath: 'cultural_tourism/commentators/',
+    imagesCloundPath: 'cultural_tourism/commentators',
     action_types: {
       n: 1000,
       e: 2000,
@@ -407,8 +407,7 @@ Page({
         that.data.model.file_type = suffix.substr(1)
         var timestamp = (new Date()).valueOf()
         let cloudPath = that.data.imagesCloundPath
-          + '-' + timestamp
-          + '_' + suffix
+          + '/' + timestamp + suffix
         wx.cloud.uploadFile({
           cloudPath,
           filePath,

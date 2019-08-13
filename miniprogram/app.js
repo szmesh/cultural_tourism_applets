@@ -1,16 +1,21 @@
 //app.js
 var QQMapWX = require('./libs/qqmap/qqmap-wx-jssdk.js');
-var md5 = require('./utils/md5.js')
-var util = require('./utils/util.js')
+const md5 = require('./utils/md5.js')
+const util = require('./utils/util.js')
 var qqmapsdk;
 
 App({
   data: {
+    profit_table_view: 'mcta_profit_percents',
+    profit_scope_table_view: 'mcta_profit_percent_scope',
+    profit_item_table_view: 'mcta_profit_percent_items',
     mapKey: 'TNABZ-4BYK3-V7J36-Y5WH7-46RCV-E7FCQ',
-    cip: ''
+    cip: '',
+    accessTokenUrl: 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxb62bb3a704a7d662&secret=899a0bc306a62d34cda63d3e8bd8dedc'
   },
 
   onLaunch: function () {
+    wx.cloud.init()
     var _this = this;
     // 获取下本地IP
     this.getCIP()
@@ -58,7 +63,8 @@ App({
       access_token: '',
       admins: [],
       locationCallBacks: [],
-      parentId: '' // 上级用户ID
+      parentId: '-3000', // 上级用户ID
+      userLocation: {}
     },
     this.getAccessToken()
     const { query } = wx.getLaunchOptionsSync()
@@ -73,7 +79,9 @@ App({
       success: function (res) {
         console.log('用户信息获取成功：')
         console.log(res)
-        _this.globalData.userInfo = res.userInfo
+        let userInfo = res.userInfo
+        userInfo.parentId = _this.globalData.parentId
+        _this.globalData.userInfo = userInfo
         _this.onGetOpenid()
 
         if (_this.userInfoReadyCallback) {
@@ -83,7 +91,6 @@ App({
       fail: function(e) {
         wx.showToast({
           title: '获取用户信息失败！',
-          icon: none,
           duration: 1000
         })
       }
@@ -100,13 +107,27 @@ App({
         this.globalData.userInfo.openid = res.result.userInfo.openId
         this.onAddUser()
         this.getAdminList()
+        this.getParentID(res.result.userInfo.openId)
       },
       fail: err => {
         wx.showToast({
           title: 'openid获取失败',
-          icon: none,
           duration: 1000
         })
+      }
+    })
+  },
+  // 获取parentID
+  getParentID(openid) {
+    const db = wx.cloud.database()
+    db.collection('mcta_users').where({ openid }).get({
+      success: res => {
+        if (res.data.length > 0 && res.data[0].parentId) {
+          this.globalData.parentId = res.data[0].parentId
+        }
+      },
+      fail: res => {
+
       }
     })
   },
@@ -147,7 +168,6 @@ App({
       fail: err => {
         wx.showToast({
           title: '插入会员失败！',
-          icon: none,
           duration: 1000
         })
       }
@@ -191,6 +211,13 @@ App({
         const speed = res.speed
         const accuracy = res.accuracy
 
+        // 保存经纬度
+        let userLocation = {
+          latitude: latitude,
+          longitude: longitude
+        }
+        _this.globalData.userLocation = userLocation
+
         _this.getReverseGeocoderLocation(longitude, latitude)
       }
     })
@@ -214,7 +241,6 @@ App({
       fail: function(e) {
         wx.showToast({
           title: '地址信息查找失败',
-          icon: none,
           duration: 2000
         })
       }
@@ -287,12 +313,17 @@ App({
     wx.request({
       url: `https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${this.globalData.appId}&secret=${this.globalData.appSecret}`,
       success: res => {
-        this.globalData.access_token = res.data.access_token
-        console.log(res)
-      },
-      fail: err => {
+      this.globalData.access_token = res.data.access_token
+      const exp_time = res.data.expires_in
+      // 到期后自动刷新
+      setTimeout(() => {
+        this.getAccessToken()
+      }, exp_time * 1000)
+      console.log(res)
+     },
+       fail: err => {
         console.log(err)
-      }
+       }
     })
   },
   /** 统一支付接口，发起微信支付调用
@@ -300,13 +331,13 @@ App({
    * @param price: 价格/元
    * @param description: 商品信息
   */
-  unitedPayRequest(tradeId, price, description) {
+  unitedPayRequest(targetData, price) {
     const _this = this
     const appid = 'wx0c72bf852316254c',
       openid = this.globalData.userInfo.openid,
     mch_id = '1549025261', //商户ID
     nonce_str = util.randomString(), //随机字符串
-    body = description || 'JSAPI 支付测试', // 描述信息
+    body = targetData.a_name || 'JSAPI 支付测试', // 描述信息
     out_trade_no = util.createTradeNo(), // 商户订单号
     total_fee = parseInt(price * 100) || 1,  //支付金额，单位为分
     spbill_create_ip = this.data.cip, // 客户端IP地址
@@ -372,13 +403,19 @@ App({
         // 用于保存订单的信息
         const saveData = {
           openid,
-          trade_id: tradeId,
+          album_id: targetData.a_id,
+          spot_id: targetData.s_id,
           trade_no: out_trade_no,
-          total_fee,
-          description: description || ''
+          total_fee: total_fee / 100,
+          album_name: targetData.a_name,
+          spot_name: targetData.s_name,
+          album_cover: targetData.a_icon
         }
+          // 分销信息记录下总金额
+          targetData['total_fee'] = total_fee / 100;
+          targetData['order_id'] = out_trade_no;
         // 正式发起支付
-        _this.weixinPayment(params, saveData)
+          _this.weixinPayment(params, saveData, targetData)
         }
 
       },
@@ -396,7 +433,7 @@ App({
     nonceStr,
     prepayId,
     signType,
-    paySign }, savedata) {
+    paySign }, savedata, targetData) {
     wx.requestPayment({
       timeStamp,
       nonceStr,
@@ -407,7 +444,9 @@ App({
         if (savedata) {
           savedata['trade_time'] = timeStamp
           this.saveTradeRecord(savedata)
+          this.saveProfitRecords(targetData)
         }
+        
         console.log(res)
       },
       fail: res => {
@@ -428,6 +467,50 @@ App({
       }
     })
   },
+  // 保存收益信息
+  saveProfitRecords(targetData) {
+    const _this = this
+    this.getProfitPercentRecordID(targetData.s_id, 
+    function (bool, data, msg) {
+      if (bool) {
+        const saveRoles = data.items
+        const db = wx.cloud.database()
+        for (let item of saveRoles) {
+          var saveData = {
+            t_name: item.name,
+            t_id: getRoleId(item),
+            t_icon: '',
+            time: util.createTimeStamp(),
+            profit: targetData.total_fee * item.percent / 100,
+            p_rate: item.p_rate,
+            wx_id: ''
+          }
+          saveData = Object.assign(saveData, targetData)
+          db.collection('mcta_profit_records').add({
+            data: saveData,
+            success: res => {
+              console.log(`存储${item.name}收益信息成功！`)
+            },
+            fail: err => {
+
+            }
+          })
+        }
+        function getRoleId(item) {
+          switch (item.name) {
+            case '平台分成':
+              return item.type
+            case '上级分成':
+              return _this.globalData.parentId
+            case '景区分成':
+              return saveData.s_id
+            case '市级分成':
+              return item.type
+          }
+        }
+      }
+    })
+  },
   // 获取终端IP
   getCIP() {
     wx.request({
@@ -439,5 +522,70 @@ App({
         this.data.cip = result.split('"')[1]
       }
     })
+  },
+  getProfitPercentRecordID: function(spotID, callback) {
+    let _this = this
+    const db = wx.cloud.database()
+    db.collection(_this.data.profit_scope_table_view).where({
+      s_id: spotID
+    }).get({
+      success: function(res) {
+        _this.getProfitPercentRecord(res.data[0].p_id, callback)
+      },
+      fail: function(err) {
+        callback(false, undefined, err)
+      }
+    })
+  },
+
+  getProfitPercentRecord: function (pid, callback) {
+    let _this = this
+    const db = wx.cloud.database()
+    db.collection(_this.data.profit_table_view).doc(pid).get({
+      success: function(res) {
+        _this.getProfitPercentItems(pid, res.data, callback)
+      },
+      fail: function(err) {
+        callback(false, undefined, err)
+      }
+    })
+  },
+
+  getProfitPercentItems: function (pid, profitModel, callback) {
+    let _this = this
+    const db = wx.cloud.database()
+    db.collection(_this.data.profit_item_table_view).where({
+      p_id: pid
+    }).get({
+      success: function (res) {
+        profitModel.items = res.data
+        console.log('step3', profitModel)
+        callback(true, profitModel, undefined)
+      },
+      fail: function(err) {
+        callback(false, undefined, err)
+      }
+    })
+  },
+  
+  geoDistance: function(lat2, lng2) {
+    if (!this.globalData.userLocation.latitude) {
+      return
+    }
+
+    let lat1 = this.globalData.userLocation.latitude
+    let lng1 = this.globalData.userLocation.longitude
+
+    let radLat1 = this.rad(lat1);
+    let radLat2 = this.rad(lat2);
+    let a = radLat1 - radLat2;
+    let b = this.rad(lng1) - this.rad(lng2);
+    let s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) + Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(b / 2), 2)));
+    s = s * 6378.137;// EARTH_RADIUS;
+    s = Math.round(s * 10000) / 10000; //输出为公里
+    return s.toFixed(2);
+  },
+  rad: function(d) {
+    return d * Math.PI / 180.0;
   }
 })

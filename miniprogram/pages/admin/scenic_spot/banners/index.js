@@ -4,6 +4,7 @@ Page({
   data: {
     sid: '',
     openid: '',
+    table_view: 'mcta_images',
     imagesCloundPath: 'cultural_tourism/spots/banner/',
     model: {
       file_type: 'png',
@@ -53,7 +54,7 @@ Page({
     const db = wx.cloud.database()
 
     // 先查询有没有数据
-    db.collection('mcta_images').where({
+    db.collection(this.data.table_view).where({
       s_id: this.data.sid,
       type: 2000
     }).get({
@@ -125,7 +126,7 @@ Page({
     const db = wx.cloud.database()
     this.data.model.url = fileID
     let model = this.data.model
-    db.collection('mcta_images').add({
+    db.collection(this.data.table_view).add({
       data: model,
       success: res => {
         wx.hideToast()
@@ -169,7 +170,7 @@ Page({
     let sid = e.target.dataset.sid
     let fileid = e.target.dataset.fileid
     let db = wx.cloud.database()
-    db.collection('mcta_images').doc(sid).remove({
+    db.collection(this.data.table_view).doc(sid).remove({
       success: res => {
         // 删除文件
         this.deleteFile(fileid)

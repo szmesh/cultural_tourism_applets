@@ -5,17 +5,17 @@ Page({
   data: {
     table_view: 'mcta_albums',
     spots_table_view: 'mcta_scenic_spots',
-    spot_items_table_view: 'mcta_scenic_spots_items',
     model: {
       name: '',
+      price: 0,
       s_id: '',
       s_name: '',
-      i_id: '',
-      i_name: ''
+      b_count: 0,
+      l_count: 0,
+      c_count: 0
     },
     userInfo: {},
     spot_model: {},
-    item_model: {},
     onSelectedSpotsCallBack: function (item) {
       if (item) {
         this.setData({
@@ -51,18 +51,6 @@ Page({
     })
   },
 
-  // 选择讲解点
-  onSelectItemButtonAction: function () {
-    wx.navigateTo({
-      url: '../../selectors/index?s_table='
-        + this.data.spot_items_table_view
-        + '&s_name_key=name'
-        + '&search_key=s_id'
-        + '&search_value=' + this.data.spot_model._id
-        + '&call_back=item_model'
-    })
-  },
-
   // 保存
   onSaveButtonAction: function() {
     if (!this.veridate()) {
@@ -72,8 +60,6 @@ Page({
     let model = this.data.model
     model.s_id = this.data.spot_model._id
     model.s_name = this.data.spot_model.name
-    model.i_id = this.data.item_model._id
-    model.i_name = this.data.item_model.name
 
     let _this = this
     let db = wx.cloud.database()
@@ -127,14 +113,6 @@ Page({
       return false
     }
 
-    if (undefined == this.data.item_model._id || 0 >= this.data.item_model._id.length) {
-      wx.showToast({
-        title: '请选择讲解点',
-        duration: 2000
-      })
-      return false
-    }
-
     return true
   },
 
@@ -145,6 +123,15 @@ Page({
       this.data.model.name = ''
     } else {
       this.data.model.name = info
+    }
+  },
+
+  onInputPrice: function (e) {
+    let value = e.detail.value
+    if (undefined == typeof (info)) {
+      this.data.model.price = 0
+    } else {
+      this.data.model.price = value
     }
   },
 })

@@ -225,8 +225,24 @@ function createTradeNo() {
     return num.toString()
   }
 }
+// 时间戳解析
+function timestampParse(timestamp) {
+  var timeStr = timestamp.toString()
+  var date = ''
+  if (timeStr.length < 13) {
+    date = new Date(timeStr * 1000)
+  } else {
+    date = new Date(Number(timestamp))
+  }
+  function addZero(num) {
+    return num < 10 ? '0' + num : num
+  }
+  let result =  date.getFullYear() + '/' + addZero(date.getMonth() + 1) + '/' + addZero(date.getDate()) + ' ' + addZero(date.getHours()) + ':' + addZero(date.getMinutes()) + ':' + addZero(date.getSeconds())
+  return result
+}
 module.exports = {
   md5,
+  timestampParse,
   createTimeStamp,
   randomString,
   getXMLNodeValue,

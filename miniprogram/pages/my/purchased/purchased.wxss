@@ -1,0 +1,52 @@
+/* miniprogram/pages/my/purchased/purchased.wxss */
+page{
+  background-color: #eceef1;
+}
+.list-container{
+  padding: 20rpx;
+  color: #565656;
+  position: relative;
+  margin-bottom: 60rpx;
+}
+.list-item{
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20rpx;
+  padding: 15rpx;
+  height: 180rpx;
+  box-shadow: 0 2rpx 6rpx rgba(0,0,0,.2) 
+}
+.album-img{
+  height: 180rpx;
+  width: 180rpx;
+}
+.item-info-section{
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 480rpx;
+  height: 180rpx;
+  font-size: 26rpx;
+  color: #525252;
+}
+.album-title{
+  width: 450rpx;
+  color: #525252;
+  font-size: 32rpx;
+  font-weight: bold;
+}
+.fee-row{
+  display: flex;
+  width: 450rpx;
+}
+.pricetag{
+  color: rgb(228, 9, 9);
+  font-weight: bold;
+}
+.tradetime-row{
+  width: 450rpx;
+  color: #8f8f8f;
+  font-size: 26rpx;
+}

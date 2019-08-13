@@ -1,0 +1,51 @@
+<view class="container">
+  <view wx:if="{{commentatorModel._id}}" class="page-section page-section-spacing bottom-margin-64">
+    <view class="commentators-list-card-root-view">
+      <image class='commentators-icon' src="{{commentatorModel.img}}"></image>
+      <view class='commentators-info-root-view'>
+        <view class='commentators-name-label-view'>
+          <view class='commentators-name font-h3'>{{commentatorModel.name}}</view>
+          <view wx:if="{{commentatorModel.label}}" class='commentators-label font-h5'>{{commentatorModel.label}}</view>
+        </view>
+
+        <view class='commentators-intr font-h4'>{{commentatorModel.intr}}</view>
+
+        <view wx:if="{{albumModel && albumModel._id}}" class='commentators-name-label-view top-margin-23'>
+          <view class='commentators-intr font-h4'>{{albumModel.l_count/10000}}万人收听</view>
+          <view class='commentators-intr left-margin-32 font-h4'>{{albumModel.b_count}}人购买</view>
+
+          <view wxif="{{albumModel.score}}" class='commentators-intr left-margin-32 font-h4'>{{albumModel.score}}评分</view>
+        </view>
+
+        <view wx:if="{{albumModel && albumModel._id}}" class='commentators-intr font-h4'>包含{{albumModel.c_count}}个讲解点</view>
+
+        <view wx:if="{{albumModel && albumModel._id}}" class="price top-margin-16 font-h3">{{albumModel.price}}元</view>
+      </view>
+    </view>
+  </view>
+  <view wx:else class="page-tips-text font-h3">查找专辑详情失败</view>
+
+  <view wx:if="{{commentatesDataSources && commentatesDataSources.length}}" class="page-section page-section-spacing bottom-margin-100">
+    <view wx:for="{{commentatesDataSources}}" wx:key="item.i_id" class="item-card-root-view bottom-margin-64">
+      <view class="title-item bottom-margin-23 font-h3">{{item.i_name}}</view>
+
+      <view class="commentates-container-root-view">
+        <view wx:for="{{item.data}}" wx:for-item="commentate" wx:for-index="cIndex" wx:key="commentate._id" class='commentates-root-view font-h3' data-playingsid="{{commentate._id}}" data-src="{{commentate.src}}" bindtap='playAudio'>
+              <image class='commentates-image' src='{{commentate.img}}'></image>
+              <image wx:if="{{playing_sid != commentate._id}}" class='commentates-play-image' src='../../../images/play/play.png'></image>
+              <image wx:if="{{playing_sid == commentate._id}}" class='commentates-play-image' src='../../../images/play/pause.png'></image>
+              <view class='commentates-audio-root-view font-h4'>{{commentate.name}}</view>
+            </view>
+    </view>
+      </view>
+  </view>
+  <view wx:else class="page-tips-text font-h3">专辑暂时没有上传讲解</view>
+
+  <view wx:if="{{albumModel._id}}" class="page-full-row-content">
+    <view class="row-content-messages">
+      <view wx:if="{{commentsDataSource && commentsDataSource.length}}" class="tips-row-content-messages font-h5">{{commentsDataSource.length}}</view>
+      <image class="row-content-messages-image" src="../../../images/messages.png"></image></view>
+    <view wx:if="{{!bought}}" class="row-content-button font-h2" bindtap='onPurchaseAction'>购买收听</view>
+     <view wx:else class="row-content-button font-h2" >已购买</view>
+  </view>
+</view>

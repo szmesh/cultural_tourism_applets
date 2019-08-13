@@ -10,10 +10,12 @@
   </view>
 
   <view class='page-section page-section-spacing bottom-margin-container'>
+   <navigator url='./purchased/purchased'>
     <view class='channel-card-view font-h3' >
       <image class='channel-icon' src='../../images/my/orders.png'></image>
       <text>我的已购</text>
     </view>
+  </navigator>
     <view class='channel-card-view font-h3'>
       <image class='channel-icon' src='../../images/my/cards.png'></image>
       <text>优惠券</text>
