@@ -45,6 +45,7 @@
     <view class="row-content-messages">
       <view wx:if="{{commentsDataSource && commentsDataSource.length}}" class="tips-row-content-messages font-h5">{{commentsDataSource.length}}</view>
       <image class="row-content-messages-image" src="../../../images/messages.png"></image></view>
-    <view class="row-content-button font-h2">购买收听</view>
+    <view wx:if="{{!bought}}" class="row-content-button font-h2" bindtap='onPurchaseAction'>购买收听</view>
+     <view wx:else class="row-content-button font-h2" >已购买</view>
   </view>
 </view>

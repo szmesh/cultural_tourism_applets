@@ -14,7 +14,8 @@ Page({
     commentatorModel: {},
     albumModel: {},
     commentatesDataSources: [],
-    commentsDataSource: []
+    commentsDataSource: [],
+    bought: false
   },
 
   onLoad: function (options) {
@@ -51,7 +52,13 @@ Page({
         aid: options.aid
       })
     }
-
+    console.log(options)
+    // 是否已购买
+    if (options.bought == true) {
+      this.setData({
+        bought: options.bought
+      })
+    }
     // 设置音频回调
     this.data.innerAudioContext = wx.createInnerAudioContext()
 
@@ -102,6 +109,7 @@ Page({
     let _this = this
     db.collection(_this.data.table_view).doc(_this.data.aid).get({
       success: function(res) {
+        console.log(res.data)
         if(res && res.data) {
           _this.setData({
             albumModel: res.data
@@ -128,6 +136,7 @@ Page({
       s_id: _this.data.aid
     }).get({
       success: function(res) {
+        console.log(res.data)
         if(res && res.data) {
           let dataSources = res.data
           let map = {}
@@ -192,4 +201,22 @@ Page({
       })
     }
   },
+  // 购买专辑
+  onPurchaseAction() {
+    var purchaseData = {
+      price: this.data.albumModel.price,
+      a_id: this.data.albumModel._id,
+      a_name: this.data.albumModel.name,
+      s_id: this.data.albumModel.s_id,
+      s_name: this.data.albumModel.s_name,
+      a_icon: this.data.commentatesDataSources[0].img,
+      f_id: app.globalData.userInfo.openid,
+      f_name: app.globalData.userInfo.nickName,
+      f_icon: app.globalData.userInfo.avatarUrl,
+      coupon: 0
+    }
+    console.log(purchaseData)
+    // 调用统一支付接口完成购买
+    app.unitedPayRequest(purchaseData, this.data.albumModel.price)
+  }
 })

@@ -28,7 +28,7 @@
     </view>
     <swiper current="{{currentIndex}}" class='info-swiper' duration="300" bindchange='onSwiperChangeAction'>
       <swiper-item>
-        <view wx:for="{{commentatorsDataSources}}" wx:key="item._id" class='commentators-list-card-root-view' data-index="{{index}}" bindtap='onCommentatorsDetailAction'>
+        <view wx:for="{{commentatorsDataSources}}" wx:key="item._id" class='commentators-list-card-root-view' >
           <image class='commentators-icon' src="{{item.img}}"></image>
           <view class='commentators-info-root-view'>
             <view class='commentators-name-label-view'>
@@ -49,8 +49,9 @@
               <view wx:if="{{item.albums && 0 < item.albums.length}}" class="price">{{item.albums[0].price}}元</view>
 
               <view class='commentators-action-button-view'>
-                <view class='action-button white-button'>详情</view>
-                <view class='action-button gold-button left-margin-23'>购买</view>
+                <view class='action-button white-button' data-index="{{index}}" bindtap='onCommentatorsDetailAction'>详情</view>
+                <view wx:if="{{!item.albums[0].purchased}}" class='action-button gold-button left-margin-23' data-index="{{index}}" bindtap='onPurchaseAction'>购买</view>
+                 <view wx:else class='action-button disabled-button left-margin-23' data-index="{{index}}" >已购</view>
               </view>
             </view>
           </view>

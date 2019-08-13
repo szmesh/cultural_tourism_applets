@@ -75,7 +75,12 @@ Component({
       // 查询所有的景区列表
       this.getSpotsDataSources()
     },
-
+    testProfit() {
+      app.getProfitPercentRecordID('face13585d4c40ad0f267a7b611582f7', function (bool, data, msg) {
+        console.log('结果数据', data)
+        
+      })
+    },
     getBanners() {
       const db = wx.cloud.database()
       db.collection(this.data.bannerCollection).get({
@@ -89,9 +94,31 @@ Component({
         }
       })
     },
+    toBannerDetail(e) {
+      console.log(e)
+      const target = this.data.banners[e.currentTarget.dataset.index]
+      if (target.banner_type == 'spot') {
+        wx.navigateTo({
+          url: `../admin/home_banners/banner_detail/banner_detail?id=${target._id}`,
+        })
+      }
+      if (target.banner_type=='image') {
+        wx.previewImage({
+          urls: [target.bannerUrl],
+        })
+      }
+      if (target.banner_type == 'link') {
+        wx.navigateTo({
+          url: `../admin/navigator/navigator?url=${target.link}`,
+        })
+      }
+
+    },
+    updateList() {},
 
     getSpotsDataSources() {
       let _this = this
+
       const db = wx.cloud.database()
       
       // 获取景区主数据

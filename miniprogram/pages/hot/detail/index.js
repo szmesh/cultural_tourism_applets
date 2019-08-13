@@ -23,7 +23,8 @@ Page({
     model: {},
     albumsDataSources: [],
     commentatorsIdArray: [],
-    commentatorsDataSources: []
+    commentatorsDataSources: [],
+    purchasedAlbums: []
   },
 
   onLoad: function (options) {
@@ -48,6 +49,7 @@ Page({
 
       // 查询景区详情
       this.getDetail()
+      this.getPurchasedList()
     }
   },
 
@@ -60,7 +62,6 @@ Page({
           _this.data.model = res.data
           _this.getImagesSetForSpot()
           _this.getAlbums()
-
           // 设置界面标题
           wx.setNavigationBarTitle({
             title: _this.data.model.name
@@ -143,7 +144,9 @@ Page({
       success: function(res) {
         if(res && res.data) {
           _this.data.albumsDataSources = res.data
-
+          if (_this.data.purchasedAlbums.length > 0) {
+            _this.remarkAlbumPurchased()
+          }
           let commentatorsIdArray = []
           for (let i = 0; i < _this.data.albumsDataSources.length; i++) {
             let album = _this.data.albumsDataSources[i]
@@ -244,7 +247,58 @@ Page({
     wx.navigateTo({
       url: '../../commentators/detail/index?sid=' + this.data.sid
       + '&cid=' + commentatorModel._id
-      + '&aid=' + commentatorModel.albums[0]._id,
+      + '&aid=' + commentatorModel.albums[0]._id
+        + '&bought=' + commentatorModel.albums[0].purchased,
     })
+  },
+  // 查询已购列表
+  getPurchasedList(sid) {
+    const db = wx.cloud.database()
+    db.collection('mcta_trade_records').where({
+      openid: app.globalData.userInfo.openid
+    }).get({
+      success: res => {
+        this.data.purchasedAlbums = res.data
+        if (this.data.albumsDataSources.length > 0) {
+          this.remarkAlbumPurchased()
+        }
+      },
+      fail: err => {
+        console.log(err)
+      }
+    })
+  },
+  // 标注一下已经购买的的专辑
+  remarkAlbumPurchased() {
+    for (let album of this.data.albumsDataSources) {
+      for (let item of this.data.purchasedAlbums) {
+        if (album._id == item.album_id) {
+          album['purchased'] = true
+          break
+        }
+      }
+    }
+    console.log(this.data.albumsDataSources)
+  },
+  // 点击购买
+  onPurchaseAction(e) {
+    const index = e.currentTarget.dataset.index
+    const commentatorModel = this.data.commentatorsDataSources[index]
+    var purchaseData = {
+      price: commentatorModel.albums[0].price,
+      a_id: commentatorModel.albums[0]._id,
+      a_name: commentatorModel.albums[0].name,
+      s_id: commentatorModel.albums[0].s_id,
+      s_name: commentatorModel.albums[0].s_name,
+      a_icon: this.data.model.imagesDataSources[0].url,
+      f_id: app.globalData.userInfo.openid,
+      f_name: app.globalData.userInfo.nickName,
+      f_icon: app.globalData.userInfo.avatarUrl,
+      coupon: 0
+    }
+    console.log(purchaseData)
+    // 调用统一支付接口完成购买
+    // app.unitedPayRequest(purchaseData,commentatorModel.albums[0].price)
+    app.unitedPayRequest(purchaseData, 0.01)
   }
 })

@@ -1,0 +1,21 @@
+/* miniprogram/pages/admin/home_banners/banner_detail/banner_detail.wxss */
+.page-content{
+  padding-left: 15px;
+  padding-right: 15px;
+}
+.info-row{
+  color: #333333;
+  font-size: 15px;
+  margin-bottom: 30rpx;
+}
+.banner-img{
+  width: 100%;
+}
+.main-title{
+  font-size: 32rpx;
+  font-weight: bold;
+}
+.sub-title{
+  font-size: 12px;
+  color: #8f8f88;
+}

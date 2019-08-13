@@ -1,0 +1,20 @@
+<!--miniprogram/pages/my/purchased/purchased.wxml
+我的已购列表-->
+<view class="list-container">
+   <view class='list-item' wx:for="{{purchasesList}}" wx:key="{{item._id}}" bindtap='toSpotDetail' data-sid="{{item.spot_id}}">
+      <image class='album-img' src='{{item.album_cover}}'></image>
+      <view class='item-info-section'>
+        <view class='album-title'>{{item.album_name}}</view>
+        <view class='fee-row'>
+          <text>价格：</text>
+          <text class='pricetag'>¥{{item.total_fee}}</text>
+        </view>
+        <view class='fee-row'>
+          <text>所属景点：{{item.spot_name}}</text>
+        </view>
+        <view class='tradetime-row'>
+          购买时间：{{item.tradetime_format}}
+        </view>
+      </view>
+   </view>
+</view>

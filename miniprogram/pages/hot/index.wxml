@@ -6,7 +6,6 @@
          placeholder='搜索景区、解说员'
          placeholder-class='placeholder-color'
          maxlength='32'></input>
-
   <view wx:if="{{banners && 0 >= banners.length}}" class="page-tips-text font-h3">暂时没有推荐内容</view>
   <view wx:else class="page-section page-section-spacing bottom-margin-23">
     <swiper indicator-dots="{{true}}"
@@ -21,7 +20,7 @@
       <block wx:for="{{banners}}" wx:key="{{item._id}}">
         <swiper-item class="swiper-item">
           <view class='banner-title'>{{item.title}}</view>
-          <image class="swiper-banner" src="{{item.bannerUrl}}" />
+          <image class="swiper-banner" src="{{item.bannerUrl}}" bindtap='toBannerDetail' data-index="{{index}}"/>
         </swiper-item>
       </block>
     </swiper>
@@ -33,7 +32,7 @@
 
   <view class='page-section bottom-margin-23 flow-label'>
     <block wx:for="{{hotCities}}" wx:key="city">
-      <view class='label-view font-h4'>{{item}}</view>
+      <view class='label-view font-h4' bindtap='testProfit'>{{item}}</view>
     </block>
   </view>
 
