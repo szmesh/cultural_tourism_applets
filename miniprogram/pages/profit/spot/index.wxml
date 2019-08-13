@@ -1,0 +1,7 @@
+<view class="container">
+  <view wx:if="{{dataSources && dataSources.length}}" class="page-section page-section-spacing">
+    <view wx:for="{{dataSources}}" wx:key="item._id" class="font-h3 top-margin-23 bottom-margin-23" data-sid="{{item._id}}" bindtap="onProfitButtonAction">{{item.name}}</view>
+  </view>
+
+  <view wx:else class="page-tips-text font-h3">没有找到景区记录</view>
+</view>

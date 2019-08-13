@@ -41,4 +41,28 @@
         <text>分成管理</text>
     </view>
   </navigator>
+
+  <!-- 平台收益 -->
+  <navigator url="../profit/index?sid=-4000&type=-4000" open-type="navigate">
+    <view class="page-section page-section-spacing channel-card-view font-3">
+        <text>平台收益</text>
+    </view>
+  </navigator>
+
+  <!-- 市级收益 -->
+  <navigator url="../profit/index?sid=-3000&type=-3000" open-type="navigate">
+    <view class="page-section page-section-spacing channel-card-view font-3">
+        <text>市级收益</text>
+    </view>
+  </navigator>
+
+  <!-- 景区收益 -->
+  <navigator url="../profit/spot/index" open-type="navigate">
+    <view class="page-section page-section-spacing channel-card-view font-3">
+        <text>景区收益</text>
+    </view>
+  </navigator>
+
+  <!-- 占位底view -->
+  <view class="place-hold-view bottom-margin-100"></view>
 </view>

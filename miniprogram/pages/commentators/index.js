@@ -1,4 +1,5 @@
 const app = getApp()
+const util = require('../../utils/util.js')
 
 Page({
   data: {
@@ -188,7 +189,7 @@ Page({
         let data = res.data
         data.forEach(function(item) {
           let st = item.time
-          let date = _this.formatDataWithTimeStamp(st)
+          let date = util.timestampParse(st)
           item.date = date
         })
 
@@ -213,18 +214,6 @@ Page({
     wx.navigateTo({
       url: './verify/index?sid=' + this.data.commetatorModel._id + '&action_type=' + this.data.action_type.e,
     })
-  },
-
-  // 时间戳转日期
-  formatDataWithTimeStamp: function(st) {
-    let d = new Date(st)
-    var date = (d.getFullYear()) + "/" +
-      (d.getMonth() + 1) + "/" +
-      (d.getDate()) + " " +
-      (d.getHours()) + ":" +
-      (d.getMinutes()) + ":" +
-      (d.getSeconds());
-    return date
   },
 
   // 添加专辑

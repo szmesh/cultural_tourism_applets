@@ -1,0 +1,147 @@
+.profit-header-root-view {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-content: center;
+  align-items: center;
+}
+
+.total-header-root-view {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-content: flex-start;
+}
+
+.usable-header-root-view {
+  height: 240rpx;
+  width: 240rpx;
+  border: 6rpx solid #ffa631;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+}
+
+.profit-value {
+  height: 32rpx;
+  line-height: 32rpx;
+  background-color: #ffa631;
+  color: white;
+  padding: 8rpx;
+  border-radius: 32rpx;
+}
+
+.line-view {
+  height: 2rpx;
+  width: 210rpx;
+  background-color: gray;
+}
+
+.usable-title {
+  color: lightgray;
+}
+
+.usable-value {
+  color: black;
+  font-weight: bold;
+}
+
+.cash-button {
+  color: #ffa631;
+  height: 32rpx;
+  line-height: 32rpx;
+  margin-top: 16rpx;
+}
+
+.tab {
+  float: left;
+  width: 33.333333%;
+  text-align: center;
+  padding: 10rpx 0;
+}
+
+.topTabSwiper {
+  zoom: 1;
+}
+
+.topTabSwiper:after {
+  content: "";
+  clear: both;
+  display: block;
+  margin-bottom :10rpx;
+}
+
+.tabBorer {
+  color: #ffa631;
+  border-bottom: 2px solid #ffa631;
+}
+
+.info-swiper {
+  width: 100%;
+  height: 1300rpx;
+}
+
+.item-card {
+  margin: 16rpx 0;
+  color: black;
+}
+
+.sub-user-card {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-content: center;
+  align-items: center;
+  margin: 32rpx 0;
+}
+
+.sub-user-avatar {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 100rpx;
+  margin-right: 32rpx;
+}
+
+.profit-dr-card {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 32rpx 0;
+  align-content: center;
+  align-items: center;
+}
+
+.profit-icon {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 100rpx;
+}
+
+.profit-dr-info-root-card {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.profit-dr-info-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.profit-dr-value {
+  color: greenyellow;
+  font-weight: bold;
+}
+
+.profit-dr-info-title {
+  color: gray;
+}
+
+.profit-cr-value {
+  color: red;
+  font-weight: bold;
+}
