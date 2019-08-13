@@ -62,7 +62,7 @@
   position: absolute;
   top: 0;
   left: 20rpx;
-  background-color: orange;
+  background-color: #ffa631;
   color: white;
   text-align: center;
   padding: 8rpx;

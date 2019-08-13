@@ -1,4 +1,12 @@
 /**app.wxss**/
+body {
+  background-color: white;
+}
+
+page {
+  background-color: white;
+}
+
 .container {
   position: relative;
   width: 100%;
@@ -9,10 +17,17 @@
   justify-content: flex-start;
   padding: 0;
   margin: 0;
+  background-color: white;
 }
 
 .template-view {
   width: 100%;
+}
+
+.place-hold-view {
+  height: 1rpx;
+  width: 100%;
+  background-color: white;
 }
 
 .bottom-margin-container {
@@ -73,6 +88,10 @@
   margin-bottom: 300rpx;
 }
 
+.bottom-margin-400 {
+  margin-bottom: 400rpx;
+}
+
 .left-margin-16 {
   margin-left: 16rpx;
 }
@@ -83,6 +102,10 @@
 
 .left-margin-32 {
   margin-left: 32rpx;
+}
+
+.right-margin-32 {
+  margin-right: 32rpx;
 }
 
 .font-h1 {

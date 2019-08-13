@@ -62,8 +62,18 @@ App({
       access_token: '',
       admins: [],
       locationCallBacks: [],
-      parentId: '-3000', // 上级用户ID
-      userLocation: {}
+      parentId: '-4000', // 默认上级用户ID
+      userLocation: {},
+      profitPercentType: {
+        parent: '-1000',
+        spot: '-2000',
+        manager: '-3000',
+        platform: '-4000'
+      },
+      profitType: {
+        dr: 1000,
+        cr: 2000
+      }
     },
     this.getAccessToken()
     const { query } = wx.getLaunchOptionsSync()
@@ -307,6 +317,21 @@ App({
 
     return area;
   },
+
+  // 分成类型名字转换
+  getProfitTypeName: function(type) {
+    switch (type) {
+      case this.globalData.profitPercentType.platform:
+        return '平台分成'
+      case this.globalData.profitPercentType.parent:
+        return '上级分成'
+      case this.globalData.profitPercentType.spot:
+        return '景区分成'
+      case this.globalData.profitPercentType.manager:
+        return '市级分成'
+    }
+  },
+
   // 获取access token
   getAccessToken() {
     wx.request({
@@ -479,10 +504,12 @@ App({
             t_name: item.name,
             t_id: getRoleId(item),
             t_icon: '',
+            p_type: item.type,
             time: util.createTimeStamp(),
             profit: targetData.total_fee * item.percent / 100,
             p_rate: item.p_rate,
-            wx_id: ''
+            wx_id: '',
+            type: _this.globalData.profitType.dr
           }
           saveData = Object.assign(saveData, targetData)
           db.collection('mcta_profit_records').add({
@@ -497,13 +524,13 @@ App({
         }
         function getRoleId(item) {
           switch (item.name) {
-            case '平台分成':
+            case _this.globalData.profitPercentType.platform:
               return item.type
-            case '上级分成':
-              return _this.globalData.parentId
-            case '景区分成':
+            case _this.globalData.profitPercentType.parent:
+              return _this.globalData.userInfo.parentId
+            case _this.globalData.profitPercentType.spot:
               return saveData.s_id
-            case '市级分成':
+            case _this.globalData.profitPercentType.manager:
               return item.type
           }
         }

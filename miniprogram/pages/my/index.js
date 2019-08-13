@@ -56,6 +56,15 @@ Page({
       })
     }
   },
+  gotoCommentatorsAction() {
+    wx.navigateTo({
+      url: '../commentators/index',
+    })
+
+    this.getTabBar().setData({
+      selected: 1
+    })
+  },
   gotoAdminPageAction() {
     wx.navigateTo({
       url: '../admin/index',

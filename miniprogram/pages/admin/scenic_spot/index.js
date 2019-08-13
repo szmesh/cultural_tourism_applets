@@ -2,6 +2,7 @@ const app = getApp()
 
 Page({
   data: {
+    table_view: 'mcta_scenic_spots',
     scenicSpots: []
   },
 
@@ -24,23 +25,24 @@ Page({
     })
 
     const db = wx.cloud.database()
+    let _this = this
 
     // 先查询有没有数据
-    db.collection('mcta_scenic_spots').get({
+    db.collection(_this.data.table_view).get({
       success: res => {
         if (0 < res.data.length) {
-          this.setData({
+          _this.setData({
             scenicSpots: res.data
           })
         } else {
-          this.setData({
+          _this.setData({
             scenicSpots: []
           })
         }
         wx.hideToast()
       },
       fail: err => {
-        this.setData({
+        _this.setData({
           scenicSpots: []
         })
         wx.hideToast()
@@ -72,7 +74,7 @@ Page({
     let sid = e.currentTarget.dataset.sid
 
     // 先查询有没有数据
-    db.collection('mcta_scenic_spots').doc(sid).remove({
+    db.collection(_this.data.table_view).doc(sid).remove({
       success: res => {
         wx.hideToast()
         wx.showToast({
