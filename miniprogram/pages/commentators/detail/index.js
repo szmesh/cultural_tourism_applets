@@ -181,6 +181,16 @@ Page({
 
   // 播放讲解
   playAudio: function (e) {
+    let index = e.currentTarget.dataset.index
+    if (!this.data.bought) {
+      if (index > 0) {
+        wx.showModal({
+          title: '购买专辑即可收听全部内容',
+          showCancel: false
+        })
+      return
+      }
+    }
     let playing_sid = e.currentTarget.dataset.playingsid
     let src = e.currentTarget.dataset.src
     if (this.data.playing_sid && this.data.playing_sid.length) {

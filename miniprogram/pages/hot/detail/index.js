@@ -214,7 +214,7 @@ Page({
         }
       })
     })
-
+    console.log(commentatorsDataSources)
     _this.setData({
       commentatorsDataSources: commentatorsDataSources
     })
@@ -278,7 +278,6 @@ Page({
         }
       }
     }
-    console.log(this.data.albumsDataSources)
   },
   // 点击购买
   onPurchaseAction(e) {
