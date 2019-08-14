@@ -120,7 +120,7 @@ Page({
   // 我的收益
   onProfitButtonAction: function() {
     wx.navigateTo({
-      url: '../../profit/index?sid=' + this.data.userInfo._id + '&type' + this.data.profitPercentType.parent,
+      url: '../../profit/index?sid=' + this.data.userInfo.userId + '&type=' + this.data.profitPercentType.parent,
     })
   }
 })

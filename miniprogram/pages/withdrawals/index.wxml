@@ -1,3 +1,19 @@
 <view class="container">
-  
+  <view class="page-section page-section-spacing">
+    <view wx:if="{{banksAccountModel._id && banksAccountModel._id.length}}" class="account-card" bindtap="selectCashAccount">
+      <view class="type-title font-h3">{{banksAccountModel.type_name}}</view>
+      <view class="font-h3">{{banksAccountModel.name}}</view>
+      <view class="sub-info font-h5">{{banksAccountModel.account}}</view>
+      <view class="font-h5">{{banksAccountModel.bank}}</view>
+      <view class="font-h5">{{banksAccountModel.bankLocal}}</view>
+    </view>
+    <view wx:else class="picker-button font-h3" bindtap="selectCashAccount">点击选择收款帐号</view>
+
+    <view class="cells-title font-h3">提取金额(余额：{{model.total_fee}})</view>
+      <view class="cells-after-title font-h4">
+      <input class="cell-input" maxlength="64" placeholder-style="color:black" placeholder="请输入提取金额" bindinput='onInputProfit' value="{{model.profit}}" />
+    </view>
+  </view>
+
+  <view class='page-full-button font-h3 top-margin-64 bottom-margin-100' bindtap='onAddButtonAction'>保存</view>
 </view>

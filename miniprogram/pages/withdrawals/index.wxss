@@ -1,0 +1,17 @@
+.account-card {
+  width: 100%;
+  margin: 32rpx 16rpx;
+}
+
+.type-title {
+  color: #ffa631;
+  font-weight: bold;
+}
+
+.sub-info {
+  color: gray;
+}
+
+.picker-button {
+  margin: 32rpx 16rpx;
+}

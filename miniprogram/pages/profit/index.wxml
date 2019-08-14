@@ -1,3 +1,13 @@
+<!--wxml-->
+<wxs module="m1">
+var fixFloat = function(a, b) {
+      var left = a - b
+      return left.toFixed(2)
+    }
+
+module.exports.fixFloat = fixFloat
+</wxs>
+
 <view class="container">
   <view class="page-section page-section-spacing profit-header-root-view">
     <view class="total-header-root-view left-margin-32">
@@ -9,9 +19,9 @@
 
     <view class="usable-header-root-view top-margin-32 bottom-margin-32 right-margin-32">
       <view class="usable-title font-h4">可用余额(元)</view>
-      <view class="usable-value font-h3">{{totalDr - totalCr}}</view>
+      <view class="usable-value font-h3">{{m1.fixFloat(totalDr, totalCr)}}</view>
       <view class="line-view"></view>
-      <view class="cash-button font-h3">提现</view>
+      <view class="cash-button font-h3" bindtap="onCashButtonAction">提现</view>
     </view>
   </view>
 

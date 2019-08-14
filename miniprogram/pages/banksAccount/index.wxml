@@ -1,6 +1,6 @@
 <view class="container">
   <view wx:if="{{dataSources && dataSources.length}}" class="page-section page-section-spacing">
-    <view wx:for="{{dataSources}}" wx:key="item._id" class="account-card">
+    <view wx:for="{{dataSources}}" wx:key="item._id" class="account-card" bindtap="onPickerAction" data-index="{{index}}">
       <view class="type-title font-h3">{{item.type_name}}</view>
       <view class="font-h3">{{item.name}}</view>
       <view class="sub-info font-h5">{{item.account}}</view>

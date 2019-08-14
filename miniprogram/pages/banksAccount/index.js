@@ -5,6 +5,8 @@ const banksAccountType = require('../../utils/banksAccountType.js')
 Page({
   data: {
     table_view: 'mcta_banks_accounts',
+    action: 1000,
+    property: '',
     userInfo: {},
     dataSources: []
   },
@@ -23,6 +25,14 @@ Page({
       })
 
       this.getDataSources()
+    }
+
+    if(options.action) {
+      this.data.action = options.action
+    }
+
+    if (options.property) {
+      this.data.property = options.property
     }
   },
 
@@ -57,6 +67,26 @@ Page({
   onAddButtonAction: function() {
     wx.navigateTo({
       url: 'add/index',
+    })
+  },
+
+  onPickerAction: function(e) {
+    let index = e.currentTarget.dataset.index
+    if(1000 == this.data.action) {
+      return
+    }
+
+    let model = this.data.dataSources[index]
+    var pagesArr = getCurrentPages()
+    let _this = this
+    wx.navigateBack({
+      delta: 1,   //回退前 delta 页面
+      success: function (res) {
+        let parentPage = pagesArr[pagesArr.length - 2]
+        let data = parentPage.data
+        data[_this.data.property] = model
+        parentPage.setData(data)
+      }
     })
   }
 })

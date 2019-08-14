@@ -51,6 +51,7 @@ Page({
     if(this.data.sid && this.data.type) {
       this.getSubUsersDataSources()
       this.getDrDataSourcese()
+      this.getCrDataSourcese()
     }
   },
 
@@ -68,7 +69,7 @@ Page({
         dataSources.forEach(item => {
           item.time_local = util.timestampParse(item.time)
           item.p_type_name = app.getProfitTypeName(item.p_type)
-          totalDr += item.profit
+          totalDr += parseFloat(item.profit)
         })
 
         _this.setData({
@@ -102,7 +103,7 @@ Page({
         dataSources.forEach(item => {
           item.time_local = util.timestampParse(item.time)
           item.p_type_name = app.getProfitTypeName(item.p_type)
-          totalCr += item.profit
+          totalCr += parseFloat(item.profit)
         })
 
         _this.setData({
@@ -162,6 +163,50 @@ Page({
     const that = this;
     that.setData({
       currentIndex: e.detail.current
+    })
+  },
+
+  onCashButtonAction: function() {
+    let left = this.data.totalDr - this.data.totalCr
+    if (0.1 >= left) {
+      wx.showToast({
+        title: '小于1元无法提现喔',
+        icon: 'fail'
+      })
+      return
+    }
+
+    // 根据不同类型的分成，设置不同的收益人信息
+    let t_id = this.data.sid
+    let t_name = this.data.userInfo.nickName
+    let t_icon = this.data.userInfo.avatarUrl
+    if (app.globalData.profitPercentType.platform === this.data.type) {
+      t_id = this.data.type
+      t_name = app.getProfitTypeName(this.data.type)
+      t_icon = ''
+    }
+
+    if (app.globalData.profitPercentType.manager === this.data.type) {
+      t_id = this.data.type
+      t_name = app.getProfitTypeName(this.data.type)
+      t_icon = ''
+    }
+
+    if (app.globalData.profitPercentType.spot === this.data.type) {
+      t_id = this.data.sid
+      t_name = ''
+      t_icon = ''
+    }
+
+    let queryParams = 'f_id=' + this.data.userInfo.userId +
+      '&f_name=' + this.data.userInfo.nickName +
+      '&f_icon=' + this.data.userInfo.avatarUrl +
+      '&t_id=' + t_id +
+      '&t_name=' + t_name +
+      '&t_icon=' + t_icon +
+      '&leftProfit=' + left
+    wx.navigateTo({
+      url: '../withdrawals/index?' + queryParams,
     })
   }
 })
