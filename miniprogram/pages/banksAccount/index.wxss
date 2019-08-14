@@ -1,0 +1,13 @@
+.account-card {
+  width: 100%;
+  margin: 32rpx 0;
+}
+
+.type-title {
+  color: #ffa631;
+  font-weight: bold;
+}
+
+.sub-info {
+  color: gray;
+}
