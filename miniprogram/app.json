@@ -22,7 +22,8 @@
     "pages/commentators/albums/index",
     "pages/admin/navigator/navigator",
     "pages/admin/home_banners/banner_detail/banner_detail",
-    "pages/my/purchased/purchased"
+    "pages/my/purchased/purchased",
+    "pages/withdrawals/approval/index"
   ],
   "permission": {
     "scope.userLocation": {

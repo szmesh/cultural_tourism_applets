@@ -1,0 +1,30 @@
+<view class="container">
+  <view wx:if="{{dataSources && dataSources.length}}" class="page-section page-section-spacing bottom-margin-100">
+    <view wx:for="{{dataSources}}" wx:key="item._id" class="apply-card font-h4 top-margin-64 bottom-margin-64">
+      <view class="info-card">
+        <view class="from-to-card">
+          <image class="apply-icon" src="{{item.f_icon}}"></image>
+          <view class="left-margin-16">{{item.f_name}}</view>
+          <image class="apply-icon left-margin-32 right-margin-32" src="../../../images/arrow.png"></image>
+          <image class="apply-icon" src="{{item.t_icon}}"></image>
+          <view class="left-margin-16">{{item.t_name}}</view>
+        </view>
+
+        <view class="time-info top-margin-16">{{item.time_local}}</view>
+
+        <view wx:if="{{item.approval && item.approval._id}}">
+          <view wx:if="{{item.approval.type === status.reject}}" bindtap="onApprovalButtonAction" data-status="{{status.view}}" data-sid="{{item._id}}">已拒绝</view>
+          <view wx:else bindtap="onApprovalButtonAction" data-status="{{status.view}}" data-sid="{{item._id}}">已确认</view>
+        </view>
+        <view wx:else class="from-to-card">
+          <view class="channel-button reject-button" bindtap="onApprovalButtonAction" data-status="{{status.reject}}" data-index="{{index}}" data-sid="{{item._id}}">拒绝</view>
+          <view class="channel-button approval-button left-margin-32" bindtap="onApprovalButtonAction" data-status="{{status.add}}" data-index="{{index}}" data-sid="{{item._id}}">确认</view>
+        </view>
+      </view>
+
+      <view class="price-info font-h2">￥{{item.profit}}</view>
+    </view>
+  </view>
+
+  <view wx:else class="page-tips-text font-h3">还没有提现申请喔</view>
+</view>

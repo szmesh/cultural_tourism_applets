@@ -1,0 +1,36 @@
+<view class="container">
+  <view class="page-section page-section-spacing">
+    <picker bindchange="pickerChange" value="{{index}}" range="{{banksAccountType}}" range-key="name">
+      <view class="picker banks-account-type font-h3">帐户类型：{{banksAccountType[banksAccountTypeIndex].name}}</view>
+    </picker>
+
+    <view class="cells-title font-h3">收款人姓名</view>
+      <view class="cells-after-title font-h4">
+      <input class="cell-input" maxlength="64" placeholder-style="color:black" placeholder="请输入收款人姓名" bindinput='onInputName' value="{{model.name}}" />
+    </view>
+
+    <view class="cells-title font-h3">联系电话</view>
+      <view class="cells-after-title font-h4">
+      <input class="cell-input" maxlength="64" placeholder-style="color:black" placeholder="请输入联系电话" bindinput='onInputPhone' value="{{model.phone}}" />
+    </view>
+
+    <view class="cells-title font-h3">帐号</view>
+      <view class="cells-after-title font-h4">
+      <input class="cell-input" maxlength="64" placeholder-style="color:black" placeholder="请输入收款帐号" bindinput='onInputAccount' value="{{model.account}}" />
+    </view>
+
+    <block wx:if="{{accountType.debit_card == model.type || accountType.credit_card == model.type}}">
+      <view class="cells-title font-h3">所属银行</view>
+        <view class="cells-after-title font-h4">
+        <input class="cell-input" maxlength="64" placeholder-style="color:black" placeholder="请输入所属银行" bindinput='onInputBank' value="{{model.bank}}" />
+      </view>
+
+      <view class="cells-title font-h3">开户分行</view>
+        <view class="cells-after-title font-h4">
+        <input class="cell-input" maxlength="64" placeholder-style="color:black" placeholder="选填开户分行" bindinput='onInputBankLocal' value="{{model.bankLocal}}" />
+      </view>
+    </block>
+  </view>
+
+  <view class='page-full-button font-h3 top-margin-64 bottom-margin-100' bindtap='onAddButtonAction'>保存</view>
+</view>

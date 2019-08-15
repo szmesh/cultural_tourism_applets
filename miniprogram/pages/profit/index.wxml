@@ -1,3 +1,13 @@
+<!--wxml-->
+<wxs module="m1">
+var fixFloat = function(a, b) {
+      var left = a - b
+      return left.toFixed(2)
+    }
+
+module.exports.fixFloat = fixFloat
+</wxs>
+
 <view class="container">
   <view class="page-section page-section-spacing profit-header-root-view">
     <view class="total-header-root-view left-margin-32">
@@ -9,9 +19,9 @@
 
     <view class="usable-header-root-view top-margin-32 bottom-margin-32 right-margin-32">
       <view class="usable-title font-h4">可用余额(元)</view>
-      <view class="usable-value font-h3">{{totalDr - totalCr}}</view>
+      <view class="usable-value font-h3">{{m1.fixFloat(totalDr, totalCr)}}</view>
       <view class="line-view"></view>
-      <view class="cash-button font-h3">提现</view>
+      <view class="cash-button font-h3" bindtap="onCashButtonAction">提现</view>
     </view>
   </view>
 
@@ -45,7 +55,7 @@
 
       <swiper-item>
         <view wx:if="{{crDataSources && crDataSources.length}}" class="template-view">
-          <view wx:for="{{crDataSources}}" wx:key="item._id" class="profit-dr-card">
+          <view wx:for="{{crDataSources}}" wx:key="item._id" class="profit-dr-card" bindtap="onApprovalDetailAction" data-sid="{{item._id}}">
             <view class="profit-dr-info-root-card">
               <image class="profit-icon" src="{{item.f_icon}}"></image>
               
@@ -53,6 +63,9 @@
                 <view class="font-h3">{{item.f_name}}</view>
                 <view wx:if="{{item.time_local}}" class="profit-dr-info-title font-h4">{{item.time_local}}</view>
                 <view wx:if="{{item.p_type_name}}" class="profit-dr-info-title font-h4">{{item.p_type_name}}</view>
+                <view wx:if="{{item.approval && item.approval._id && status.add == item.approval.type}}" class="status-title font-h4">已审批</view>
+                <view wx:if="{{item.approval && item.approval._id && status.reject == item.approval.type}}" class="status-title font-h4">已拒绝</view>
+                <view wx:if="{{!item.approval}}" class="status-title font-h4">审批中</view>
               </view>
             </view>
 

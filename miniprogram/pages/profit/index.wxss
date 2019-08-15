@@ -145,3 +145,7 @@
   color: red;
   font-weight: bold;
 }
+
+.status-title {
+  color: #ffa631;
+}

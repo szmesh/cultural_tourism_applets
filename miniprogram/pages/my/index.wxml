@@ -25,11 +25,19 @@
       <text>解说管理</text>
     </view>
     <navigator url='./promotion/promotion'>
-    <view class='channel-card-view font-h3'>
-      <image class='channel-icon' src='../../images/my/promotion.png'></image>
-      <text>推广赚钱</text>
-    </view>
-     </navigator>
+      <view class='channel-card-view font-h3'>
+        <image class='channel-icon' src='../../images/my/promotion.png'></image>
+        <text>推广赚钱</text>
+      </view>
+    </navigator>
+
+    <navigator url='../banksAccount/index'>
+      <view class='channel-card-view font-h3'>
+        <image class='channel-icon' src='../../images/my/banks.png'></image>
+        <text>我的帐户</text>
+      </view>
+    </navigator>
+
     <view class='channel-card-view font-h3'>
       <image class='channel-icon' src='../../images/my/about.png'></image>
       <text>版本声明</text>

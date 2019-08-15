@@ -1,0 +1,14 @@
+.banks-account-type {
+  width: 100%;
+  margin: 23rpx 0;
+  padding: 8rpx 16rpx;
+}
+
+.input-card {
+  width: 100%;
+  margin: 23rpx 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}

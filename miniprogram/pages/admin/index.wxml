@@ -42,6 +42,13 @@
     </view>
   </navigator>
 
+  <!-- 提现管理 -->
+  <navigator url="../withdrawals/cash/index" open-type="navigate">
+    <view class="page-section page-section-spacing channel-card-view font-3">
+        <text>提现管理</text>
+    </view>
+  </navigator>
+
   <!-- 平台收益 -->
   <navigator url="../profit/index?sid=-4000&type=-4000" open-type="navigate">
     <view class="page-section page-section-spacing channel-card-view font-3">
