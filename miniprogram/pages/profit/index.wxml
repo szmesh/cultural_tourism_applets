@@ -55,7 +55,7 @@ module.exports.fixFloat = fixFloat
 
       <swiper-item>
         <view wx:if="{{crDataSources && crDataSources.length}}" class="template-view">
-          <view wx:for="{{crDataSources}}" wx:key="item._id" class="profit-dr-card">
+          <view wx:for="{{crDataSources}}" wx:key="item._id" class="profit-dr-card" bindtap="onApprovalDetailAction" data-sid="{{item._id}}">
             <view class="profit-dr-info-root-card">
               <image class="profit-icon" src="{{item.f_icon}}"></image>
               
@@ -63,6 +63,9 @@ module.exports.fixFloat = fixFloat
                 <view class="font-h3">{{item.f_name}}</view>
                 <view wx:if="{{item.time_local}}" class="profit-dr-info-title font-h4">{{item.time_local}}</view>
                 <view wx:if="{{item.p_type_name}}" class="profit-dr-info-title font-h4">{{item.p_type_name}}</view>
+                <view wx:if="{{item.approval && item.approval._id && status.add == item.approval.type}}" class="status-title font-h4">已审批</view>
+                <view wx:if="{{item.approval && item.approval._id && status.reject == item.approval.type}}" class="status-title font-h4">已拒绝</view>
+                <view wx:if="{{!item.approval}}" class="status-title font-h4">审批中</view>
               </view>
             </view>
 

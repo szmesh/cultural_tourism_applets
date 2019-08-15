@@ -1,0 +1,23 @@
+<view class="container">
+  <view class="page-section page-section-spacing bottom-margin-64">
+    <view class="cells-title font-h3">处理人</view>
+      <view class="cells-after-title font-h4">
+      <input class="cell-input" disabled="{{isEditable}}" maxlength="64" placeholder-style="color:black" placeholder="请输入实际处理人名字" bindinput='onInputAname' value="{{model.a_name}}" />
+    </view>
+
+    <view class="cells-title font-h3 top-margin-64">联系电话</view>
+      <view class="cells-after-title font-h4">
+      <input class="cell-input" disabled="{{isEditable}}" maxlength="64" placeholder-style="color:black" placeholder="请输入处理人联系电话" bindinput='onInputAphone' value="{{model.a_phone}}" />
+    </view>
+
+    <view class="cells-title font-h3 top-margin-64">说明</view>
+    <view class="cells-after-title font-h4">
+      <textarea placeholder-style="color:black" disabled="{{isEditable}}" placeholder="请输入详细说明" bindinput='onInputDes' value="{{model.des}}" auto-height />
+    </view>
+
+    <view class="cells-title font-h3 top-margin-64" disabled="{{isEditable}}" bindtap="chooseImage">点击上传图片</view>
+    <image wx:if="{{model.img && model.img.length}}" class="list-image-value" src="{{model.img}}"></image>
+  </view>
+
+  <view wx:if="{{status != 1000}}" class='page-full-button font-h3 top-margin-64 bottom-margin-100' bindtap='onAddButtonAction'>保存</view>
+</view>

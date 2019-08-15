@@ -7,6 +7,18 @@ page {
   background-color: white;
 }
 
+.list-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 16rpx;
+}
+
+.list-image-value {
+  width: 704rpx;
+  height: 396rpx;
+  border-radius: 16rpx;
+}
+
 .container {
   position: relative;
   width: 100%;

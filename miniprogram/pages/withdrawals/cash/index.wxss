@@ -1,0 +1,72 @@
+.account-card {
+  width: 100%;
+  margin: 32rpx 16rpx;
+}
+
+.type-title {
+  color: #ffa631;
+  font-weight: bold;
+}
+
+.sub-info {
+  color: gray;
+}
+
+.picker-button {
+  margin: 32rpx 16rpx;
+}
+
+.apply-card {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.info-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.from-to-card {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.time-info {
+  color: gray;
+}
+
+.apply-icon {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 64rpx;
+}
+
+.price-info {
+  color: #ffa631;
+  font-weight: bold;
+}
+
+.channel-button {
+  height: 32rpx;
+  line-height: 32rpx;
+  padding: 8rpx 16rpx;
+  border-radius: 32rpx;
+  text-align: center;
+}
+
+.reject-button {
+  background-color: white;
+  color: #ffa631;
+  border: 3rpx solid #ffa631;
+}
+
+.approval-button {
+  background-color: #ffa631;
+  color: white;
+}

@@ -1,11 +1,14 @@
 
 const app = getApp()
 const util = require('../../utils/util.js')
+const recordDetailStatus = require('../../utils/recordDetailStatus.js')
 
 Page({
   data: {
     table_view: 'mcta_profit_records',
     userTableView: 'mcta_users',
+    approval_table_view: 'mcta_profit_records_approval',
+    status: recordDetailStatus.status,
     totalDr: 0,
     totalCr: 0,
     currentIndex: 0,
@@ -99,17 +102,18 @@ Page({
     }).get({
       success: function (res) {
         let dataSources = res.data
-        let totalCr = 0
+        let sidArray = []
         dataSources.forEach(item => {
           item.time_local = util.timestampParse(item.time)
           item.p_type_name = app.getProfitTypeName(item.p_type)
-          totalCr += parseFloat(item.profit)
+          sidArray.push(item._id)
         })
 
         _this.setData({
           crDataSources: dataSources,
-          totalCr: totalCr
         })
+
+        _this.getApprovalDataSources(sidArray)
       },
       fail: function (err) {
         wx.showToast({
@@ -118,6 +122,48 @@ Page({
 
         _this.setData({
           crDataSources: [],
+          totalCr: 0
+        })
+      }
+    })
+  },
+
+  // 查询提现申请的审批情况
+  getApprovalDataSources: function (sidArray) {
+    let _this = this
+    const db = wx.cloud.database()
+    const _ = db.command
+    db.collection(_this.data.approval_table_view).where({
+      s_id: _.in(sidArray)
+    }).get({
+      success: function (res) {
+        let approvalDataSources = res.data
+        let crDataSources = _this.data.crDataSources
+        let totalCr = 0
+        crDataSources.forEach(apply => {
+          approvalDataSources.forEach(approval => {
+            if (approval.s_id === apply._id) {
+              apply.approval = approval
+            }
+          })
+
+          if (apply.approval) {
+            if (_this.data.status.reject !== parseInt(apply.approval.type)) {
+              totalCr += parseFloat(apply.profit)
+            }
+          } else {
+            totalCr += parseFloat(apply.profit)
+          }
+        })
+
+        _this.setData({
+          crDataSources: crDataSources,
+          totalCr: totalCr
+        })
+      },
+      fail: function (err) {
+        wx.showToast({
+          title: '查询提现审批失败',
           totalCr: 0
         })
       }
@@ -207,6 +253,13 @@ Page({
       '&leftProfit=' + left
     wx.navigateTo({
       url: '../withdrawals/index?' + queryParams,
+    })
+  },
+
+  onApprovalDetailAction: function (e) {
+    let sid = e.currentTarget.dataset.sid
+    wx.navigateTo({
+      url: '../withdrawals/approval/index?sid=' + sid + '&status=' + this.data.status.view
     })
   }
 })
