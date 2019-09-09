@@ -6,7 +6,7 @@
       <text class="userinfo-nickname font-h2">{{userInfo.nickName}}</text>
     </block>
     <!-- <button type='primary' bindtap='myBill' size='mini'>支付测试</button> -->
-    <text wx:if="{{openid}}">{{openid}}</text>
+    <!-- <text wx:if="{{openid}}">{{openid}}</text> -->
   </view>
 
   <view class='page-section page-section-spacing bottom-margin-container'>

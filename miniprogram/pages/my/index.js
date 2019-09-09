@@ -16,9 +16,9 @@ Page({
   },
   onLoad() {
     // 测试openId，并显示
-    if (app.globalData.userInfo.openid) {
+    if (app.globalData.access_token) {
       this.setData({
-        openid: app.globalData.userInfo.openid
+        openid: app.globalData.access_token
       })
     }
 
