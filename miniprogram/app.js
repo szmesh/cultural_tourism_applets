@@ -10,7 +10,7 @@ App({
     profit_scope_table_view: 'mcta_profit_percent_scope',
     profit_item_table_view: 'mcta_profit_percent_items',
     mapKey: 'C3IBZ-EE5KK-O7LJC-AQT6W-WWQR3-KXB4P',
-    accessTokenUrl: 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxb62bb3a704a7d662&secret=899a0bc306a62d34cda63d3e8bd8dedc'
+    accessTokenUrl: 'https://www.mesher.cn/mcts/wechat/accessToken'
   },
 
   onLaunch: function () {
@@ -58,7 +58,6 @@ App({
     // app全局保存数据
     this.globalData = {
       appId: 'wx0c72bf852316254c',
-      appSecret: 'f826a0aff906145032a3811c097f2a96',
       access_token: '',
       admins: [],
       locationCallBacks: [],
@@ -335,7 +334,7 @@ App({
   // 获取access token
   getAccessToken() {
     wx.request({
-      url: `https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${this.globalData.appId}&secret=${this.globalData.appSecret}`,
+      url: this.data.accessTokenUrl,
       success: res => {
       this.globalData.access_token = res.data.access_token
       const exp_time = res.data.expires_in

@@ -46,18 +46,14 @@ Page({
   // 获取推广二维码
   getQRcode() {
     wx.request({
-      url: `https://api.weixin.qq.com/cgi-bin/wxaapp/createwxaqrcode?access_token=${app.globalData.access_token}`,
+      url: 'https://www.mesher.cn/mcts/wechat/qrcode',
       method: 'POST',
-      responseType: 'arraybuffer',
       data: {
-        path: `pages/hot/index?userID=${app.globalData.userInfo.openid}`
+        path: `pages/hot/index?userID=${app.globalData.userInfo.userId}`
       },
       success: res => {
-        console.log(res)
-        // 将Buffer转成图片显示
-        const baseData = 'data:image/png;base64,' + wx.arrayBufferToBase64(res.data)
         this.setData({
-          imgURL: baseData
+          imgURL: 'https://www.mesher.cn' + res.data
         })
       },
       fail: err => {
