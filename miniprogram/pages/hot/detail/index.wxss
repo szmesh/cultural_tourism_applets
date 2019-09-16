@@ -1,4 +1,4 @@
-page{
+page {
   padding-bottom: 100rpx;
   background-color: #f1f1f1;
 }

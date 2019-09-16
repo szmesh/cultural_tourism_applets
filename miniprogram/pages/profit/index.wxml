@@ -1,0 +1,76 @@
+<view class="container">
+  <view class="page-section page-section-spacing profit-header-root-view">
+    <view class="total-header-root-view left-margin-32">
+      <view class="font-h3">累计收益</view>
+      <view class="profit-value font-h3 bottom-margin-23">￥ {{totalDr}}</view>
+      <view class="font-h3">已提现</view>
+      <view class="profit-value font-h3">￥ {{totalCr}}</view>
+    </view>
+
+    <view class="usable-header-root-view top-margin-32 bottom-margin-32 right-margin-32">
+      <view class="usable-title font-h4">可用余额(元)</view>
+      <view class="usable-value font-h3">{{totalDr - totalCr}}</view>
+      <view class="line-view"></view>
+      <view class="cash-button font-h3">提现</view>
+    </view>
+  </view>
+
+  <view class='page-section page-section-spacing bottom-margin-100'>
+    <view class='topTabSwiper'>
+      <view class='tab {{currentIndex == 0 ? "tabBorer" : ""}}' data-index="0" bindtap='onTabButtonAction'>收入明细</view>
+      <view class='tab  {{currentIndex == 1 ? "tabBorer" : ""}}' data-index="1" bindtap='onTabButtonAction'>提现记录</view>
+      <view class='tab  {{currentIndex == 2 ? "tabBorer" : ""}}' data-index="2" bindtap='onTabButtonAction'>所有下级</view>
+    </view>
+
+    <swiper current="{{currentIndex}}" class='info-swiper' duration="300" bindchange='onSwiperChangeAction'>
+      <swiper-item>
+        <view wx:if="{{drDataSources && drDataSources.length}}" class="template-view">
+          <view wx:for="{{drDataSources}}" wx:key="item._id" class="profit-dr-card">
+            <view class="profit-dr-info-root-card">
+              <image class="profit-icon" src="{{item.f_icon}}"></image>
+              
+              <view class="profit-dr-info-card left-margin-32">
+                <view class="font-h3">{{item.f_name}}</view>
+                <view wx:if="{{item.time_local}}" class="profit-dr-info-title font-h4">{{item.time_local}}</view>
+                <view wx:if="{{item.p_type_name}}" class="profit-dr-info-title font-h4">{{item.p_type_name}}</view>
+              </view>
+            </view>
+
+            <view class="profit-dr-value font-h2">￥ {{item.profit}}</view>
+          </view>
+        </view>
+
+  <view wx:else class="page-tips-text font-h3">还没有收益喔</view>
+      </swiper-item>
+
+      <swiper-item>
+        <view wx:if="{{crDataSources && crDataSources.length}}" class="template-view">
+          <view wx:for="{{crDataSources}}" wx:key="item._id" class="profit-dr-card">
+            <view class="profit-dr-info-root-card">
+              <image class="profit-icon" src="{{item.f_icon}}"></image>
+              
+              <view class="profit-dr-info-card left-margin-32">
+                <view class="font-h3">{{item.f_name}}</view>
+                <view wx:if="{{item.time_local}}" class="profit-dr-info-title font-h4">{{item.time_local}}</view>
+                <view wx:if="{{item.p_type_name}}" class="profit-dr-info-title font-h4">{{item.p_type_name}}</view>
+              </view>
+            </view>
+
+            <view class="profit-cr-value font-h2">￥ -{{item.profit}}</view>
+          </view>
+        </view>
+  <view wx:else class="page-tips-text font-h3">还没有提现记录喔</view>
+      </swiper-item>
+
+      <swiper-item>
+        <view wx:if="{{subUsersDataSources && subUsersDataSources.length}}" class="template-view">
+          <view wx:for="{{subUsersDataSources}}" wx:key="item._id" class="sub-user-card">
+            <image class="sub-user-avatar" src="{{item.avatarUrl}}"></image>
+            <view class="font-h3">{{item.nickName}}</view>
+          </view>
+        </view>
+        <view wx:else class="page-tips-text font-h3">还没有下级喔</view>
+      </swiper-item>
+    </swiper>
+  </view>
+</view>

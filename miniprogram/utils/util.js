@@ -1,6 +1,6 @@
 /* 时间戳产生函数   */
 function createTimeStamp() {
-  return parseInt(new Date().getTime() / 1000) + ''
+  return parseInt(new Date().getTime()) + ''
 }
 /* 随机数 */
 function randomString() {

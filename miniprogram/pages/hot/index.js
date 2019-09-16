@@ -1,4 +1,4 @@
-var app = getApp();
+const app = getApp();
 
 Component({
   data: {
@@ -217,6 +217,17 @@ Component({
       wx.navigateTo({
         url: 'detail/index?sid=' + sid,
       })
-    }
+    },
+    /**
+   * 用户点击右上角分享
+   */
+   onShareAppMessage: function (res) {
+      let currPages  = getCurrentPages()
+      const route = currPages[currPages.length - 1]
+      return {
+        title: "星河互联小程序",
+        path: `${route}?userID=${app.globalData.parentId}` 
+      }
+    },
   }
 })

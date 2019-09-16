@@ -6,14 +6,27 @@ Page({
    * 页面的初始数据
    */
   data: {
-    imgURL: ''
-
+    imgURL: '',
+    userInfo: {},
+    profitPercentType: {}
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    if (app.globalData.userInfo) {
+      this.setData({
+        userInfo: app.globalData.userInfo
+      })
+    }
+
+    if (app.globalData.profitPercentType) {
+      this.setData({
+        profitPercentType: app.globalData.profitPercentType
+      })
+    }
+
     this.getQRcode()
   },
 
@@ -102,5 +115,12 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+
+  // 我的收益
+  onProfitButtonAction: function() {
+    wx.navigateTo({
+      url: '../../profit/index?sid=' + this.data.userInfo._id + '&type' + this.data.profitPercentType.parent,
+    })
   }
 })
