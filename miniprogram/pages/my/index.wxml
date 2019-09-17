@@ -1,6 +1,10 @@
 <view class="container">
   <view class="user-info bottom-margin-container">
-    <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
+    <!-- <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button> -->
+    <block wx:if="{{!globalData.isLogin}}">
+      <image class="userinfo-avatar" src="../../images/user-unlogin.png" mode="cover"></image>
+      <button type="primary" bindtap="doWXLogin">微信登录</button>
+    </block>
     <block wx:else>
       <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
       <text class="userinfo-nickname font-h2">{{userInfo.nickName}}</text>
@@ -10,33 +14,33 @@
   </view>
 
   <view class='page-section page-section-spacing bottom-margin-container'>
-   <navigator url='./purchased/purchased'>
-    <view class='channel-card-view font-h3' >
+   <!-- <navigator url='./purchased/purchased'> -->
+    <view bindtap="navigateTo" data-url="./purchased/purchased" class='channel-card-view font-h3' >
       <image class='channel-icon' src='../../images/my/orders.png'></image>
       <text>我的已购</text>
     </view>
-  </navigator>
-    <view class='channel-card-view font-h3'>
+  <!-- </navigator> -->
+    <view bindtap="navigateTo" data-url="" class='channel-card-view font-h3'>
       <image class='channel-icon' src='../../images/my/cards.png'></image>
       <text>优惠券</text>
     </view>
-    <view class='channel-card-view font-h3' bindtap='gotoCommentatorsAction'>
+    <view bindtap="navigateTo" data-url="../commentators/index" class='channel-card-view font-h3'>
       <image class='channel-icon' src='../../images/my/commentators.png'></image>
       <text>解说管理</text>
     </view>
-    <navigator url='./promotion/promotion'>
-      <view class='channel-card-view font-h3'>
+    <!-- <navigator url='./promotion/promotion'> -->
+      <view bindtap="navigateTo" data-url="./promotion/promotion" class='channel-card-view font-h3'>
         <image class='channel-icon' src='../../images/my/promotion.png'></image>
         <text>推广赚钱</text>
       </view>
-    </navigator>
+    <!-- </navigator> -->
 
-    <navigator url='../banksAccount/index'>
-      <view class='channel-card-view font-h3'>
+    <!-- <navigator url='../banksAccount/index'> -->
+      <view  bindtap="navigateTo" data-url="../banksAccount/index"  class='channel-card-view font-h3'>
         <image class='channel-icon' src='../../images/my/banks.png'></image>
         <text>我的帐户</text>
       </view>
-    </navigator>
+    <!-- </navigator> -->
 
     <view class='channel-card-view font-h3'>
       <image class='channel-icon' src='../../images/my/about.png'></image>
