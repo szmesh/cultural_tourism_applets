@@ -12,20 +12,9 @@ App({
     mapKey: 'C3IBZ-EE5KK-O7LJC-AQT6W-WWQR3-KXB4P',
     accessTokenUrl: 'https://www.mesher.cn/mcts/wechat/accessToken'
   },
-
-  onLaunch: function () {
-    wx.cloud.init()
-    var _this = this;
-    // 获取下本地IP
-    this.getCIP()
-    // 本地缓存服务
-    if (!wx.cloud) {
-      console.error('请使用 2.2.3 或以上的基础库以使用云能力')
-    } else {
-      wx.cloud.init({
-        traceUser: true,
-      })
-    }
+  // 用户授权登录
+  doAuthorize() {
+    const _this = this
     wx.getSetting({
       success: function (res) {
         // 用户信息授权
@@ -49,7 +38,21 @@ App({
         wx.hideToast()
       }
     })
-
+  },
+  onLaunch: function () {
+    wx.cloud.init()
+    var _this = this;
+    // 获取下本地IP
+    this.getCIP()
+    // 本地缓存服务
+    if (!wx.cloud) {
+      console.error('请使用 2.2.3 或以上的基础库以使用云能力')
+    } else {
+      wx.cloud.init({
+        traceUser: true,
+      })
+    }
+    
     // 实例化API核心类
     qqmapsdk = new QQMapWX({
       key: _this.data.mapKey
@@ -59,6 +62,7 @@ App({
     this.globalData = {
       appId: 'wx0c72bf852316254c',
       access_token: '',
+      isLogin: false, // 是否已授权登录
       admins: [],
       locationCallBacks: [],
       parentId: '-4000', // 默认上级用户ID
@@ -101,7 +105,7 @@ App({
           title: '获取用户信息失败！',
           duration: 1000
         })
-      }
+      }    
     })
   },
 
@@ -116,12 +120,39 @@ App({
         this.onAddUser()
         this.getAdminList()
         this.getParentID(res.result.userInfo.openId)
+        this.globalData.isLogin = true
+        wx.showToast({
+          title: '登录成功！',
+        })
       },
       fail: err => {
         wx.showToast({
           title: 'openid获取失败',
           duration: 1000
         })
+      }
+    })
+  },
+  // 重新加载下当前页面，更新视图信息
+  reLoadPage() {
+    const pages = getCurrentPages()
+    const perpage = pages[pages.length - 1]
+    console.log(pages)
+    perpage.onLoad()  
+  },
+  // 登录提示
+  loginSuggest() {
+    wx.showModal({
+      title: '登录提示',
+      content: '抱歉你还未登录，登录后才能继续，是否立即登录？',
+      showCancel: true,
+      confirmText: '微信登录',
+       cancelText: '以后再说',
+      confirmColor: '#07c160',
+      success: res => {
+        if (res.confirm) {
+          this.doAuthorize()
+        }
       }
     })
   },
@@ -192,6 +223,7 @@ App({
           this.globalData.admins = res.data
           let admin = this.getAdminData()
           this.globalData.currentUserAdmin = admin
+          this.reLoadPage()
         }
       }
     })

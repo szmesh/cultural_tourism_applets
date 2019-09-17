@@ -25,6 +25,12 @@ Page({
       })
       return
     }
+    if (!options) {
+      wx.reLaunch({
+        url: '../../hot/index',
+      })
+      return
+    }
 
     if (app.globalData.userInfo) {
       this.setData({
@@ -51,7 +57,7 @@ Page({
       this.setData({
         aid: options.aid
       })
-    }
+    } 
     console.log(options)
     // 是否已购买
     if (options.bought == true) {
@@ -181,6 +187,18 @@ Page({
 
   // 播放讲解
   playAudio: function (e) {
+    // 如果说没有购买只能听第一个
+    if (!this.data.bought) {
+      const aindex = e.currentTarget.dataset.aindex
+      const cindex = e.currentTarget.dataset.cindex
+      if (aindex > 0 || cindex > 0) {
+        wx.showModal({
+          title: '提示',
+          content: '若要收听更多内容，请购买对应专辑',
+          showCancel: false
+        })
+      }
+    }
     let playing_sid = e.currentTarget.dataset.playingsid
     let src = e.currentTarget.dataset.src
     if (this.data.playing_sid && this.data.playing_sid.length) {
@@ -203,6 +221,10 @@ Page({
   },
   // 购买专辑
   onPurchaseAction() {
+    if (!app.globalData.isLogin) {
+      app.loginSuggest()
+      return
+    }
     var purchaseData = {
       price: this.data.albumModel.price,
       a_id: this.data.albumModel._id,

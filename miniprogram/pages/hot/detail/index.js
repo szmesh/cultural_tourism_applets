@@ -1,4 +1,3 @@
-
 const app = getApp()
 
 Page({
@@ -27,29 +26,32 @@ Page({
     purchasedAlbums: []
   },
 
-  onLoad: function (options) {
+  onLoad: function(options) {
     if (!wx.cloud) {
       wx.redirectTo({
         url: '../../chooseLib/chooseLib',
       })
       return
     }
+    if (!options || !options.sid) {
+      wx.reLaunch({
+        url: '../index',
+      })
+    }
+    // 景区记录id
+    if (options.sid) {
+      this.setData({
+        sid: options.sid
+      })
+      // 查询景区详情
+      this.getDetail()
+      this.getPurchasedList()
+    } 
 
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo
       })
-    }
-
-    // 景区记录id
-    if(options.sid) {
-      this.setData({
-        sid: options.sid
-      })
-
-      // 查询景区详情
-      this.getDetail()
-      this.getPurchasedList()
     }
   },
 
@@ -119,7 +121,7 @@ Page({
       s_id: _this.data.sid
     }).get({
       success: res => {
-        if(res && res.data) {
+        if (res && res.data) {
           let model = _this.data.model
           model.itemsDataSources = res.data
 
@@ -142,7 +144,7 @@ Page({
       s_id: _this.data.sid
     }).get({
       success: function(res) {
-        if(res && res.data) {
+        if (res && res.data) {
           _this.data.albumsDataSources = res.data
           if (_this.data.purchasedAlbums.length > 0) {
             _this.remarkAlbumPurchased()
@@ -179,7 +181,7 @@ Page({
       _openid: _.in(_this.data.commentatorsIdArray)
     }).get({
       success: function(res) {
-        if(res && res.data) {
+        if (res && res.data) {
           _this.setData({
             commentatorsDataSources: res.data
           })
@@ -221,7 +223,7 @@ Page({
   },
 
   //获取当前滑块的index
-  onSwiperChangeAction: function (e) {
+  onSwiperChangeAction: function(e) {
     const that = this;
     that.setData({
       currentIndex: e.detail.current
@@ -229,7 +231,7 @@ Page({
   },
 
   //点击切换，滑块index赋值
-  onTabButtonAction: function (e) {
+  onTabButtonAction: function(e) {
     const that = this;
     if (that.data.currentIndex === e.target.dataset.index) {
       return false;
@@ -245,10 +247,10 @@ Page({
     let index = e.currentTarget.dataset.index
     let commentatorModel = this.data.commentatorsDataSources[index]
     wx.navigateTo({
-      url: '../../commentators/detail/index?sid=' + this.data.sid
-      + '&cid=' + commentatorModel._id
-      + '&aid=' + commentatorModel.albums[0]._id
-        + '&bought=' + commentatorModel.albums[0].purchased,
+      url: '../../commentators/detail/index?sid=' + this.data.sid +
+        '&cid=' + commentatorModel._id +
+        '&aid=' + commentatorModel.albums[0]._id +
+        '&bought=' + commentatorModel.albums[0].purchased,
     })
   },
   // 查询已购列表
@@ -278,10 +280,16 @@ Page({
         }
       }
     }
-    console.log(this.data.albumsDataSources)
+    this.setData({
+      albumsDataSources: this.data.albumsDataSources
+    })
   },
   // 点击购买
   onPurchaseAction(e) {
+    if (!app.globalData.isLogin) {
+      app.loginSuggest()
+      return
+    }
     const index = e.currentTarget.dataset.index
     const commentatorModel = this.data.commentatorsDataSources[index]
     var purchaseData = {
@@ -299,6 +307,6 @@ Page({
     console.log(purchaseData)
     // 调用统一支付接口完成购买
     // app.unitedPayRequest(purchaseData,commentatorModel.albums[0].price)
-    app.unitedPayRequest(purchaseData, 0.01)
+    app.unitedPayRequest(purchaseData, purchaseData.price)
   }
 })

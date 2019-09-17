@@ -5,8 +5,15 @@ Page({
     userInfo: {},
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
+    globalData: app.globalData
+  },
+  doWXLogin() {
+    app.doAuthorize()
   },
   onShow() {
+    this.setData({
+      globalData: app.globalData
+    })
     if (typeof this.getTabBar === 'function' &&
       this.getTabBar()) {
       this.getTabBar().setData({
@@ -15,6 +22,9 @@ Page({
     }
   },
   onLoad() {
+    this.setData({
+      globalData: app.globalData
+    })
     // 测试openId，并显示
     if (app.globalData.access_token) {
       this.setData({
@@ -55,6 +65,19 @@ Page({
         }
       })
     }
+  },
+  navigateTo(e) {
+    if (!app.globalData.isLogin) {
+      app.loginSuggest()
+      return
+    }
+    var url = e.currentTarget.dataset.url
+    wx.navigateTo({
+      url
+    })
+    this.getTabBar().setData({
+      selected: 1
+    })
   },
   gotoCommentatorsAction() {
     wx.navigateTo({
